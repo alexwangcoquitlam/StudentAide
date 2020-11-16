@@ -1,0 +1,70 @@
+com/group04/studentaide/loginActivity.java
+ com.group04.studentaide.loginActivity
+ com.group04.studentaide.loginActivity$1
+ com.group04.studentaide.loginActivity$2
+com/group04/studentaide/loadingscreen.java
+ com.group04.studentaide.loadingscreen
+ com.group04.studentaide.loadingscreen$1
+com/group04/studentaide/CourseSingleton.java
+ com.group04.studentaide.CourseSingleton
+com/group04/studentaide/data/LoginRepository.java
+ com.example.myapplication.data.LoginRepository
+com/group04/studentaide/registration.java
+ com.group04.studentaide.registration
+ com.group04.studentaide.registration$1
+ com.group04.studentaide.registration$2
+ com.group04.studentaide.registration$3
+com/group04/studentaide/studyStatistics.java
+ com.group04.studentaide.studyStatistics
+com/group04/studentaide/serverURL.java
+ com.group04.studentaide.serverURL
+com/group04/studentaide/StudentAideSingleton.java
+ com.group04.studentaide.StudentAideSingleton
+com/group04/studentaide/User.java
+ com.group04.studentaide.User
+com/group04/studentaide/BuildConfig.java
+ com.group04.studentaide.BuildConfig
+com/group04/studentaide/data/LoginDataSource.java
+ com.example.myapplication.data.LoginDataSource
+com/group04/studentaide/data/Result.java
+ com.example.myapplication.data.Result
+ com.example.myapplication.data.Result$1
+ com.example.myapplication.data.Result$Error
+ com.example.myapplication.data.Result$Success
+com/group04/studentaide/calendarActivity.java
+ com.group04.studentaide.calendarActivity
+ com.group04.studentaide.calendarActivity$1
+com/group04/studentaide/coursesActivity.java
+ com.group04.studentaide.coursesActivity
+ com.group04.studentaide.coursesActivity$1
+ com.group04.studentaide.coursesActivity$2
+ com.group04.studentaide.coursesActivity$Callback
+com/group04/studentaide/data/model/LoggedInUser.java
+ com.example.myapplication.data.model.LoggedInUser
+com/group04/studentaide/SharedPreferencesUtility.java
+ com.group04.studentaide.SharedPreferencesUtility
+com/group04/studentaide/MainActivity.java
+ com.group04.studentaide.MainActivity
+com/group04/studentaide/courseCreation.java
+ com.group04.studentaide.courseCreation
+ com.group04.studentaide.courseCreation$1
+ com.group04.studentaide.courseCreation$2
+ com.group04.studentaide.courseCreation$3
+com/group04/studentaide/studySessionPlan.java
+ com.group04.studentaide.studySessionPlan
+ com.group04.studentaide.studySessionPlan$1
+ com.group04.studentaide.studySessionPlan$2
+ com.group04.studentaide.studySessionPlan$2$1
+ com.group04.studentaide.studySessionPlan$2$2
+ com.group04.studentaide.studySessionPlan$3
+ com.group04.studentaide.studySessionPlan$Callback
+com/group04/studentaide/studySession.java
+ com.group04.studentaide.studySession
+ com.group04.studentaide.studySession$1
+ com.group04.studentaide.studySession$2
+ com.group04.studentaide.studySession$3
+ com.group04.studentaide.studySession$4
+ com.group04.studentaide.studySession$5
+ com.group04.studentaide.studySession$6
+ com.group04.studentaide.studySession$7
+ com.group04.studentaide.studySession$Callback
