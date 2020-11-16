@@ -1,0 +1,122 @@
+package com.group04.studentaide;
+
+/*
+Written By Yufeng Luo
+Tested functionality locally using activity_course_creation.xml, and coursesActivity.xml
+Currently no implementation for institution field or Quizzes switch --> will be done in v2/v3
+ */
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class courseCreation extends AppCompatActivity {
+
+
+    EditText mInputCourseName;
+    EditText mInputInstitution;
+    Switch mQuizzes;
+    Button mCreateCourse;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_course_creation); // Set to study session XML
+        mInputCourseName = findViewById(R.id.inputCourseName);
+        mInputInstitution = findViewById(R.id.institutionInput);
+        mQuizzes = findViewById(R.id.allowQuiz);
+        mCreateCourse = findViewById(R.id.createButton);
+
+        //Create our LinkedHashMap object from singleton
+        CourseSingleton courseList = CourseSingleton.getInstance();
+
+        //After user enters details and clicks create course
+        //They will be taken back to the main course activity page
+        mCreateCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createCourseFire();
+            }
+        });
+
+    }
+
+    private void createCourseFire(){
+
+        String name = mInputCourseName.getText().toString().trim();
+        String institution;
+        String quiz;
+        String uid;
+        String owner;
+        if (user != null) {
+            uid = user.getUid();
+            owner = user.getDisplayName();
+        }
+        else {
+            uid = "No associated user";
+            owner = "No associated user";
+        }
+        if (mQuizzes.isChecked())
+            quiz = "true";
+        else
+            quiz = "false";
+
+        if (TextUtils.isEmpty(mInputInstitution.getText().toString().trim()))
+            institution = "personal";
+        else
+            institution = mInputInstitution.getText().toString().trim();
+
+        if (TextUtils.isEmpty(name)){
+            mInputCourseName.setError("Please enter a course name");
+            mInputCourseName.requestFocus(); // requestFocus will make the focus go to this box that is empty
+        }
+        else {
+            Map<String, Object> Courses = new HashMap<>();
+            Courses.put("name", mInputCourseName.getText().toString().trim());
+            Courses.put("institution", institution);
+            Courses.put("allowQuizzes", quiz);
+            Courses.put("owner", owner);
+            Courses.put("owner uid", uid);
+
+            db.collection("Courses")
+                    .add(Courses)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d("courseAdded", "DocumentSnapshot added with ID: " + documentReference.getId());
+                            Toast.makeText(courseCreation.this, "Course created", Toast.LENGTH_LONG).show();
+                            Intent returnCourses = new Intent(courseCreation.this, coursesActivity.class);
+                            startActivity(returnCourses);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("courseAddFail", "Error adding document", e);
+                        }
+                    });
+        }
+    }
+}

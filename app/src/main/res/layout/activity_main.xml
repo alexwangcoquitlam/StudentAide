@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/mainImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toTopOf="@+id/mainLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.105"
+        app:srcCompat="@drawable/applogo" />
+
+    <TextView
+        android:id="@+id/mainLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="StudentAide"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/loginOpen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainImage" />
+
+    <Button
+        android:id="@+id/calendarOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="calendarScreen"
+        android:text="Calendar"
+        app:layout_constraintBottom_toTopOf="@+id/statsOpen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/studyOpen" />
+
+    <Button
+        android:id="@+id/coursesOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="coursesScreen"
+        android:text="Courses"
+        app:layout_constraintBottom_toTopOf="@+id/studyOpen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginOpen" />
+
+    <Button
+        android:id="@+id/studyOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="studyScreen"
+        android:text="Study"
+        app:layout_constraintBottom_toTopOf="@+id/calendarOpen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursesOpen" />
+
+    <Button
+        android:id="@+id/statsOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:onClick="statsScreen"
+        android:text="My Stats"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarOpen"
+        app:layout_constraintVertical_bias="0.238" />
+
+    <Button
+        android:id="@+id/loginOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="loginScreen"
+        android:text="Login and Sign up"
+        app:layout_constraintBottom_toTopOf="@+id/coursesOpen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
