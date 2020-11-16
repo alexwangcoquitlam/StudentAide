@@ -1,0 +1,134 @@
+[
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_loadingscreen.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_loadingscreen.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_course_creation.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_course_creation.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_courses.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_courses.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\anim_fade_out.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\anim\\fade_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\drawable_applogo.jpg.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\drawable\\applogo.jpg"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\drawable_applogoblack.jpg.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\drawable\\applogoblack.jpg"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_registration.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_registration.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\anim_fade_in.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\anim\\fade_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_stats.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_stats.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\drawable_applogosmall.jpg.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\drawable\\applogosmall.jpg"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_study_session.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_study_session.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_study_plan.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_study_plan.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_calendar.xml.flat",
+        "source": "C:\\Users\\Alexander Wang\\AndroidStudioProjects\\StudentAide\\app\\src\\main\\res\\layout\\activity_calendar.xml"
+    }
+]
