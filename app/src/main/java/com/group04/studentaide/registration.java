@@ -62,6 +62,7 @@ public class registration extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +94,11 @@ public class registration extends AppCompatActivity {
 
     }
 
+    public void educatorRegister(View view){
+        Intent educator = new Intent(registration.this, registrationEducator.class);
+        startActivity(educator);
+    }
+
     private void registrationFireAuth(){
         String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString();
@@ -100,6 +106,7 @@ public class registration extends AppCompatActivity {
         String firstName = inputFirstName.getText().toString().trim();
         String lastName = inputLastName.getText().toString().trim();
         String name = firstName + " " + lastName;
+        name = name.toLowerCase();
         Log.d("nameCheck", name);
         if (TextUtils.isEmpty(firstName)){
             inputFirstName.setError("Please enter a first name");
