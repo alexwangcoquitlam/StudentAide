@@ -33,6 +33,7 @@ import java.util.TreeMap;
 public class coursesActivity extends AppCompatActivity {
 
     Button createCourseClicked;
+    Button joinCourseClicked;
     Spinner coursesDisplay;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -45,6 +46,16 @@ public class coursesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
+
+        joinCourseClicked = (Button)findViewById(R.id.courseJoin);
+        joinCourseClicked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), joinCourseActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         if (user != null) {
             uid = user.getUid();
