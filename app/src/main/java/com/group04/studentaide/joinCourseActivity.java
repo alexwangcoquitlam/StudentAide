@@ -2,6 +2,8 @@ package com.group04.studentaide;
 
 /*
 
+Written By: Yufeng Luo
+
 1. User selects Institution
 2. Then chooses Educator
 3. Then displays all courses that the Educator currently owns
@@ -34,6 +36,7 @@ CourseList: <Name, DocumentID>
 
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -78,6 +81,7 @@ public class joinCourseActivity extends AppCompatActivity {
     private final static String TAG = "institutionList";
 
     String courseChosen;
+    String courseChosenID;
     String studentDocumentID;
 
     //Collection names
@@ -88,19 +92,22 @@ public class joinCourseActivity extends AppCompatActivity {
     final String statisticsDB = "Statistics";
     final String studentCoursesDB = "StudentCourses";
 
+    //Create an instance of our Firestore database
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     //Current user's UID, used to add them into course
     String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
+    //ArrayLists to hold the appropriate names and populate spinners
     ArrayList<String> institutionList = new ArrayList<String>();
     ArrayList<String> educatorList = new ArrayList<String>();
-    ArrayList<String> courseList = new ArrayList<String>();
+    //ArrayList<String> courseList = new ArrayList<String>();
 
+    //Basic Adapters for spinners
     ArrayAdapter<String> institutionAdapter;
     ArrayAdapter<String> educatorAdapter;
     ArrayAdapter<String> courseAdapter;
 
+    //Hashmap structures to insert new data/update data into  Firestore database
     Map<String, String> institutionsHM = new HashMap<String, String>();
     Map<String, String> educatorsHM = new HashMap<String, String>();
     Map<String, String> coursesHM = new HashMap<String, String>();
@@ -111,22 +118,20 @@ public class joinCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_join);
 
+
+        //Sets up Spinners so that the first option is not an item that can be chosen
         institutionList.add(0, "Choose an Institution");
         educatorList.add(0, "Choose an Educator");
-        courseList.add(0, "Choose a Course");
+        //courseList.add(0, "Choose a Course");
 
+
+        //Setup view ID's for respective widgets
         mInstitutionSpinner = (Spinner) findViewById(R.id.institution_spinner);
         mEducatorSpinner = (Spinner) findViewById(R.id.educator_spinner);
         mCourseSpinner = (Spinner) findViewById(R.id.course_spinner);
         mJoinCourseButton = (Button) findViewById(R.id.join_course_button);
 
-        //Might not need this method as a callback as the student UID variable will not be used until later
-        getCurrentStudentDocument(UID, new Callback() {
-            @Override
-            public void call() {
-
-            }
-        });
+        Log.d(TAG, "Current UserID: " + UID);
 
         getAllInstitutions(new Callback() {
             @Override
@@ -143,6 +148,8 @@ public class joinCourseActivity extends AppCompatActivity {
 
                 if (!choice.equals("Choose an Institution")) {
 
+                    //String choiceID = institutionsHM.get(choice);
+                    //Change these variables when live to use document ID's
                     getAllEducators(choice, new Callback() {
                         @Override
                         public void call() {
@@ -169,9 +176,11 @@ public class joinCourseActivity extends AppCompatActivity {
 
                 if (!choice.equals("Choose an Educator")){
 
-                    getAllCourses(choice, new Callback() {
+                    //String choiceID = educatorsHM.get(choice);
+                    //Chagne these variables to use Document ID
+                    getAllCourses(choice, new courseCallback() {
                         @Override
-                        public void call() {
+                        public void onCourseCallback(ArrayList<String> courseList) {
 
                             courseAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courseList);
                             courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -179,6 +188,7 @@ public class joinCourseActivity extends AppCompatActivity {
 
                             Log.d(TAG, "Course Spinner set");
                         }
+
                     });
                 }
             }
@@ -191,11 +201,12 @@ public class joinCourseActivity extends AppCompatActivity {
         mCourseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 //Get course name selected
                 courseChosen = mCourseSpinner.getItemAtPosition(position).toString();
 
+                courseChosenID = coursesHM.get(courseChosen);
 
-                Log.d(TAG, "First item in courseList: " + courseList.get(0));
                 Log.d(TAG, "Made it here.");
             }
 
@@ -211,21 +222,50 @@ public class joinCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                getCurrentStudentDocument(UID, new StudentDocumentCallback() {
+                    @Override
+                    public void onDocumentCallback(String StudentDocumentID) {
+                        Log.d(TAG, "student document ID: " + StudentDocumentID);
+                        //Pass in courseChosenID here
+                        joinSelectedCourse(courseChosen, StudentDocumentID);
+                        Log.d(TAG, "Join course called, course: " + courseChosen + " added");
+
+                        Log.d(TAG, "Starting new activity");
+                        Intent intent = new Intent(getApplicationContext(), coursesActivity.class);
+                        startActivity(intent);
+
+                    }
+                });
             }
         });
 
     }
 
     //Create callback methods
+    //Callback methods used because Firestore API is asynchronous
+    //Need to wait for method to grab data before moving on in application
     public interface Callback{
         void call();
+    }
+
+    public interface StudentDocumentCallback{
+        void onDocumentCallback(String StudentDocumentID);
+    }
+
+    public interface courseCallback{
+        void onCourseCallback(ArrayList<String> courseList);
     }
 
     public joinCourseActivity getActivity(){
         return this;
     }
 
-    public void getCurrentStudentDocument(String userID,Callback callback){
+
+    //Queries against the current documents inside of "Students" collection
+    //Finds the document where the UID matches
+    //And gets the students unique Document ID to be added to the course
+    public void getCurrentStudentDocument(String userID, StudentDocumentCallback callback){
+
         db.collection(studentsDB)
                 .whereEqualTo("User_ID", userID)
                 .get()
@@ -235,7 +275,9 @@ public class joinCourseActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()){
                                 studentDocumentID = document.getId();
+                                Log.d(TAG, "StudentdocumentID inside of method: " + studentDocumentID);
                             }
+                            callback.onDocumentCallback(studentDocumentID);
                         }else{
                             Log.d(TAG, "Error retrieving document ID");
                         }
@@ -243,6 +285,10 @@ public class joinCourseActivity extends AppCompatActivity {
                 });
     }
 
+    //Queries against the institution name chosen
+    //When chosen, the name of the institution is put into an arrayList to be populated in spinner
+    //A hashmap will be populated with the respective institution name and document ID
+    //Then the document ID and be easily retreived
     public void getAllInstitutions(Callback callback){
         db.collection(institutionDb)
                 .get()
@@ -253,7 +299,7 @@ public class joinCourseActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()){
                                 String institution = document.getString("Name");
                                 String institutionID = document.getId();
-                                Log.d(TAG, "Institution from Firestore: " + institution);
+                                //Log.d(TAG, "Institution from Firestore: " + institution);
                                 if (!institutionList.contains(institution)){
                                     institutionList.add(institution);
 
@@ -270,6 +316,10 @@ public class joinCourseActivity extends AppCompatActivity {
                 });
     }
 
+    //Perform a query against the Institution name chosen
+    //When chosen, the name of the educator is put into an arrayList to be populated in spinner
+    //A hashmap will be populated with the respective educators name and document ID
+    //Then the document ID and be easily retreived
     public void getAllEducators(String institutionName, Callback callback){
         db.collection(educatorDB)
                 .whereEqualTo("institution" ,institutionName)
@@ -297,13 +347,20 @@ public class joinCourseActivity extends AppCompatActivity {
                 });
     }
 
-    public void getAllCourses(String educatorName, Callback callback){
+
+    //Queries against the educator name chosen
+    //Course names associated with the educator are populated into spinner
+    //A hashmap will be populated with the respective courses name and document ID
+    //Then the document ID and be easily retreived
+    public void getAllCourses(String educatorName, courseCallback callback){
         db.collection(courseDB)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
+                            ArrayList<String> courseList = new ArrayList<>();
+                            courseList.add(0, "Choose a Course");
                             for(QueryDocumentSnapshot document : task.getResult()){
                                 String course = document.getString("name");
                                 String courseID = document.getId();
@@ -313,7 +370,8 @@ public class joinCourseActivity extends AppCompatActivity {
 
                                 Log.d(TAG, course + " added.");
                             }
-                            callback.call();
+
+                            callback.onCourseCallback(courseList);
                         }else{
                             Log.d(TAG,"Error retrieving documents.");
                         }
@@ -321,8 +379,10 @@ public class joinCourseActivity extends AppCompatActivity {
                 });
     }
 
-    //When joining selected course -> need to retreive their student document ID first
-    public void joinSelectedCourse(String courseName){
+    //When joining selected course
+    //Query against the current users student document ID
+    //Update the Course_SA_ID to show that they are in the Educators Course
+    public void joinSelectedCourse(String courseName, String studentDocumentID){
 
         CollectionReference studentDocRef = db.collection(studentCoursesDB);
         studentDocRef.whereEqualTo("STUDENT_SA_ID", "/Students/" + studentDocumentID)
