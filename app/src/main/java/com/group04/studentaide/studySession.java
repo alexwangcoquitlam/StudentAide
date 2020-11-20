@@ -101,9 +101,6 @@ public class studySession extends AppCompatActivity {
     ArrayList<Double> duration = new ArrayList<Double>();
 
     // Used for updating course stats
-    ArrayList<String> currentDocId = new ArrayList<String>();
-    ArrayList<String> currentCourseStats = new ArrayList<String>();
-    ArrayList<Double> currentCourseDuration = new ArrayList<Double>();
     boolean updateRequired = false;
 
     // Need to find a way to grab current users document id
@@ -224,27 +221,33 @@ public class studySession extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // When user pauses the timer, get the total duration elapsed since user has
-                // started studying and store into database.
-                long startMilli = mStartTimeMilli;
-                long timeLeftMilli = mTimeLeftMilli;
-                long milliElapsed = startMilli - timeLeftMilli;
+                if (mStartTimeMilli == 0) {
 
-                // secondsElapsed = duration elapsed since user has started or resumed the timer
-                double secondsElapsed = (double) milliElapsed / 1000;
 
-                courseName.clear();
-                duration.clear();
 
-                // Grabs the users current stats before storing and updating database with new stats
-                grabStats(new Callback() {
-                    @Override
-                    public void call() {
-                        storeStats(secondsElapsed);
-                    }
-                });
+                } else {
 
-                pauseTimer();
+                    // When user pauses the timer, get the total duration elapsed since user has
+                    // started studying and store into database.
+                    long startMilli = mStartTimeMilli;
+                    long timeLeftMilli = mTimeLeftMilli;
+                    long milliElapsed = startMilli - timeLeftMilli;
+
+                    // secondsElapsed = duration elapsed since user has started or resumed the timer
+                    double secondsElapsed = (double) milliElapsed / 1000;
+
+                    // Grabs the users current stats before storing and updating database with new stats
+                    grabStats(new Callback() {
+                        @Override
+                        public void call() {
+                            storeStats(secondsElapsed);
+                        }
+                    });
+
+                    pauseTimer();
+
+                }
+
             }
         });
 
@@ -348,9 +351,6 @@ public class studySession extends AppCompatActivity {
                 long milliElapsed = mStartTimeMilli;
                 double secondsElapsed = (double) milliElapsed / 1000;
 
-                courseName.clear();
-                duration.clear();
-
                 grabStats(new Callback() {
                     @Override
                     public void call() {
@@ -405,6 +405,8 @@ public class studySession extends AppCompatActivity {
     // Grabs users current stats from the database
     public void grabStats(Callback callback) {
 
+        courseName.clear();
+        duration.clear();
         documentId.clear();
 
         // Bug #1
@@ -534,70 +536,32 @@ public class studySession extends AppCompatActivity {
 
     }
 
-    public void grabCourseStats(Callback callback) {
-
-        currentCourseStats.clear();
-        currentCourseDuration.clear();
-        currentDocId.clear();
-
-        db.collection("Statistics")
-                .whereEqualTo("Student_SA_ID", studentRef)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Double> courseStats = (Map<String, Double>) document.get("coursesTimeStudied");
-
-                                for (Map.Entry<String, Double> entry : courseStats.entrySet()) {
-
-                                    String k = entry.getKey();
-                                    Double v = entry.getValue();
-
-                                    currentCourseStats.add(k);
-                                    currentCourseDuration.add(v);
-
-                                }
-
-                                currentDocId.add(document.getId());
-
-                            }
-                            callback.call();
-                        } else {
-                            Log.v("CoursesActivity", "Error occurred when getting data from Firebase.");
-                        }
-                    }
-                });
-
-    }
-
     public void updateStats() {
 
-        grabCourseStats(new Callback() {
+        grabStats(new Callback() {
             @Override
             public void call() {
 
                 Map<String, Double> courseStats = new HashMap<>();
 
                 for (int i = 1; i < courses.size(); i++) {
-                    if (currentCourseStats.size() == 0) {
+                    if (courseName.size() == 0) {
                         courseStats.put(courses.get(i), 0.0);
                         updateRequired = true;
                     }
-                    for (int j = 0; j < currentCourseStats.size(); j++) {
-                        if (!currentCourseStats.contains(courses.get(i))) {
+                    for (int j = 0; j < courseName.size(); j++) {
+                        if (!courseName.contains(courses.get(i))) {
                             courseStats.put(courses.get(i), 0.0);
                             updateRequired = true;
-                        } else if (currentCourseStats.get(j).equals(courses.get(i))){
-                            courseStats.put(courses.get(i), currentCourseDuration.get(j));
+                        } else if (courseName.get(j).equals(courses.get(i))){
+                            courseStats.put(courses.get(i), duration.get(j));
                         }
                     }
                 }
 
                 if (updateRequired) {
 
-                    DocumentReference statsRef = db.collection("Statistics").document(currentDocId.get(0));
+                    DocumentReference statsRef = db.collection("Statistics").document(documentId.get(0));
                     statsRef
                             .update("coursesTimeStudied", courseStats)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
