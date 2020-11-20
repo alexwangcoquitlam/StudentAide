@@ -62,7 +62,7 @@ public class registration extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user;
-
+    private String name;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +105,7 @@ public class registration extends AppCompatActivity {
         String passwordCheck = passwordConfirmation.getText().toString();
         String firstName = inputFirstName.getText().toString().trim();
         String lastName = inputLastName.getText().toString().trim();
-        String name = firstName + " " + lastName;
+        name = firstName + " " + lastName;
         name = name.toLowerCase();
         Log.d("nameCheck", name);
         if (TextUtils.isEmpty(firstName)){
@@ -146,6 +146,43 @@ public class registration extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa133", "createUserWithEmail:success");
+                                user = mAuth.getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name).build();
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("profileUpdated", "User profile updated.");
+                                                }
+                                            }
+                                        });
+                                Map<String, Object> Students = new HashMap<>();
+                                Students.put("Email", email);
+                                Students.put("Given_Names", firstName);
+                                Students.put("Last_Names", lastName);
+                                Students.put("Email", email);
+                                Students.put("User_ID", user.getUid());
+                                //Students.put("Institution_ID", institutionID);
+
+                                db.collection("Students")
+                                        .add(Students)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Log.d("studentAdded", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("studentAddFail", "Error adding document", e);
+                                            }
+                                        });
+                                Intent returnLogin = new Intent(registration.this, loginActivity.class);
+                                Toast.makeText(registration.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                startActivity(returnLogin);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("hwa134", "createUserWithEmail:failure", task.getException());
@@ -154,21 +191,6 @@ public class registration extends AppCompatActivity {
                             }
                         }
                     });
-            user = mAuth.getCurrentUser();
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name).build();
-            user.updateProfile(profileUpdates)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("profileUpdated", "User profile updated.");
-                            }
-                        }
-                    });
-            Intent returnLogin = new Intent(registration.this, loginActivity.class);
-            Toast.makeText(registration.this, "Registration successful", Toast.LENGTH_SHORT).show();
-            startActivity(returnLogin);
         }
     }
 }
