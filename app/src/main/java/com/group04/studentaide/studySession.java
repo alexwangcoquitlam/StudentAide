@@ -581,6 +581,10 @@ public class studySession extends AppCompatActivity {
                 Map<String, Double> courseStats = new HashMap<>();
 
                 for (int i = 1; i < courses.size(); i++) {
+                    if (currentCourseStats.size() == 0) {
+                        courseStats.put(courses.get(i), 0.0);
+                        updateRequired = true;
+                    }
                     for (int j = 0; j < currentCourseStats.size(); j++) {
                         if (!currentCourseStats.contains(courses.get(i))) {
                             courseStats.put(courses.get(i), 0.0);
