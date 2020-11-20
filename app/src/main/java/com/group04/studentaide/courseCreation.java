@@ -6,6 +6,11 @@ Tested functionality locally using activity_course_creation.xml, and coursesActi
 Currently no implementation for institution field or Quizzes switch --> will be done in v2/v3
  */
 
+/*
+    Quick little temporary fix for me to test my functions. Not the final product since I believe Yufeng is working on this.
+        - Jason
+ */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,18 +37,25 @@ import java.util.Map;
 
 public class courseCreation extends AppCompatActivity {
 
-
     EditText mInputCourseName;
     EditText mInputInstitution;
     Switch mQuizzes;
     Button mCreateCourse;
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    informationRetrieval infoRetrieve = informationRetrieval.getInstance();
+
+    DocumentReference studentRef;
+    String studentDocumentId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_creation); // Set to study session XML
+
+        grabDocumentReference();
+
         mInputCourseName = findViewById(R.id.inputCourseName);
         mInputInstitution = findViewById(R.id.institutionInput);
         mQuizzes = findViewById(R.id.allowQuiz);
@@ -60,6 +72,13 @@ public class courseCreation extends AppCompatActivity {
                 createCourseFire();
             }
         });
+
+    }
+
+    public void grabDocumentReference() {
+
+        studentDocumentId = infoRetrieve.getDocumentID();
+        studentRef = db.collection("Students").document(studentDocumentId);
 
     }
 
@@ -93,14 +112,15 @@ public class courseCreation extends AppCompatActivity {
             mInputCourseName.requestFocus(); // requestFocus will make the focus go to this box that is empty
         }
         else {
-            Map<String, Object> Courses = new HashMap<>();
-            Courses.put("name", mInputCourseName.getText().toString().trim());
-            Courses.put("institution", institution);
-            Courses.put("allowQuizzes", quiz);
-            Courses.put("owner", owner);
-            Courses.put("owner uid", uid);
 
-            db.collection("Courses")
+            String placeholder = "0";
+
+            Map<String, Object> Courses = new HashMap<>();
+            Courses.put("CourseName", mInputCourseName.getText().toString().trim());
+            Courses.put("Student_SA_ID", studentRef);
+            Courses.put("Course_SA_ID", placeholder);
+
+            db.collection("StudentCourses")
                     .add(Courses)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
