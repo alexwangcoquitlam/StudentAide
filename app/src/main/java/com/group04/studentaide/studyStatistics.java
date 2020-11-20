@@ -193,9 +193,28 @@ public class studyStatistics extends AppCompatActivity {
 		pieDataSet.setValueTextSize(12);
 
 		ArrayList<Integer> colors = new ArrayList<>();
-		colors.add(Color.GRAY);
-		colors.add(Color.RED);
-		colors.add(Color.GREEN);
+		
+		// Red
+		colors.add(Color.rgb(255, 192, 203)); // Pink
+		colors.add(Color.rgb(222, 23, 56)); // Red
+		colors.add(Color.rgb(255, 131, 0)); // Orange
+		colors.add(Color.rgb(255, 203, 164)); // Peach
+		colors.add(Color.rgb(181, 101, 29)); // Light Brown
+
+		// Blue
+		colors.add(Color.rgb(192, 5, 248)); // Neon Purple
+		colors.add(Color.rgb(56, 123, 225)); // Royal Blue
+		colors.add(Color.rgb(135, 206, 235)); // Sky Blue
+		colors.add(Color.rgb(181, 126, 220)); // Lavender
+		colors.add(Color.rgb(255, 255, 0)); // Yellow
+
+		// Green
+		colors.add(Color.rgb(64, 224, 208)); // Turquoise
+		colors.add(Color.rgb(63, 122, 77)); // Green
+		colors.add(Color.rgb(57, 255, 20)); // Neon Green
+		colors.add(Color.rgb(227, 255, 0)); // Lemon Lime
+		colors.add(Color.rgb(0, 168, 107)); // Jade
+		
 		pieDataSet.setColors(colors);
 
 		PieData pieData = new PieData(pieDataSet);
@@ -227,9 +246,28 @@ public class studyStatistics extends AppCompatActivity {
 		pieDataSet.setValueTextSize(12);
 
 		ArrayList<Integer> colors = new ArrayList<>();
-		colors.add(Color.GRAY);
-		colors.add(Color.RED);
-		colors.add(Color.GREEN);
+		
+		// Red
+		colors.add(Color.rgb(255, 192, 203)); // Pink
+		colors.add(Color.rgb(222, 23, 56)); // Red
+		colors.add(Color.rgb(255, 131, 0)); // Orange
+		colors.add(Color.rgb(255, 203, 164)); // Peach
+		colors.add(Color.rgb(181, 101, 29)); // Light Brown
+
+		// Blue
+		colors.add(Color.rgb(192, 5, 248)); // Neon Purple
+		colors.add(Color.rgb(56, 123, 225)); // Royal Blue
+		colors.add(Color.rgb(135, 206, 235)); // Sky Blue
+		colors.add(Color.rgb(181, 126, 220)); // Lavender
+		colors.add(Color.rgb(255, 255, 0)); // Yellow
+
+		// Green
+		colors.add(Color.rgb(64, 224, 208)); // Turquoise
+		colors.add(Color.rgb(63, 122, 77)); // Green
+		colors.add(Color.rgb(57, 255, 20)); // Neon Green
+		colors.add(Color.rgb(227, 255, 0)); // Lemon Lime
+		colors.add(Color.rgb(0, 168, 107)); // Jade
+		
 		pieDataSet.setColors(colors);
 
 		PieData pieData = new PieData(pieDataSet);
