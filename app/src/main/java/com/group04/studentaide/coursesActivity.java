@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -48,13 +49,6 @@ public class coursesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_courses);
 
         joinCourseClicked = (Button)findViewById(R.id.courseJoin);
-        joinCourseClicked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), joinCourseActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
         if (user != null) {
@@ -62,6 +56,16 @@ public class coursesActivity extends AppCompatActivity {
         } else {
             uid = "No associated user";
         }
+
+
+        joinCourseClicked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), joinCourseActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /*createCourseClicked.findViewById(R.id.courseCreate);
 
@@ -136,6 +140,7 @@ public class coursesActivity extends AppCompatActivity {
                 });
 
     }
+
 
     public interface Callback {
         void call();
