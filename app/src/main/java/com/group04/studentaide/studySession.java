@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,16 +20,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
-import java.util.TreeMap;
+import java.util.Map;
 
 import javax.security.auth.callback.Callback;
 
@@ -45,12 +50,26 @@ Assume user inputs time in whole minutes because who sets a timer to study for 5
 
 //TODO: Study statistics added to total or certain course
 
+    Bugs (I have written a comment where the bugs are, ex. Bug #1):
+        #1: Not sure why, but sometimes the database reads Map<String, Long>, while other times it may read Map<String, Double> (from Statistics collection
+            for the coursesTimeStudied field).
+    Changes:
+        November 15th - Draft 1 of Version 1
+        November 16th - Draft 2 of Version 1
+        November 17th - Draft 3 of Version 1
+        November 18th - Draft 4 of Version 1
+
+ */
+
+/*  To-Do List:
+        Need a way to remove planned study session once the date has passed - Write a function that updates and removes study sessions that have passed
+        Need a way to only start planned study session on the correct day and time - Put it in start timer
  */
 
 public class studySession extends AppCompatActivity {
 
     Spinner selectSession;
-    Spinner courses;
+    Spinner courseSpinner;
     Button planSession;
 
     EditText userInputTime;
@@ -59,20 +78,42 @@ public class studySession extends AppCompatActivity {
     Button pauseTime;
     Button resetTime;
     TextView textCountdownTimer;
-    CourseSingleton courseList;
 
     private CountDownTimer mCountDownTimer;
     private Boolean mTimerRunning;
-    private long mStartTimeMilli;
+    private long mStartTimeMilli = 0;
     private long mTimeLeftMilli;
     private long mEndTimeMilli;
     private long mEndTime;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private int counter = 0;
 
-    String uid = null;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    informationRetrieval infoRetrieve = informationRetrieval.getInstance();
+
+    // Used to fill Spinner
+    ArrayList<String> courses = new ArrayList<String>();
     ArrayList<String> sessions = new ArrayList<String>();
+
+    // Used for storing and grabbing from database
+    ArrayList<String> documentId = new ArrayList<String>();
+    ArrayList<String> courseName = new ArrayList<String>();
+    ArrayList<Double> duration = new ArrayList<Double>();
+
+    // Used for updating course stats
+    ArrayList<String> currentDocId = new ArrayList<String>();
+    ArrayList<String> currentCourseStats = new ArrayList<String>();
+    ArrayList<Double> currentCourseDuration = new ArrayList<Double>();
+    boolean updateRequired = false;
+
+    // Need to find a way to grab current users document id
+    DocumentReference studentRef;
+    String studentDocumentId;
+    boolean exists = false;
+    boolean setCourse = false;
+
+    ArrayAdapter<String> courseAdapter;
+    String sessionCourse;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,26 +121,87 @@ public class studySession extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_study_session);
 
-        if (user != null) {
-            uid = user.getUid();
-        } else {
-            uid = "No associated user";
+        grabDocumentReference();
+        courses.clear();
+        sessions.clear();
+
+        if (counter == 0) {
+            sessions.add("No Session Selected");
+            courses.add("No Course Selected");
         }
 
-        courseList = CourseSingleton.getInstance();
+        // Populate courseSpinner with users courses
+        courseSpinner = (Spinner) findViewById(R.id.courses);
+        grabCourses(new Callback() {
+            @Override
+            public void call() {
+                courseAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courses);
+                courseSpinner.setAdapter(courseAdapter);
+                updateStats();
+            }
+        });
 
-        courses = (Spinner) findViewById(R.id.courses);
-        ArrayList<String> hashKeys = courseList.courseKeys;
-        ArrayAdapter<String> coursesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, hashKeys);
-        courses.setAdapter(coursesAdapter);
+        // When user selects a course from courseSpinner to study for, change selectSession Spinner to No Session Selected
+        courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String choice = parent.getItemAtPosition(position).toString();
+                if (setCourse == true) {
+                    if (!choice.equals(sessionCourse)) {
+                        setTimer(0);
+                        selectSession.setSelection(0);
+                        setCourse = false;
+                    }
+                }
 
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // Populate selectSession Spinner with "No Planned Session"
         selectSession = (Spinner) findViewById(R.id.selectSession);
+        String[] ifNoSessions = new String[]{"No Planned Sessions"};
+        ArrayAdapter<String> sessionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, ifNoSessions);
+        selectSession.setAdapter(sessionsAdapter);
+
+        // If the user has planned study sessions, overwrite selectSession Spinner with planned study sessions
         grabStudySession(new Callback() {
             @Override
             public void call() {
-                Log.v("StudySession", "Callback");
                 ArrayAdapter<String> sessionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, sessions);
                 selectSession.setAdapter(sessionsAdapter);
+            }
+        });
+
+        // When user selects a planned study session from selectSession Spinner, change courseSpinner to No Course Selected
+        selectSession.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String choice = parent.getItemAtPosition(position).toString();
+
+                // If Spinner gets put on "No Session Selected", reset timer to 0
+                if (choice == "No Session Selected" || choice == "No Planned Sessions") {
+                    setTimer(0);
+                } else {
+                    // Set courseSpinner to be the course the planned study session was for
+                    getSessionCourse(new Callback() {
+                        @Override
+                        public void call() {
+                            int sessionPosition = courseAdapter.getPosition(sessionCourse);
+                            courseSpinner.setSelection(sessionPosition);
+                            sessionDuration(choice);
+                            setCourse = true;
+                        }
+                    });
+                }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -112,20 +214,56 @@ public class studySession extends AppCompatActivity {
         startTime = (Button) findViewById(R.id.startTime);
         //resetTime = (Button) findViewById(R.id.resetTimer);
 
+        // If the user does not currently have a document in Firebase for their stats, create one
+        if (counter == 0) {
+            createStats();
+            counter++;
+        }
+
         pauseTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // When user pauses the timer, get the total duration elapsed since user has
+                // started studying and store into database.
+                long startMilli = mStartTimeMilli;
+                long timeLeftMilli = mTimeLeftMilli;
+                long milliElapsed = startMilli - timeLeftMilli;
+
+                // secondsElapsed = duration elapsed since user has started or resumed the timer
+                double secondsElapsed = (double) milliElapsed / 1000;
+
+                courseName.clear();
+                duration.clear();
+
+                // Grabs the users current stats before storing and updating database with new stats
+                grabStats(new Callback() {
+                    @Override
+                    public void call() {
+                        storeStats(secondsElapsed);
+                    }
+                });
+
                 pauseTimer();
             }
         });
 
+        // Start the timer
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTimer();
+
+                if (mStartTimeMilli == 0) {
+                    Toast.makeText(getApplicationContext(), "Please enter a time.", Toast.LENGTH_SHORT).show();
+                } else {
+                    mStartTimeMilli = mTimeLeftMilli;
+                    startTimer();
+                }
+
             }
         });
 
+        // Takes user to the studySessionPlan page
         planSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,18 +273,21 @@ public class studySession extends AppCompatActivity {
             }
         });
 
+        // Set the timer
         setTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String timeInput = userInputTime.getText().toString().trim();
-                double duration = Double.parseDouble(timeInput);
+                long millisLeftToTime = 0;
 
-                // Log.v("StudySession", String.valueOf(duration));
+                try {
+                    millisLeftToTime = Long.parseLong(timeInput) * 60000;
+                } catch (NumberFormatException nfe) {
+                    Toast.makeText(getApplicationContext(), "Please enter a valid time.", Toast.LENGTH_SHORT).show();
+                }
 
-                long millisLeftToTime = Long.parseLong(timeInput) * 60000;
-
-                if (courses.getSelectedItem() == null || millisLeftToTime == 0) {
+                if (courseSpinner.getSelectedItem() == "No Course Selected" || millisLeftToTime == 0) {
 
                     if (millisLeftToTime == 0) {
                         Toast.makeText(getApplicationContext(), "Please enter a time.", Toast.LENGTH_SHORT).show();
@@ -156,8 +297,6 @@ public class studySession extends AppCompatActivity {
 
                 } else {
 
-                    String courseInput = courses.getSelectedItem().toString();
-                    courseList.setStudyTime(courseInput, duration);
                     setTimer(millisLeftToTime);
                     userInputTime.setText("");
 
@@ -175,9 +314,18 @@ public class studySession extends AppCompatActivity {
 
     }
 
+    // Return current activity
     private studySession getActivity() {
 
         return this;
+
+    }
+
+    // Will be used to return current users Document ID
+    public void grabDocumentReference() {
+
+        studentDocumentId = infoRetrieve.getDocumentID();
+        studentRef = db.collection("Students").document(studentDocumentId);
 
     }
 
@@ -195,8 +343,21 @@ public class studySession extends AppCompatActivity {
             @Override
             public void onFinish() {
                 mTimerRunning = false;
-                //Create an object
-                //totalTimeStudying = totalTimeStudying + (startTimeMilli /60000) in minutes
+
+                // When timer finishes running, store duration studied into database
+                long milliElapsed = mStartTimeMilli;
+                double secondsElapsed = (double) milliElapsed / 1000;
+
+                courseName.clear();
+                duration.clear();
+
+                grabStats(new Callback() {
+                    @Override
+                    public void call() {
+                        storeStats(secondsElapsed);
+                    }
+                });
+
             }
 
         }.start();
@@ -215,7 +376,7 @@ public class studySession extends AppCompatActivity {
     private void setTimer(long milliseconds){
         mStartTimeMilli = milliseconds;
         resetTimer();
-        hideKeyboard();
+        //hideKeyboard();
     }
 
     private void hideKeyboard(){
@@ -241,88 +402,326 @@ public class studySession extends AppCompatActivity {
         textCountdownTimer.setText(timeLeftFormatted);
     }
 
+    // Grabs users current stats from the database
+    public void grabStats(Callback callback) {
+
+        documentId.clear();
+
+        // Bug #1
+        db.collection("Statistics")
+                .whereEqualTo("Student_SA_ID", studentRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Double> coursesTimeStudied = (Map<String, Double>) document.get("coursesTimeStudied");
+
+                                for (Map.Entry<String, Double> entry : coursesTimeStudied.entrySet()) {
+
+                                    String k = entry.getKey();
+                                    Double v = (double) entry.getValue();
+
+                                    courseName.add(k);
+                                    duration.add(v);
+
+                                }
+
+                                documentId.add(document.getId());
+
+                                callback.call();
+                            }
+                        } else {
+                            Log.v("CoursesActivity", "Error occurred when getting data from Firebase.");
+                        }
+                    }
+                });
+
+    }
+
+    public void getSessionCourse(Callback callback) {
+
+        String session = selectSession.getSelectedItem().toString();
+
+        db.collection("PlannedSessions")
+                .whereEqualTo("Student_SA_ID", studentRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Timestamp start = (Timestamp) document.get("Start");
+                                Date date = start.toDate();
+                                String dateString = date.toString();
+
+                                String currentCourse = (String) document.get("Course_Name");
+
+                                if (session.equals(dateString)) {
+
+                                    sessionCourse = currentCourse;
+
+                                }
+
+                            }
+                            callback.call();
+                        } else {
+                            Log.v("CoursesActivity", "Error occurred when getting data from Firebase.");
+                        }
+                    }
+                });
+
+    }
+
+    // Stores and updates user stats in database if it exists
+    public void storeStats(double secondsElapsed) {
+
+        String currentCourse = courseSpinner.getSelectedItem().toString();
+
+        if (documentId.isEmpty() == false) {
+
+            double totalTimeStudied = 0;
+            Log.v("StudySession", "totalTimeStudied: " + totalTimeStudied);
+
+            Map<String, Double> courseStats = new HashMap<>();
+            for (int i = 0; i < courseName.size(); i++) {
+                if (courseName.get(i).equals(currentCourse)) {
+                    double newDuration = Math.round(duration.get(i) + secondsElapsed);
+                    courseStats.put(courseName.get(i), newDuration);
+                } else {
+                    courseStats.put(courseName.get(i), duration.get(i));
+                }
+            }
+
+            for (int i = 0; i < duration.size(); i++) {
+                totalTimeStudied += Math.round(duration.get(i));
+            }
+
+            totalTimeStudied += Math.round(secondsElapsed);
+
+            DocumentReference userRef = db.collection("Statistics").document(documentId.get(0));
+            userRef
+                    .update("totalTimeStudied", totalTimeStudied)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.v("StudySession", "Updated totalTimeStudied field");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.v("StudySession", "Error updating document", e);
+                        }
+                    });
+            userRef
+                    .update("coursesTimeStudied", courseStats)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.v("StudySession", "Updated coursesTimeStudied field");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.v("StudySession", "Error updating document", e);
+                        }
+                    });
+
+        }
+
+    }
+
+    public void grabCourseStats(Callback callback) {
+
+        currentCourseStats.clear();
+        currentCourseDuration.clear();
+        currentDocId.clear();
+
+        db.collection("Statistics")
+                .whereEqualTo("Student_SA_ID", studentRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Double> courseStats = (Map<String, Double>) document.get("coursesTimeStudied");
+
+                                for (Map.Entry<String, Double> entry : courseStats.entrySet()) {
+
+                                    String k = entry.getKey();
+                                    Double v = entry.getValue();
+
+                                    currentCourseStats.add(k);
+                                    currentCourseDuration.add(v);
+
+                                }
+
+                                currentDocId.add(document.getId());
+
+                            }
+                            callback.call();
+                        } else {
+                            Log.v("CoursesActivity", "Error occurred when getting data from Firebase.");
+                        }
+                    }
+                });
+
+    }
+
+    public void updateStats() {
+
+        grabCourseStats(new Callback() {
+            @Override
+            public void call() {
+
+                Map<String, Double> courseStats = new HashMap<>();
+
+                for (int i = 1; i < courses.size(); i++) {
+                    for (int j = 0; j < currentCourseStats.size(); j++) {
+                        if (!currentCourseStats.contains(courses.get(i))) {
+                            courseStats.put(courses.get(i), 0.0);
+                            updateRequired = true;
+                        } else if (currentCourseStats.get(j).equals(courses.get(i))){
+                            courseStats.put(courses.get(i), currentCourseDuration.get(j));
+                        }
+                    }
+                }
+
+                if (updateRequired) {
+
+                    DocumentReference statsRef = db.collection("Statistics").document(currentDocId.get(0));
+                    statsRef
+                            .update("coursesTimeStudied", courseStats)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.v("StudySession", "Updated coursesTimeStudied field");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.v("StudySession", "Error updating document", e);
+                                }
+                            });
+
+                }
+
+            }
+        });
+
+    }
+
+    // If user does not have a document for their stats, create one
+    public void createStats() {
+
+        statExists(new Callback() {
+            @Override
+            public void call() {
+
+                if (exists == false) {
+
+                    // If the users stats don't exist, then create one
+                    Map<String, Double> courseStats = new HashMap<>();
+                    for (int i = 1; i < courses.size(); i++) {
+                        courseStats.put(courses.get(i), 0.0);
+                    }
+
+                    Map<String, Object> stats = new HashMap<>();
+                    stats.put("Student_SA_ID", studentRef);
+                    stats.put("totalTimeStudied", 0.0);
+                    stats.put("coursesTimeStudied", courseStats);
+
+                    db.collection("Statistics")
+                            .add(stats)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.v("StudySession", "Document added with ID: " + documentReference.getId());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.v("StudySession", "Error adding document");
+                                }
+                            });
+
+                }
+
+            }
+        });
+
+    }
+
+    // Checks if the users stats currently exist
+    public void statExists(Callback callback) {
+
+        db.collection("Statistics")
+                .whereEqualTo("Student_SA_ID", studentRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                exists = true;
+                                callback.call();
+                            }
+                            callback.call();
+                        } else {
+
+                        }
+                    }
+                });
+
+    }
+
+    // Grabs all courses that the user is enrolled in to display in Spinner
+    public void grabCourses(Callback callback) {
+
+        db.collection("StudentCourses")
+                .whereEqualTo("Student_SA_ID", studentRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String courseName = (String) document.get("CourseName");
+
+                                courses.add(courseName);
+                            }
+                            callback.call();
+                        } else {
+                            Log.v("CoursesActivity", "Error occurred when getting data from Firebase.");
+                        }
+                    }
+                });
+
+    }
+
+    // Grabs all planned study sessions that the user has to display in Spinner
     public void grabStudySession(Callback callback) {
 
         db.collection("PlannedSessions")
-                .whereEqualTo("uid", uid)
+                .whereEqualTo("Student_SA_ID", studentRef)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
-                            // Create new TreeMap that will sort the months in order before storing into sessions
-                            TreeMap<Integer, ArrayList<Integer>> sortMonth = new TreeMap<>();
-
-                            // Store key and value pairs into TreeMap which will then be sorted by month (ascending order)
+                            // Store the Date of the start Timestamp into sessions spinner to be displayed
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                long monthInt = (long) document.get("month");
-                                long dayDB = (long) document.get("day");
-                                long yearDB = (long) document.get("year");
+                                Timestamp start = (Timestamp) document.get("Start");
+                                Date date = start.toDate();
 
-                                int month = (int) monthInt;
-                                int day = (int) dayDB;
-                                int year = (int) yearDB;
-
-                                ArrayList<Integer> temp = new ArrayList<Integer>();
-                                temp.add(day);
-                                temp.add(year);
-
-                                sortMonth.put(month, temp);
-                            }
-
-                            // Start storing the month, day, and year into sessions to be displayed in Spinner
-                            for (TreeMap.Entry<Integer, ArrayList<Integer>> entry : sortMonth.entrySet()) {
-                                int monthInt = entry.getKey();
-
-                                ArrayList<Integer> temp = entry.getValue();
-                                int dayDB = temp.get(0);
-                                int yearDB = temp.get(1);
-
-                                String month = "";
-
-                                switch(monthInt) {
-                                    case 1:
-                                        month = "January";
-                                        break;
-                                    case 2:
-                                        month = "February";
-                                        break;
-                                    case 3:
-                                        month = "March";
-                                        break;
-                                    case 4:
-                                        month = "April";
-                                        break;
-                                    case 5:
-                                        month = "May";
-                                        break;
-                                    case 6:
-                                        month = "June";
-                                        break;
-                                    case 7:
-                                        month = "July";
-                                        break;
-                                    case 8:
-                                        month = "August";
-                                        break;
-                                    case 9:
-                                        month = "September";
-                                        break;
-                                    case 10:
-                                        month = "October";
-                                        break;
-                                    case 11:
-                                        month = "November";
-                                        break;
-                                    case 12:
-                                        month = "December";
-                                        break;
-                                }
-
-                                String day = Integer.toString(dayDB);
-                                String year = Integer.toString(yearDB);
-                                sessions.add(month + " " + day + ", " + year);
+                                sessions.add(String.valueOf(date));
                                 callback.call();
                             }
 
@@ -334,6 +733,42 @@ public class studySession extends AppCompatActivity {
 
     }
 
+    // When user selects a planned study session from the spinner, update timer to show the duration
+    public void sessionDuration(String choice) {
+
+        db.collection("PlannedSessions")
+                .whereEqualTo("Student_SA_ID", studentRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Timestamp start = (Timestamp) document.get("Start");
+                                Timestamp end = (Timestamp) document.get("End");
+
+                                Date startDate = start.toDate();
+                                Date endDate = end.toDate();
+
+                                String startString = String.valueOf(startDate);
+
+                                if (startString.equals(choice)) {
+
+                                    long startMillis = startDate.getTime();
+                                    long endMillis = endDate.getTime();
+                                    long diffMillis = endMillis - startMillis;
+
+                                    setTimer(diffMillis);
+
+                                }
+                            }
+                        }
+                    }
+                });
+
+    }
+
+    // Callback function
     public interface Callback {
         void call();
     }
