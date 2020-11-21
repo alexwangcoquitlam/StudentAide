@@ -9,8 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".studySessionPlan"
-            android:parentActivityName=".studySession"></activity>
+        <activity
+            android:name=".loginActivityGuest"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".registrationEducator"
+            android:parentActivityName=".registration" />
+        <activity
+            android:name=".studySessionPlan"
+            android:parentActivityName=".studySession" />
         <activity
             android:name=".studySession"
             android:parentActivityName=".MainActivity" />
@@ -28,10 +35,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".registration"
-            android:parentActivityName=".loginActivity" />
-        <activity
-            android:name=".joinCourseActivity"
-            android:parentActivityName=".coursesActivity"/>
+            android:parentActivityName=".loginActivityGuest" />
         <activity
             android:name=".loadingscreen"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
@@ -41,13 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".loginActivity"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+        <activity android:name=".loginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
