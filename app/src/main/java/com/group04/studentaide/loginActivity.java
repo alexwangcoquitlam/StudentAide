@@ -36,11 +36,18 @@ public class loginActivity extends AppCompatActivity {
     EditText inputPassword;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (user != null){
+            Intent mainAc = new Intent (loginActivity.this, MainActivity.class);
+            Toast.makeText(loginActivity.this, "Welcome back, " + user.getDisplayName().toUpperCase(), Toast.LENGTH_LONG).show();
+            startActivity(mainAc);
+        }
 
         logInButton = (Button) findViewById(R.id.login);
         inputEmail = (EditText) findViewById(R.id.emailInputLogin);
@@ -107,6 +114,11 @@ public class loginActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void continueAsGuest(View view){
+        Intent main = new Intent(loginActivity.this, MainActivity.class);
+        startActivity(main);
     }
 
 }
