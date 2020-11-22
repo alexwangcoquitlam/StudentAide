@@ -34,6 +34,10 @@ InstitutionList: <Name, documentID>
 EducatorList: <Name, documentID>
 CourseList: <Name, DocumentID>
 
+
+AM I JUST GONNA USE A DAMN GLOBAL VARIABLE AND PASS THE COURSE DOCUMENT ID?????
+
+
  */
 
 import android.content.Intent;
@@ -51,15 +55,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -99,13 +105,13 @@ public class joinCourseActivity extends AppCompatActivity {
 
     //ArrayLists to hold the appropriate names and populate spinners
     ArrayList<String> institutionList = new ArrayList<String>();
-    ArrayList<String> educatorList = new ArrayList<String>();
+    //ArrayList<String> educatorList = new ArrayList<String>();
     //ArrayList<String> courseList = new ArrayList<String>();
 
     //Basic Adapters for spinners
     ArrayAdapter<String> institutionAdapter;
     ArrayAdapter<String> educatorAdapter;
-    ArrayAdapter<String> courseAdapter;
+    //ArrayAdapter<String> courseAdapter;
 
     //Hashmap structures to insert new data/update data into  Firestore database
     Map<String, String> institutionsHM = new HashMap<String, String>();
@@ -121,7 +127,7 @@ public class joinCourseActivity extends AppCompatActivity {
 
         //Sets up Spinners so that the first option is not an item that can be chosen
         institutionList.add(0, "Choose an Institution");
-        educatorList.add(0, "Choose an Educator");
+        //educatorList.add(0, "Choose an Educator");
         //courseList.add(0, "Choose a Course");
 
 
@@ -148,17 +154,20 @@ public class joinCourseActivity extends AppCompatActivity {
 
                 if (!choice.equals("Choose an Institution")) {
 
-                    //String choiceID = institutionsHM.get(choice);
-                    //Change these variables when live to use document ID's
-                    getAllEducators(choice, new Callback() {
+                    String institutionChoiceID = institutionsHM.get(choice);
+
+                    Log.d(TAG, "InstitutionID: " + institutionChoiceID);
+
+                    getAllEducators(institutionChoiceID, new educatorCallback() {
                         @Override
-                        public void call() {
+                        public void onEducatorCallback(ArrayList<String> educatorList) {
 
                             educatorAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, educatorList);
                             mEducatorSpinner.setAdapter(educatorAdapter);
 
                         }
                     });
+
                 }
 
             }
@@ -176,13 +185,19 @@ public class joinCourseActivity extends AppCompatActivity {
 
                 if (!choice.equals("Choose an Educator")){
 
-                    //String choiceID = educatorsHM.get(choice);
-                    //Chagne these variables to use Document ID
-                    getAllCourses(choice, new courseCallback() {
+                    String choiceID = educatorsHM.get(choice);
+                    Log.d(TAG, "EducatorDocumentID: " + choiceID);
+
+                    getAllCourses(choiceID, new courseCallback() {
                         @Override
                         public void onCourseCallback(ArrayList<String> courseList) {
+                            Log.d(TAG, "Course item 1: " + courseList.get(0));
+                            Log.d(TAG, "Course item 2: " + courseList.get(1));
+                            Log.d(TAG, "Course item 3: " + courseList.get(2));
+                            Log.d(TAG, "Course item 4: " + courseList.get(3));
 
-                            courseAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courseList);
+
+                            ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courseList);
                             courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             mCourseSpinner.setAdapter(courseAdapter);
 
@@ -222,20 +237,25 @@ public class joinCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                getCurrentStudentDocument(UID, new StudentDocumentCallback() {
-                    @Override
-                    public void onDocumentCallback(String StudentDocumentID) {
-                        Log.d(TAG, "student document ID: " + StudentDocumentID);
-                        //Pass in courseChosenID here
-                        joinSelectedCourse(courseChosen, StudentDocumentID);
-                        Log.d(TAG, "Join course called, course: " + courseChosen + " added");
+                if (courseChosen.equals(null)) {
+                    Toast.makeText(getActivity(),"Please choose a course.", Toast.LENGTH_SHORT).show();
+                } else {
 
-                        Log.d(TAG, "Starting new activity");
-                        Intent intent = new Intent(getApplicationContext(), coursesActivity.class);
-                        startActivity(intent);
+                    getCurrentStudentDocument(UID, new StudentDocumentCallback() {
+                        @Override
+                        public void onDocumentCallback(String StudentDocumentID) {
+                            Log.d(TAG, "student document ID: " + StudentDocumentID);
+                            //Pass in courseChosenID here
+                            joinSelectedCourse(courseChosen, courseChosenID, StudentDocumentID);
+                            Log.d(TAG, "Join course called, course: " + courseChosen + " added");
 
-                    }
-                });
+                            Log.d(TAG, "Starting new activity");
+                            Intent intent = new Intent(getApplicationContext(), coursesActivity.class);
+                            startActivity(intent);
+
+                        }
+                    });
+                }
             }
         });
 
@@ -250,6 +270,10 @@ public class joinCourseActivity extends AppCompatActivity {
 
     public interface StudentDocumentCallback{
         void onDocumentCallback(String StudentDocumentID);
+    }
+
+    public interface educatorCallback{
+        void onEducatorCallback(ArrayList<String> educatorList);
     }
 
     public interface courseCallback{
@@ -297,16 +321,16 @@ public class joinCourseActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()){
-                                String institution = document.getString("Name");
+                                String institution = document.getString("Name") + " " + document.getString("Faculty");
                                 String institutionID = document.getId();
                                 //Log.d(TAG, "Institution from Firestore: " + institution);
-                                if (!institutionList.contains(institution)){
+                                //if (!institutionList.contains(institution)){
                                     institutionList.add(institution);
 
                                     //Insert key value pair to retreive document ID's
                                     institutionsHM.put(institution, institutionID);
 
-                                }
+                                //}
                             }
                             callback.call();
                         }else{
@@ -320,26 +344,38 @@ public class joinCourseActivity extends AppCompatActivity {
     //When chosen, the name of the educator is put into an arrayList to be populated in spinner
     //A hashmap will be populated with the respective educators name and document ID
     //Then the document ID and be easily retreived
-    public void getAllEducators(String institutionName, Callback callback){
+    public void getAllEducators(String institutionName, educatorCallback callback){
+
+        String institutionID = institutionsHM.get(institutionName);
+        String institutionSearch = "Institutions/" + institutionName;
+
+        Log.d(TAG, "INSIDE OF GETALLEDUCATORS");
+
         db.collection(educatorDB)
-                .whereEqualTo("institution" ,institutionName)
+                .whereEqualTo("Institution_ID", institutionSearch)
+                .orderBy("Last_Names", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
+                            ArrayList<String> educatorList = new ArrayList<String>();
+                            educatorList.add(0, "Choose an Educator");
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String educator = document.getString("Last_Names");
                                 String educatorID = document.getId();
-                                if (!educatorList.contains(educator)) {
+                                //if (!educatorList.contains(educator)) {
                                     educatorList.add(educator);
 
                                     educatorsHM.put(educator, educatorID);
 
                                     Log.d(TAG, educator + " added.");
-                                }
+                                //}
+
                             }
-                            callback.call();
+                            callback.onEducatorCallback(educatorList);
                         } else {
                             Log.d(TAG, "Error retrieving documents.");
                         }
@@ -353,7 +389,16 @@ public class joinCourseActivity extends AppCompatActivity {
     //A hashmap will be populated with the respective courses name and document ID
     //Then the document ID and be easily retreived
     public void getAllCourses(String educatorName, courseCallback callback){
+
+        String educator_SA_ID = educatorsHM.get(educatorName);
+        String educatorSearch = "Educators/" + educator_SA_ID;
+
+        Log.d(TAG, "Inside of getAllCourses");
+
+                        //.whereEqualTo("Educator_SA_ID", educatorSearch)
+
         db.collection(courseDB)
+
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -362,7 +407,7 @@ public class joinCourseActivity extends AppCompatActivity {
                             ArrayList<String> courseList = new ArrayList<>();
                             courseList.add(0, "Choose a Course");
                             for(QueryDocumentSnapshot document : task.getResult()){
-                                String course = document.getString("name");
+                                String course = document.getString("Course_Name");
                                 String courseID = document.getId();
                                 courseList.add(course);
 
@@ -370,7 +415,7 @@ public class joinCourseActivity extends AppCompatActivity {
 
                                 Log.d(TAG, course + " added.");
                             }
-
+                            Log.d(TAG, "CourseList callback");
                             callback.onCourseCallback(courseList);
                         }else{
                             Log.d(TAG,"Error retrieving documents.");
@@ -381,25 +426,28 @@ public class joinCourseActivity extends AppCompatActivity {
 
     //When joining selected course
     //Query against the current users student document ID
-    //Update the Course_SA_ID to show that they are in the Educators Course
-    public void joinSelectedCourse(String courseName, String studentDocumentID){
+    public void joinSelectedCourse(String courseName, String courseChosenSAID, String studentDocumentID){
 
         CollectionReference studentDocRef = db.collection(studentCoursesDB);
-        studentDocRef.whereEqualTo("STUDENT_SA_ID", "/Students/" + studentDocumentID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        //Store information that is passed in
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("CourseName", courseName);
+        inputMap.put("Course_SA_ID", courseChosenSAID);
+        inputMap.put("STUDENT_SA_ID", studentDocumentID);
+        studentDocRef.document().set(inputMap);
+
+        studentDocRef.document().set(inputMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                String courseID = coursesHM.get(courseName);
-                                Map<String, Object> inputMap = new HashMap<>();
-                                inputMap.put("Course_SA_ID", courseID);
-                                studentDocRef.document(document.getId()).update(inputMap);
-                            }
-                        }else{
-                            Log.d(TAG, "Error updating courseID field.");
-                        }
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), courseName + " joined.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Error joining course", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
