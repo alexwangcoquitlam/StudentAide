@@ -1,12 +1,12 @@
 package com.group04.studentaide;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +25,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -33,18 +32,31 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /*  File Name: studyStatistics.java
     Team: ProjectTeam04
     Written By: Jason Leung
+
+    Description:
+    	This class implements the STATISTICS page in StudentAide. This class will grab data from the Cloud Firestore in order to display the users
+    	stats on the page. There will be a Spinner at the top populated with the users courses, along with a Total option. When total is selected,
+    	display a pie chart that will show the time studied in each individual course. When a course is selected, display a pie chart that will
+    	show the time studied in that course compared to every other course displayed as one whole.
+
     Changes:
         November 7th - Draft 1 of Version 1
         November 8th - Draft 2 of Version 1
         November 9th - Finalized Version 1
         November 18th - Draft 1 of Version 2
+        November 20th - Finalized Version 2
+
+    External Libraries Used:
+    	MPAndroidChart by PhilJay
+    		https://weeklycoding.com/mpandroidchart/
+
     Bugs:
+    	Haven't tested.
 
  */
 
@@ -55,6 +67,7 @@ public class studyStatistics extends AppCompatActivity {
 	Spinner courseSpinner;
 	double totalTime;
 
+	FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 	FirebaseFirestore db = FirebaseFirestore.getInstance();
 	informationRetrieval infoRetrieve = informationRetrieval.getInstance();
 	private static DecimalFormat df = new DecimalFormat("0.00");
@@ -63,7 +76,6 @@ public class studyStatistics extends AppCompatActivity {
 	ArrayList<String> courseName = new ArrayList<String>();
 	ArrayList<Double> duration = new ArrayList<Double>();
 
-	// Need to find a way to grab current users document id
 	DocumentReference studentRef;
 	String studentDocumentId;
 	private int counter = 0;
@@ -73,98 +85,110 @@ public class studyStatistics extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stats);
 
-		grabDocumentReference();
+		if (user == null) {
+			Toast.makeText(getApplicationContext(), "Please sign in.", Toast.LENGTH_SHORT).show();
+			Intent main = new Intent(this, MainActivity.class);
+			startActivity(main);
+		} else {
 
-		if (counter == 0) {
-			courses.add("Total");
-			counter++;
-		}
+			grabDocumentReference();
 
-		courseSpinner = (Spinner) findViewById(R.id.chooseCourseStats);
-		timeCount = (TextView) findViewById(R.id.totalTimeCount);
-		chart = (PieChart) findViewById(R.id.chart);
-
-		chart.setRotationEnabled(true);
-		chart.setHoleRadius(25f);
-		chart.setTransparentCircleAlpha(0);
-
-		// Populate courseSpinner with users courses
-		grabCourses(new Callback() {
-			@Override
-			public void call() {
-				ArrayAdapter<String> courseAdapter= new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courses);
-				courseSpinner.setAdapter(courseAdapter);
+			if (counter == 0) {
+				courses.add("Total");
+				counter++;
 			}
-		});
 
-		chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-			@Override
-			public void onValueSelected(Entry e, Highlight h) {
-				String entry = e.toString();
-				int pos = entry.indexOf("y: ");
+			courseSpinner = (Spinner) findViewById(R.id.chooseCourseStats);
+			timeCount = (TextView) findViewById(R.id.totalTimeCount);
+			chart = (PieChart) findViewById(R.id.chart);
 
-				String time = e.toString().substring(pos + 3);
-				String name = "Other Courses";
+			chart.setRotationEnabled(true);
+			chart.setHoleRadius(25f);
+			chart.setTransparentCircleAlpha(0);
 
-				for (int i = 0; i < courseName.size(); i++) {
-					if (duration.get(i) == Double.parseDouble(time)) {
-						name = courseName.get(i);
-						break;
-					}
+			// Populate courseSpinner with users courses
+			grabCourses(new Callback() {
+				@Override
+				public void call() {
+					ArrayAdapter<String> courseAdapter= new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courses);
+					courseSpinner.setAdapter(courseAdapter);
 				}
+			});
 
-				Toast.makeText(getApplicationContext(), "Course: " + name, Toast.LENGTH_SHORT).show();
-			}
-			@Override
-			public void onNothingSelected() {
+			// When clicking on one of the values on the chart, alert the user and display the course name
+			chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+				@Override
+				public void onValueSelected(Entry e, Highlight h) {
+					String entry = e.toString();
+					int pos = entry.indexOf("y: ");
 
-			}
-		});
+					String time = e.toString().substring(pos + 3);
+					String name = "Other Courses";
 
-		// When user selects one of their courses in the courseSpinner, display the total amount of time they've spent studying that course
-		courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String choice = parent.getItemAtPosition(position).toString();
+					for (int i = 0; i < courseName.size(); i++) {
+						if (duration.get(i) == Double.parseDouble(time)) {
+							name = courseName.get(i);
+							break;
+						}
+					}
 
-				courseName.clear();
-				duration.clear();
+					Toast.makeText(getApplicationContext(), "Course: " + name, Toast.LENGTH_SHORT).show();
+				}
+				@Override
+				public void onNothingSelected() {
 
-				grabTotalTime(new Callback() {
-					@Override
-					public void call() {
+				}
+			});
 
-						if (choice.equals(courses.get(0))) {
-							// Populate grabTotalTime with users totalTimeStudied
-							String displayTotal = df.format(totalTime);
-							timeCount.setText(displayTotal);
+			// When user selects one of their courses in the courseSpinner, display the stats of that course
+			courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+					String choice = parent.getItemAtPosition(position).toString();
 
-							chart.setCenterText("Total Time Studied");
-							addTotalChart();
+					courseName.clear();
+					duration.clear();
 
-						} else {
+					grabTotalTime(new Callback() {
+						@Override
+						public void call() {
 
-							for (int i = 0; i < courseName.size(); i++) {
-								if (courseName.get(i).equals(choice)) {
-									String displayCourseTotal = df.format(duration.get(i));
-									timeCount.setText(displayCourseTotal);
+							// If Total is selected
+							if (choice.equals(courses.get(0))) {
+
+								// Populate grabTotalTime with users totalTimeStudied
+								String displayTotal = df.format(totalTime);
+								timeCount.setText(displayTotal);
+
+								chart.setCenterText("Total Time Studied");
+								addTotalChart();
+
+							} else {
+
+								// If a course is selected
+								for (int i = 0; i < courseName.size(); i++) {
+									if (courseName.get(i).equals(choice)) {
+										String displayCourseTotal = df.format(duration.get(i));
+										timeCount.setText(displayCourseTotal);
+									}
 								}
+
+								chart.setCenterText("Course Time Studied");
+								addCourseChart(choice);
+
 							}
 
-							chart.setCenterText("Course Time Studied");
-							addCourseChart(choice);
-
 						}
+					});
 
-					}
-				});
+				}
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {
 
-			}
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
+				}
+			});
 
-			}
-		});
+		}
 
 	}
 
@@ -175,6 +199,7 @@ public class studyStatistics extends AppCompatActivity {
 
 	}
 
+	// Changes pie chart to display the time studied in each course when Total is selected
 	public void addTotalChart() {
 
 		ArrayList<PieEntry> yEntrys = new ArrayList<>();
@@ -188,12 +213,12 @@ public class studyStatistics extends AppCompatActivity {
 			xEntrys.add(courseName.get(i));
 		}
 
-		PieDataSet pieDataSet = new PieDataSet(yEntrys, "Test");
+		PieDataSet pieDataSet = new PieDataSet(yEntrys, "Total");
 		pieDataSet.setSliceSpace(2);
 		pieDataSet.setValueTextSize(12);
 
 		ArrayList<Integer> colors = new ArrayList<>();
-		
+
 		// Red
 		colors.add(Color.rgb(255, 192, 203)); // Pink
 		colors.add(Color.rgb(222, 23, 56)); // Red
@@ -214,7 +239,7 @@ public class studyStatistics extends AppCompatActivity {
 		colors.add(Color.rgb(57, 255, 20)); // Neon Green
 		colors.add(Color.rgb(227, 255, 0)); // Lemon Lime
 		colors.add(Color.rgb(0, 168, 107)); // Jade
-		
+
 		pieDataSet.setColors(colors);
 
 		PieData pieData = new PieData(pieDataSet);
@@ -223,6 +248,7 @@ public class studyStatistics extends AppCompatActivity {
 
 	}
 
+	// Changes pie chart to display the specific courses stats when a course is selected
 	public void addCourseChart(String choice) {
 
 		ArrayList<PieEntry> yEntrys = new ArrayList<>();
@@ -241,12 +267,12 @@ public class studyStatistics extends AppCompatActivity {
 			xEntrys.add(courseName.get(i));
 		}
 
-		PieDataSet pieDataSet = new PieDataSet(yEntrys, "Test");
+		PieDataSet pieDataSet = new PieDataSet(yEntrys, "Courses");
 		pieDataSet.setSliceSpace(2);
 		pieDataSet.setValueTextSize(12);
 
 		ArrayList<Integer> colors = new ArrayList<>();
-		
+
 		// Red
 		colors.add(Color.rgb(255, 192, 203)); // Pink
 		colors.add(Color.rgb(222, 23, 56)); // Red
@@ -267,7 +293,7 @@ public class studyStatistics extends AppCompatActivity {
 		colors.add(Color.rgb(57, 255, 20)); // Neon Green
 		colors.add(Color.rgb(227, 255, 0)); // Lemon Lime
 		colors.add(Color.rgb(0, 168, 107)); // Jade
-		
+
 		pieDataSet.setColors(colors);
 
 		PieData pieData = new PieData(pieDataSet);
@@ -284,7 +310,7 @@ public class studyStatistics extends AppCompatActivity {
 
 	}
 
-	// Grabs the totalTimeStudied from database to be displayed
+	// Grabs the stats from database to be displayed
 	public void grabTotalTime(Callback callback) {
 
 		db.collection("Statistics")
