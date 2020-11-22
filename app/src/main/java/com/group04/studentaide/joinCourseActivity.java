@@ -111,7 +111,7 @@ public class joinCourseActivity extends AppCompatActivity {
     //Basic Adapters for spinners
     ArrayAdapter<String> institutionAdapter;
     ArrayAdapter<String> educatorAdapter;
-    //ArrayAdapter<String> courseAdapter;
+    ArrayAdapter<String> courseAdapter;
 
     //Hashmap structures to insert new data/update data into  Firestore database
     Map<String, String> institutionsHM = new HashMap<String, String>();
@@ -139,6 +139,7 @@ public class joinCourseActivity extends AppCompatActivity {
 
         Log.d(TAG, "Current UserID: " + UID);
 
+        //Institution Spinner set
         getAllInstitutions(new Callback() {
             @Override
             public void call() {
@@ -147,6 +148,7 @@ public class joinCourseActivity extends AppCompatActivity {
             }
         });
 
+        //Educator Spinner set
         mInstitutionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -178,6 +180,7 @@ public class joinCourseActivity extends AppCompatActivity {
             }
         });
 
+        //Course spinner set
         mEducatorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -197,7 +200,7 @@ public class joinCourseActivity extends AppCompatActivity {
                             Log.d(TAG, "Course item 4: " + courseList.get(3));
 
 
-                            ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courseList);
+                            courseAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courseList);
                             courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             mCourseSpinner.setAdapter(courseAdapter);
 
@@ -213,6 +216,7 @@ public class joinCourseActivity extends AppCompatActivity {
             }
         });
 
+        //Get the course selected from course spinner
         mCourseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -231,8 +235,10 @@ public class joinCourseActivity extends AppCompatActivity {
             }
         });
 
-        //Clicked join course button
-        //db.collection("")
+        /*
+        Join Course Button clicked
+        New course will be added into StudentCourses with Course name, Course_SA_ID, Student_SA_ID
+         */
         mJoinCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -313,6 +319,12 @@ public class joinCourseActivity extends AppCompatActivity {
     //When chosen, the name of the institution is put into an arrayList to be populated in spinner
     //A hashmap will be populated with the respective institution name and document ID
     //Then the document ID and be easily retreived
+
+    /*
+    Queries the institution database upon opening app to prompt user with list of institutions
+
+    Hashmap is used to associate the name chosen with its documentID quickly
+     */
     public void getAllInstitutions(Callback callback){
         db.collection(institutionDb)
                 .get()
@@ -340,16 +352,18 @@ public class joinCourseActivity extends AppCompatActivity {
                 });
     }
 
-    //Perform a query against the Institution name chosen
-    //When chosen, the name of the educator is put into an arrayList to be populated in spinner
-    //A hashmap will be populated with the respective educators name and document ID
-    //Then the document ID and be easily retreived
-    public void getAllEducators(String institutionName, educatorCallback callback){
 
-        String institutionID = institutionsHM.get(institutionName);
-        String institutionSearch = "Institutions/" + institutionName;
+    /*
+    - Perform a query for the chosen institutionID
+    - Will list all educators associated with the institutionID
+    - Name of the educator is then stored in a hashmap along with the respective documentID for quick lookup
+     */
+    public void getAllEducators(String institutionID, educatorCallback callback){
 
-        Log.d(TAG, "INSIDE OF GETALLEDUCATORS");
+        //String institutionID = institutionsHM.get(institutionName);
+        String institutionSearch = "Institutions/" + institutionID;
+
+        Log.d(TAG, "INSIDE OF getAllEducators");
 
         db.collection(educatorDB)
                 .whereEqualTo("Institution_ID", institutionSearch)
@@ -364,7 +378,9 @@ public class joinCourseActivity extends AppCompatActivity {
                             educatorList.add(0, "Choose an Educator");
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String educator = document.getString("Last_Names");
+                                String firstName = document.getString("Given_Names");
+                                String lastName = document.getString("Last_Names");
+                                String educator = firstName + " " + lastName;
                                 String educatorID = document.getId();
                                 //if (!educatorList.contains(educator)) {
                                     educatorList.add(educator);
@@ -384,10 +400,12 @@ public class joinCourseActivity extends AppCompatActivity {
     }
 
 
-    //Queries against the educator name chosen
-    //Course names associated with the educator are populated into spinner
-    //A hashmap will be populated with the respective courses name and document ID
-    //Then the document ID and be easily retreived
+    /*
+    Queries into Course database and looks for all courses associated with the chosen
+    Educators documentID, then all courses are populated into an ArrayList
+
+    Hashmap is used to quickly look up respective documentID's when choosing a string in spinner
+     */
     public void getAllCourses(String educatorName, courseCallback callback){
 
         String educator_SA_ID = educatorsHM.get(educatorName);
@@ -424,8 +442,10 @@ public class joinCourseActivity extends AppCompatActivity {
                 });
     }
 
-    //When joining selected course
-    //Query against the current users student document ID
+    /*
+    - New document is created inside of StudentCourses with fields
+    course name, course_SA_ID, and student_SA_ID filled
+     */
     public void joinSelectedCourse(String courseName, String courseChosenSAID, String studentDocumentID){
 
         CollectionReference studentDocRef = db.collection(studentCoursesDB);
@@ -433,9 +453,8 @@ public class joinCourseActivity extends AppCompatActivity {
         //Store information that is passed in
         Map<String, Object> inputMap = new HashMap<>();
         inputMap.put("CourseName", courseName);
-        inputMap.put("Course_SA_ID", courseChosenSAID);
-        inputMap.put("STUDENT_SA_ID", studentDocumentID);
-        studentDocRef.document().set(inputMap);
+        inputMap.put("Course_SA_ID", "Courses/" + courseChosenSAID);
+        inputMap.put("STUDENT_SA_ID", "Students/" + studentDocumentID);
 
         studentDocRef.document().set(inputMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
