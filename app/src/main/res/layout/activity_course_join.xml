@@ -26,17 +26,15 @@
         android:layout_marginEnd="-7dp" />
 
     <Spinner
-        android:id="@+id/course_spinner"
+        android:id="@+id/joinCourseSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/educator_spinner"
+        android:layout_below="@+id/institution_spinner"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="279dp" />
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="251dp"
+        android:layout_marginEnd="-7dp" />
 
     <Button
         android:id="@+id/join_course_button"
@@ -46,4 +44,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="56dp"
         android:text="Join Course" />
+
 </RelativeLayout>

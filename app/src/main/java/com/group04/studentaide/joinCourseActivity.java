@@ -134,7 +134,7 @@ public class joinCourseActivity extends AppCompatActivity {
         //Setup view ID's for respective widgets
         mInstitutionSpinner = (Spinner) findViewById(R.id.institution_spinner);
         mEducatorSpinner = (Spinner) findViewById(R.id.educator_spinner);
-        mCourseSpinner = (Spinner) findViewById(R.id.course_spinner);
+        mCourseSpinner = (Spinner) findViewById(R.id.joinCourseSpinner);
         mJoinCourseButton = (Button) findViewById(R.id.join_course_button);
 
         Log.d(TAG, "Current UserID: " + UID);
@@ -191,17 +191,13 @@ public class joinCourseActivity extends AppCompatActivity {
                     String choiceID = educatorsHM.get(choice);
                     Log.d(TAG, "EducatorDocumentID: " + choiceID);
 
+                    //Passed in doucmentID of chosen educator
                     getAllCourses(choiceID, new courseCallback() {
                         @Override
                         public void onCourseCallback(ArrayList<String> courseList) {
-                            Log.d(TAG, "Course item 1: " + courseList.get(0));
-                            Log.d(TAG, "Course item 2: " + courseList.get(1));
-                            Log.d(TAG, "Course item 3: " + courseList.get(2));
-                            Log.d(TAG, "Course item 4: " + courseList.get(3));
-
 
                             courseAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courseList);
-                            courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            //courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             mCourseSpinner.setAdapter(courseAdapter);
 
                             Log.d(TAG, "Course Spinner set");
@@ -243,7 +239,7 @@ public class joinCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (courseChosen.equals(null)) {
+                if (courseChosen.equals("Choose a Course")) {
                     Toast.makeText(getActivity(),"Please choose a course.", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -255,7 +251,7 @@ public class joinCourseActivity extends AppCompatActivity {
                             joinSelectedCourse(courseChosen, courseChosenID, StudentDocumentID);
                             Log.d(TAG, "Join course called, course: " + courseChosen + " added");
 
-                            Log.d(TAG, "Starting new activity");
+                            //Log.d(TAG, "Starting new activity");
                             Intent intent = new Intent(getApplicationContext(), coursesActivity.class);
                             startActivity(intent);
 
@@ -406,17 +402,14 @@ public class joinCourseActivity extends AppCompatActivity {
 
     Hashmap is used to quickly look up respective documentID's when choosing a string in spinner
      */
-    public void getAllCourses(String educatorName, courseCallback callback){
-
-        String educator_SA_ID = educatorsHM.get(educatorName);
-        String educatorSearch = "Educators/" + educator_SA_ID;
-
+    public void getAllCourses(String educatorID, courseCallback callback){
         Log.d(TAG, "Inside of getAllCourses");
 
-                        //.whereEqualTo("Educator_SA_ID", educatorSearch)
+        String educatorSearch = "Educators/" + educatorID;
 
         db.collection(courseDB)
-
+                .whereEqualTo("Educator_SA_ID", educatorSearch)
+                .orderBy("Course_Name", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
