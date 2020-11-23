@@ -1,7 +1,5 @@
 /*
-
 Written by: Yufeng Luo, Jason Leung
-
  */
 package com.group04.studentaide;
 
@@ -31,7 +29,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 
-public class coursesActivity extends AppCompatActivity {
+public class CoursesActivity extends AppCompatActivity {
 
     Button createCourseClicked;
     Button joinCourseClicked;
@@ -62,13 +60,12 @@ public class coursesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), joinCourseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), JoinCourseActivity.class);
                 startActivity(intent);
             }
         });
 
         /*createCourseClicked.findViewById(R.id.courseCreate);
-
         createCourseClicked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +88,6 @@ public class coursesActivity extends AppCompatActivity {
         coursesDisplay.setAdapter(courseAdapter);
 
         /*
-
         ArrayAdapter<String> arrAdapt = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, hashKeys);
         coursesDisplay.setAdapter(arrAdapt);
         coursesDisplay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -104,15 +100,13 @@ public class coursesActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
         */
 
     }
 
-    private coursesActivity getActivity() {
+    private CoursesActivity getActivity() {
 
         return this;
 
@@ -147,13 +141,13 @@ public class coursesActivity extends AppCompatActivity {
     }
 
     public void courseCreate(View view){
-        Intent create = new Intent(this, courseCreation.class);
+        Intent create = new Intent(this, CourseCreation.class);
         startActivity(create);
     }
 
 
     public void educatorRegister(View view){
-        Intent educator = new Intent(this, courseCreationEducator.class);
+        Intent educator = new Intent(this, CourseCreationEducator.class);
         startActivity(educator);
     }
 
