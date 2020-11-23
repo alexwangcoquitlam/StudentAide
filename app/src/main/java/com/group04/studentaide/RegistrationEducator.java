@@ -2,7 +2,9 @@
     Written by Alexander Wang
 
     User chooses to create an educator account, the app will ask for more information than a regular account.
-    The data is stored in a separate collection.
+    The data is stored in a separate collection labeled Educators
+    For this type of account, the user is asked for more information in order for us to verify their identity
+    Institution and faculty will be set by the developers and shown to the user in spinners.
  */
 
 package com.group04.studentaide;
@@ -69,6 +71,11 @@ public class RegistrationEducator extends AppCompatActivity {
 
     }
 
+
+    /* Essentially the same function as in Registration, differences are:
+     * 1. Checks more info
+     * 2. Stores info into a different collection
+     */
     private void registrationEducator(){
         String email = mEmailInput.getText().toString().trim();
         String password = mPasswordInput.getText().toString();

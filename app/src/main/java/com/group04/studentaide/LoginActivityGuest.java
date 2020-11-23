@@ -1,11 +1,9 @@
 /*
- *Written by: Yufeng Luo, Alexander Wang
- * UNTESTED
+ * Written by Alexander Wang
  *
- * User login will check information entered serverside and use StringRequest response to determine whether or not credentials are known in database
- * On successful login, new Intent will be created taking users to MainActivity
- *
- *
+ * This page is for the user to see while in the main app.
+ * Two pages were required as the manifest needs to define a parent activity, and using only one page would cause continuity issues
+ * The main differences for this page is that there is a Sign out button, and the user cannot continue as guest.
  * */
 
 package com.group04.studentaide;
@@ -88,6 +86,7 @@ public class LoginActivityGuest extends AppCompatActivity {
 
     }
 
+    // Same login function as LoginActivity
     private void loginFire(){
         minputEmail = findViewById(R.id.emailInputLogin2);
         minputPassword = findViewById(R.id.password2);
@@ -136,6 +135,7 @@ public class LoginActivityGuest extends AppCompatActivity {
 
     }
 
+    // Uses Firebase authentication to sign the user out.
     private void signOut(){
         if (user != null) {
             mAuth.signOut();

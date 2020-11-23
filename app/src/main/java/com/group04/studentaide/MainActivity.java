@@ -1,3 +1,9 @@
+/*
+ * Written by Alexander Wang
+ *
+ * The main screen has no real functions, just some buttons that lead to other functional pages.
+ */
+
 package com.group04.studentaide;
 
 import android.content.Intent;

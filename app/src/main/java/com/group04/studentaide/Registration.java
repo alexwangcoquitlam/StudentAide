@@ -1,12 +1,8 @@
 /*
  * Written by: Yufeng Luo, Alexander Wang
  *
- * UNTESTED
- *
- * Registration Class POSTS user entered information using Volley to Server URL in JSONObject format
- * Using Volleys built-in functionality getParams() that utilizes hashmaps to store key-pair values
- *
- * Makes use of StudentAideSingleton class to create RequestQueues and add Volley requests to be sent to server
+ * Registers the user with Firebase authentication
+ * The data is stored into a separate collection that the app uses for functions like courses, study sessions, etc.
  *
  * */
 
@@ -89,6 +85,8 @@ public class Registration extends AppCompatActivity {
         startActivity(educator);
     }
 
+    // Checks if the textboxes are empty, if the email is valid, and if the password is more than 6 characters
+    // Once that is done a new user is created in firebase authentication, and their info is stored into the Students collection
     private void registrationFireAuth(){
         String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString();
