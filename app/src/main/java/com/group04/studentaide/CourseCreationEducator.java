@@ -59,10 +59,8 @@ public class CourseCreationEducator extends AppCompatActivity {
             }
         });
 
-        mInputCourseName = findViewById(R.id.inputCourseName);
-        mInputInstitutionName = findViewById(R.id.institutionInput);
-        mQuizzes = findViewById(R.id.allowQuiz);
-        mCreateCourse = findViewById(R.id.createButton);
+        mInputCourseName = findViewById(R.id.inputCourseName2);
+        mCreateCourse = findViewById(R.id.createButton2);
 
         mCreateCourse.setOnClickListener(new View.OnClickListener() {
             @Override

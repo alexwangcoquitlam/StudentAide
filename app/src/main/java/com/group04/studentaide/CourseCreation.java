@@ -57,8 +57,6 @@ public class CourseCreation extends AppCompatActivity {
         grabDocumentReference();
 
         mInputCourseName = findViewById(R.id.inputCourseName);
-        mInputInstitution = findViewById(R.id.institutionInput);
-        mQuizzes = findViewById(R.id.allowQuiz);
         mCreateCourse = findViewById(R.id.createButton);
 
         //Create our LinkedHashMap object from singleton
@@ -91,27 +89,6 @@ public class CourseCreation extends AppCompatActivity {
     private void createCourseFire(){
 
         String name = mInputCourseName.getText().toString().trim();
-        String institution;
-        String quiz;
-        String uid;
-        String owner;
-        if (user != null) {
-            uid = user.getUid();
-            owner = user.getDisplayName();
-        }
-        else {
-            uid = "No associated user";
-            owner = "No associated user";
-        }
-        if (mQuizzes.isChecked())
-            quiz = "true";
-        else
-            quiz = "false";
-
-        if (TextUtils.isEmpty(mInputInstitution.getText().toString().trim()))
-            institution = "personal";
-        else
-            institution = mInputInstitution.getText().toString().trim();
 
         if (TextUtils.isEmpty(name)){
             mInputCourseName.setError("Please enter a course name");

@@ -1,25 +1,18 @@
 package com.group04.studentaide;
 
 /*
-
 Written By: Yufeng Luo
-
 1. User selects Institution
 2. Then chooses Educator
 3. Then displays all courses that the Educator currently owns
-
 Use 3 dependent spinners -> Institution -> Educator -> Course -> join
 Upon clicking join -> (Add student into the Course collection?)
-
 Use ArrayAdapters to hold names
-
 BUGS: Last spinner is not populating, although the ArrayList is being populated
-
 1. Retrieve educators institution ID from Institution_ID -> List will then be all educators from associated institution
 2. After choosing educator -> take documentID of matched queries and create a query in Courses
 3. Query Courses for Educator_SA_ID hit and retreive all Course_Names associated with educator
 4. Stored in hashmaps
-
 Example
 1. Choose name to search for in institutions
 2. Get name (SFU) - Get documentID (GPxJ3nn6oD4AmvTILN1f)
@@ -27,13 +20,11 @@ Example
 4. And retreive the names associated with the documents to display, retreive documentId of educator selected
 5. Query for all courses with educator document ID and retreive names of courses to display in Spinner
 6. Upon user selection -> and a field to respective current Users statistics
-
 Data structure to use: Hashmap
-
 InstitutionList: <Name, documentID>
 EducatorList: <Name, documentID>
 CourseList: <Name, DocumentID>
-
+AM I JUST GONNA USE A DAMN GLOBAL VARIABLE AND PASS THE COURSE DOCUMENT ID?????
  */
 
 import android.content.Intent;
@@ -56,7 +47,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -95,7 +85,6 @@ public class JoinCourseActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     //Current user's UID, used to add them into course
     String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     //ArrayLists to hold the appropriate names and populate spinners
     ArrayList<String> institutionList = new ArrayList<String>();
@@ -118,12 +107,6 @@ public class JoinCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_join);
 
-        
-        if (user == null){
-            Toast.makeText(this, "Please sign in.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, CoursesActivity.class);
-            startActivity(intent);
-        }
 
         //Sets up Spinners so that the first option is not an item that can be chosen
         institutionList.add(0, "Choose an Institution");
@@ -318,7 +301,6 @@ public class JoinCourseActivity extends AppCompatActivity {
 
     /*
     Queries the institution database upon opening app to prompt user with list of institutions
-
     Hashmap is used to associate the name chosen with its documentID quickly
      */
     public void getAllInstitutions(Callback callback){
@@ -399,7 +381,6 @@ public class JoinCourseActivity extends AppCompatActivity {
     /*
     Queries into Course database and looks for all courses associated with the chosen
     Educators documentID, then all courses are populated into an ArrayList
-
     Hashmap is used to quickly look up respective documentID's when choosing a string in spinner
      */
     public void getAllCourses(String educatorID, courseCallback callback){
