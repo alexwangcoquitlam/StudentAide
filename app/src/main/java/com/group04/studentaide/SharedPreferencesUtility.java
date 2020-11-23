@@ -1,10 +1,10 @@
 package com.group04.studentaide;
 
 /*  This class is used to save key-data of the user, allowing them to not have to login everytime they open the app
-* Data is lost when: application is uninstalled or clearing application data through the settings
-*
-*
-* */
+ * Data is lost when: application is uninstalled or clearing application data through the settings
+ *
+ *
+ * */
 
 
 import android.content.Context;
@@ -79,7 +79,7 @@ public class SharedPreferencesUtility {
         //Clear all saved details from our application context
         editor.clear();
         editor.apply();
-        mContext.startActivity(new Intent(mContext, loginActivity.class));
+        mContext.startActivity(new Intent(mContext, LoginActivity.class));
     }
 
 }
