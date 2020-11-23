@@ -298,59 +298,63 @@ public class StudySessionPlan extends AppCompatActivity {
             Month month = Month.of(monthInt);
             int monthLength = month.length(false);
 
-            // Create LocalDateTime Objects
-            LocalDateTime currentDate = LocalDateTime.now();
-            LocalDateTime startDate = LocalDateTime.of(year, month, day, timeStartHour, timeStartMinute);
-            LocalDateTime endDate = LocalDateTime.of(year, month, day, timeEndHour, timeEndMinute);
+            if (day > monthLength) {
 
-            // Get users current time zone ID
-            ZoneId zoneId = ZoneId.systemDefault();
-
-            // Turn LocalDateTime Objects into seconds
-            long startSecond = startDate.atZone(zoneId).toEpochSecond();
-            long endSecond = endDate.atZone(zoneId).toEpochSecond();
-
-            // Create Firebase timestamp with seconds
-            Timestamp start = new Timestamp(startSecond, 0);
-            Timestamp end = new Timestamp(endSecond, 0);
-
-            // If user input study date has already passed or if month does not contain that date, give an error message
-            if (startDate.isBefore(currentDate) == true || day > monthLength) {
-
-                if (startDate.isBefore(currentDate) == true) {
-                    Toast.makeText(getApplicationContext(), "Date has already passed.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please enter a valid date.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(getApplicationContext(), "Please enter a valid date.", Toast.LENGTH_SHORT).show();
 
             } else {
 
-                int placeholder = 0;
+                // Create LocalDateTime Objects
+                LocalDateTime currentDate = LocalDateTime.now();
+                LocalDateTime startDate = LocalDateTime.of(year, month, day, timeStartHour, timeStartMinute);
+                LocalDateTime endDate = LocalDateTime.of(year, month, day, timeEndHour, timeEndMinute);
 
-                // Store the planned study session into the database
-                Map<String, Object> sessions = new HashMap<>();
-                sessions.put("Course_Name", courseInput);
-                sessions.put("Course_SA_ID", placeholder);
-                sessions.put("Student_SA_ID", studentRef);
-                sessions.put("Start", start);
-                sessions.put("End", end);
+                // Get users current time zone ID
+                ZoneId zoneId = ZoneId.systemDefault();
 
-                db.collection("PlannedSessions")
-                        .add(sessions)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(StudySessionPlan.this, "New Session Planned", Toast.LENGTH_SHORT).show();
-                                Intent returnStudy = new Intent(StudySessionPlan.this, StudySession.class);
-                                startActivity(returnStudy);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("StudySessionPlan", "Error occurred when adding session to Firebase.", e);
-                            }
-                        });
+                // Turn LocalDateTime Objects into seconds
+                long startSecond = startDate.atZone(zoneId).toEpochSecond();
+                long endSecond = endDate.atZone(zoneId).toEpochSecond();
+
+                // Create Firebase timestamp with seconds
+                Timestamp start = new Timestamp(startSecond, 0);
+                Timestamp end = new Timestamp(endSecond, 0);
+
+                // If user input study date has already passed or if month does not contain that date, give an error message
+                if (startDate.isBefore(currentDate) == true) {
+
+                    Toast.makeText(getApplicationContext(), "Date has already passed.", Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                    int placeholder = 0;
+
+                    // Store the planned study session into the database
+                    Map<String, Object> sessions = new HashMap<>();
+                    sessions.put("Course_Name", courseInput);
+                    sessions.put("Course_SA_ID", placeholder);
+                    sessions.put("Student_SA_ID", studentRef);
+                    sessions.put("Start", start);
+                    sessions.put("End", end);
+
+                    db.collection("PlannedSessions")
+                            .add(sessions)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(StudySessionPlan.this, "New Session Planned", Toast.LENGTH_SHORT).show();
+                                    Intent returnStudy = new Intent(StudySessionPlan.this, StudySession.class);
+                                    startActivity(returnStudy);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("StudySessionPlan", "Error occurred when adding session to Firebase.", e);
+                                }
+                            });
+
+                }
 
             }
         }
