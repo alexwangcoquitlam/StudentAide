@@ -60,7 +60,7 @@ import java.util.Map;
 
  */
 
-public class studyStatistics extends AppCompatActivity {
+public class StudyStatistics extends AppCompatActivity {
 
 	PieChart chart;
 	TextView timeCount;
@@ -69,7 +69,7 @@ public class studyStatistics extends AppCompatActivity {
 
 	FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 	FirebaseFirestore db = FirebaseFirestore.getInstance();
-	informationRetrieval infoRetrieve = informationRetrieval.getInstance();
+	InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 	private static DecimalFormat df = new DecimalFormat("0.00");
 
 	ArrayList<String> courses = new ArrayList<String>();
@@ -98,9 +98,9 @@ public class studyStatistics extends AppCompatActivity {
 				counter++;
 			}
 
-			courseSpinner = (Spinner) findViewById(R.id.chooseCourseStats);
-			timeCount = (TextView) findViewById(R.id.totalTimeCount);
-			chart = (PieChart) findViewById(R.id.chart);
+			courseSpinner = findViewById(R.id.chooseCourseStats);
+			timeCount = findViewById(R.id.totalTimeCount);
+			chart = findViewById(R.id.chart);
 
 			chart.setRotationEnabled(true);
 			chart.setHoleRadius(25f);
@@ -193,7 +193,7 @@ public class studyStatistics extends AppCompatActivity {
 	}
 
 	// Return current activity
-	private studyStatistics getActivity() {
+	private StudyStatistics getActivity() {
 
 		return this;
 
