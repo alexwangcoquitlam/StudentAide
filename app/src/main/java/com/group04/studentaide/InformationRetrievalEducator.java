@@ -12,15 +12,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class informationRetrievalEducator {
+public class InformationRetrievalEducator {
 
-    private static informationRetrievalEducator ourInstance = null;
+    private static InformationRetrievalEducator ourInstance = null;
     private String educatorDocumentID;
     private String institutionID;
     private FirebaseUser user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public informationRetrievalEducator() {
+    public InformationRetrievalEducator() {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -49,9 +49,9 @@ public class informationRetrievalEducator {
 
     }
 
-    public static informationRetrievalEducator getInstance(){
+    public static InformationRetrievalEducator getInstance(){
         if (ourInstance == null){
-            ourInstance = new informationRetrievalEducator();
+            ourInstance = new InformationRetrievalEducator();
         }
 
         return ourInstance;
