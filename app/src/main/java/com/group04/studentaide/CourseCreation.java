@@ -75,6 +75,12 @@ public class CourseCreation extends AppCompatActivity {
 
     }
 
+    public void educatorCreateCourse(View view){
+        Intent educator = new Intent(this, CourseCreationEducator.class);
+        startActivity(educator);
+    }
+
+
     public void grabDocumentReference() {
 
         studentDocumentId = infoRetrieve.getDocumentID();
