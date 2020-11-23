@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+// Change current UID when logging in
+
 public class LoginActivity extends AppCompatActivity {
 
     Button logInButton;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa135", "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                infoRetrieve.updateID();
                                 Intent returnMain = new Intent(LoginActivity.this, MainActivity.class);
                                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                                 startActivity(returnMain);
