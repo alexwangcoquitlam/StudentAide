@@ -77,7 +77,7 @@ import java.util.Map;
 
 import javax.security.auth.callback.Callback;
 
-public class joinCourseActivity extends AppCompatActivity {
+public class JoinCourseActivity extends AppCompatActivity {
 
     Spinner mInstitutionSpinner;
     Spinner mEducatorSpinner;
@@ -252,7 +252,7 @@ public class joinCourseActivity extends AppCompatActivity {
                             Log.d(TAG, "Join course called, course: " + courseChosen + " added");
 
                             //Log.d(TAG, "Starting new activity");
-                            Intent intent = new Intent(getApplicationContext(), coursesActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), CoursesActivity.class);
                             startActivity(intent);
 
                         }
@@ -282,7 +282,7 @@ public class joinCourseActivity extends AppCompatActivity {
         void onCourseCallback(ArrayList<String> courseList);
     }
 
-    public joinCourseActivity getActivity(){
+    public JoinCourseActivity getActivity(){
         return this;
     }
 
@@ -333,10 +333,10 @@ public class joinCourseActivity extends AppCompatActivity {
                                 String institutionID = document.getId();
                                 //Log.d(TAG, "Institution from Firestore: " + institution);
                                 //if (!institutionList.contains(institution)){
-                                    institutionList.add(institution);
+                                institutionList.add(institution);
 
-                                    //Insert key value pair to retreive document ID's
-                                    institutionsHM.put(institution, institutionID);
+                                //Insert key value pair to retreive document ID's
+                                institutionsHM.put(institution, institutionID);
 
                                 //}
                             }
@@ -379,11 +379,11 @@ public class joinCourseActivity extends AppCompatActivity {
                                 String educator = firstName + " " + lastName;
                                 String educatorID = document.getId();
                                 //if (!educatorList.contains(educator)) {
-                                    educatorList.add(educator);
+                                educatorList.add(educator);
 
-                                    educatorsHM.put(educator, educatorID);
+                                educatorsHM.put(educator, educatorID);
 
-                                    Log.d(TAG, educator + " added.");
+                                Log.d(TAG, educator + " added.");
                                 //}
 
                             }
