@@ -145,10 +145,4 @@ public class CoursesActivity extends AppCompatActivity {
         startActivity(create);
     }
 
-
-    public void educatorRegister(View view){
-        Intent educator = new Intent(this, CourseCreationEducator.class);
-        startActivity(educator);
-    }
-
 }

@@ -24,10 +24,11 @@
         android:layout_width="197dp"
         android:layout_height="37dp"
         android:layout_marginTop="31dp"
-        android:layout_marginBottom="328dp"
+        android:layout_marginBottom="8dp"
         android:text="Create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputCourseName"
         app:layout_constraintVertical_bias="0.0" />
@@ -68,14 +69,15 @@
         android:id="@+id/educatorCourseCreation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="educatorCreateCourse"
         android:text="Create an educator course?"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createButton"
-        app:layout_constraintVertical_bias="0.095" />
+        app:layout_constraintVertical_bias="0.707" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

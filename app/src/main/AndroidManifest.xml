@@ -37,7 +37,13 @@
             android:name=".Registration"
             android:parentActivityName=".LoginActivityGuest" />
         <activity
-            android:name=".LoadingScreen"
+            android:name=".CourseCreationEducator"
+            android:parentActivityName=".CourseCreation"/>
+        <activity
+            android:name=".JoinCourseActivity"
+            android:parentActivityName=".CoursesActivity"/>
+        <activity
+            android:name=".Loadingscreen"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
