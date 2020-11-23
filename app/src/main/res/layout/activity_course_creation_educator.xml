@@ -8,29 +8,29 @@
     tools:context=".CourseCreation">
 
     <ImageView
-        android:id="@+id/courseCreateLogo"
+        android:id="@+id/courseCreateLogo2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseCreateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/courseCreateLabel2"
         app:layout_constraintVertical_bias="0.063"
         app:srcCompat="@drawable/applogo" />
 
     <Button
-        android:id="@+id/createButton"
+        android:id="@+id/createButton2"
         android:layout_width="197dp"
         android:layout_height="37dp"
-        android:text="@string/create_button"
+        android:text="Create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allowQuiz"
+        app:layout_constraintTop_toBottomOf="@+id/allowQuiz2"
         app:layout_constraintVertical_bias="0.123" />
 
     <TextView
-        android:id="@+id/courseCreateLabel"
+        android:id="@+id/courseCreateLabel2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
@@ -45,48 +45,48 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <Switch
-        android:id="@+id/allowQuiz"
+        android:id="@+id/allowQuiz2"
         android:layout_width="213dp"
         android:layout_height="14dp"
         android:background="#FFFFFF"
-        android:text="@string/quiz_switch"
+        android:text="Quizzes?"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/institutionInput"
+        app:layout_constraintTop_toBottomOf="@+id/institutionInput2"
         app:layout_constraintVertical_bias="0.132" />
 
     <EditText
-        android:id="@+id/inputCourseName"
+        android:id="@+id/inputCourseName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="@string/course_name_hint"
+        android:hint="Course name"
         android:inputType="textPersonName"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseCreateLogo"
+        app:layout_constraintTop_toBottomOf="@+id/courseCreateLogo2"
         app:layout_constraintVertical_bias="0.093" />
 
     <EditText
-        android:id="@+id/institutionInput"
+        android:id="@+id/institutionInput2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="@string/institution_hint"
+        android:hint="Institution"
         android:inputType="textPersonName"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputCourseName"
+        app:layout_constraintTop_toBottomOf="@+id/inputCourseName2"
         app:layout_constraintVertical_bias="0.095" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
