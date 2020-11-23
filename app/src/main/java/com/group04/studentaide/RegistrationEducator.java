@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class registrationEducator extends AppCompatActivity {
+public class RegistrationEducator extends AppCompatActivity {
 
     private EditText mFirstNameInput, mLastNameInput, mEmailInput, mInstitutionInput, mFacultyInput, mPhoneNumberInput, mPasswordInput, mPasswordCheck;
     private Button mRegister;
@@ -129,7 +129,7 @@ public class registrationEducator extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("hwa134", "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(registrationEducator.this, "Authentication failed.",
+                                Toast.makeText(RegistrationEducator.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -189,8 +189,8 @@ public class registrationEducator extends AppCompatActivity {
                     Log.w("institutionAddFail", "Error adding institution.");
                 }
             });
-            Intent returnLogin = new Intent(registrationEducator.this, loginActivity.class);
-            Toast.makeText(registrationEducator.this, "Registration successful", Toast.LENGTH_SHORT).show();
+            Intent returnLogin = new Intent(RegistrationEducator.this, LoginActivity.class);
+            Toast.makeText(RegistrationEducator.this, "Registration successful", Toast.LENGTH_SHORT).show();
             startActivity(returnLogin);
         }
     }
