@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 
-public class coursesActivity extends AppCompatActivity {
+public class CoursesActivity extends AppCompatActivity {
 
     Button createCourseClicked;
     Button joinCourseClicked;
@@ -63,7 +63,7 @@ public class coursesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), joinCourseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), JoinCourseActivity.class);
                 startActivity(intent);
             }
         });
@@ -113,7 +113,7 @@ public class coursesActivity extends AppCompatActivity {
 
     }
 
-    private coursesActivity getActivity() {
+    private CoursesActivity getActivity() {
 
         return this;
 
@@ -148,7 +148,7 @@ public class coursesActivity extends AppCompatActivity {
     }
 
     public void courseCreate(View view){
-        Intent create = new Intent(this, courseCreation.class);
+        Intent create = new Intent(this, CourseCreation.class);
         startActivity(create);
     }
 

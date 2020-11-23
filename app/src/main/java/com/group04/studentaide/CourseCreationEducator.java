@@ -35,7 +35,7 @@ Educator created account -> inside of Educator Field will need UID field
 
 */
 
-public class courseCreationEducator extends AppCompatActivity {
+public class CourseCreationEducator extends AppCompatActivity {
 
     EditText mInputCourseName;
     EditText mInputInstitutionName;
@@ -44,7 +44,7 @@ public class courseCreationEducator extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    informationRetrievalEducator infoRetrieve = informationRetrievalEducator.getInstance();
+    InformationRetrievalEducator infoRetrieve = InformationRetrievalEducator.getInstance();
 
     DocumentReference educatorRef;
     String educatorDocumentID;
@@ -116,7 +116,7 @@ public class courseCreationEducator extends AppCompatActivity {
                         Toast.makeText(getActivity(), courseName + " created.", Toast.LENGTH_SHORT).show();
                         Log.d("WDF", courseName + " " + educatorDocumentID + " " + institutionID);
 
-                        Intent intent = new Intent(getActivity(),coursesActivity.class);
+                        Intent intent = new Intent(getActivity(),CoursesActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -124,7 +124,7 @@ public class courseCreationEducator extends AppCompatActivity {
 
     }
 
-    public courseCreationEducator getActivity(){
+    public CourseCreationEducator getActivity(){
         return this;
     }
 
