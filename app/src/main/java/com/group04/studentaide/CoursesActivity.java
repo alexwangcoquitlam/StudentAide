@@ -1,5 +1,7 @@
 /*
+
 Written by: Yufeng Luo, Jason Leung
+
  */
 package com.group04.studentaide;
 
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 
-public class CoursesActivity extends AppCompatActivity {
+public class coursesActivity extends AppCompatActivity {
 
     Button createCourseClicked;
     Button joinCourseClicked;
@@ -46,11 +48,12 @@ public class CoursesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
 
-        joinCourseClicked = (Button)findViewById(R.id.courseJoin);
+        joinCourseClicked = findViewById(R.id.courseJoin);
 
 
         if (user != null) {
             uid = user.getUid();
+
         } else {
             uid = "No associated user";
         }
@@ -60,12 +63,13 @@ public class CoursesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), JoinCourseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), joinCourseActivity.class);
                 startActivity(intent);
             }
         });
 
         /*createCourseClicked.findViewById(R.id.courseCreate);
+
         createCourseClicked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +92,7 @@ public class CoursesActivity extends AppCompatActivity {
         coursesDisplay.setAdapter(courseAdapter);
 
         /*
+
         ArrayAdapter<String> arrAdapt = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, hashKeys);
         coursesDisplay.setAdapter(arrAdapt);
         coursesDisplay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -100,13 +105,15 @@ public class CoursesActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
+
         */
 
     }
 
-    private CoursesActivity getActivity() {
+    private coursesActivity getActivity() {
 
         return this;
 
@@ -141,13 +148,13 @@ public class CoursesActivity extends AppCompatActivity {
     }
 
     public void courseCreate(View view){
-        Intent create = new Intent(this, CourseCreation.class);
+        Intent create = new Intent(this, courseCreation.class);
         startActivity(create);
     }
 
 
     public void educatorRegister(View view){
-        Intent educator = new Intent(this, CourseCreationEducator.class);
+        Intent educator = new Intent(this, courseCreationEducator.class);
         startActivity(educator);
     }
 
