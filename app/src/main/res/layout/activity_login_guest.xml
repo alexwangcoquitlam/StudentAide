@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".loginActivityGuest">
+    tools:context=".LoginActivityGuest">
 
     <Button
         android:id="@+id/register2"
