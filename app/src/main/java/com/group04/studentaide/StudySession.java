@@ -42,7 +42,7 @@ import java.util.Map;
 import javax.security.auth.callback.Callback;
 
 /*
-    File Name: studySession.java
+    File Name: StudySession.java
     Team: ProjectTeam04
     Written By: Yufeng Luo, Jason Leung
 
@@ -75,7 +75,7 @@ import javax.security.auth.callback.Callback;
         Deal with user == null situation and allow offline use (for study stats too)
  */
 
-public class studySession extends AppCompatActivity {
+public class StudySession extends AppCompatActivity {
 
     Spinner selectSession;
     Spinner courseSpinner;
@@ -100,7 +100,7 @@ public class studySession extends AppCompatActivity {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    informationRetrieval infoRetrieve = informationRetrieval.getInstance();
+    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 
     // Used to fill Spinner
     ArrayList<String> courses = new ArrayList<String>();
@@ -139,6 +139,16 @@ public class studySession extends AppCompatActivity {
             courses.clear();
             sessions.clear();
 
+            courseSpinner = findViewById(R.id.courses);
+            selectSession = findViewById(R.id.selectSession);
+            planSession = findViewById(R.id.planSession);
+            userInputTime = findViewById(R.id.timeInput);
+            pauseTime = findViewById(R.id.pauseTime);
+            setTime = findViewById(R.id.setTime);
+            textCountdownTimer = findViewById(R.id.timeLeft);
+            startTime = findViewById(R.id.startTime);
+            //resetTime = findViewById(R.id.resetTimer);
+
             // Add a none selected value to the array that will be used to populate courseSpinner and selectSession
             if (counter == 0) {
                 sessions.add("No Session Selected");
@@ -146,7 +156,6 @@ public class studySession extends AppCompatActivity {
             }
 
             // Populate courseSpinner with users courses and updateStats once courses have been grabbed
-            courseSpinner = (Spinner) findViewById(R.id.courses);
             grabCourses(new Callback() {
                 @Override
                 public void call() {
@@ -179,7 +188,6 @@ public class studySession extends AppCompatActivity {
             });
 
             // Populate selectSession Spinner with "No Planned Session"
-            selectSession = (Spinner) findViewById(R.id.selectSession);
             String[] ifNoSessions = new String[]{"No Planned Sessions"};
             ArrayAdapter<String> sessionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, ifNoSessions);
             selectSession.setAdapter(sessionsAdapter);
@@ -221,15 +229,6 @@ public class studySession extends AppCompatActivity {
 
                 }
             });
-
-            planSession = (Button) findViewById(R.id.planSession);
-
-            userInputTime = (EditText) findViewById(R.id.timeInput);
-            pauseTime = (Button) findViewById(R.id.pauseTime);
-            setTime = (Button) findViewById(R.id.setTime);
-            textCountdownTimer = (TextView) findViewById(R.id.timeLeft);
-            startTime = (Button) findViewById(R.id.startTime);
-            //resetTime = (Button) findViewById(R.id.resetTimer);
 
             // If the user does not currently have a document in Firebase for their stats, create one
             if (counter == 0) {
@@ -321,7 +320,7 @@ public class studySession extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // Not sure if it should be "getApplicationContext()", or "this"
-                    Intent intent = new Intent(getApplicationContext(), studySessionPlan.class);
+                    Intent intent = new Intent(getApplicationContext(), StudySessionPlan.class);
                     startActivity(intent);
                 }
             });
@@ -405,7 +404,7 @@ public class studySession extends AppCompatActivity {
     }
 
     // Return current activity
-    private studySession getActivity() {
+    private StudySession getActivity() {
 
         return this;
 
