@@ -15,16 +15,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class informationRetrieval {
+public class InformationRetrieval {
 
-    private static informationRetrieval ourInstance = null;
+    private static InformationRetrieval ourInstance = null;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private String studentDocumentID;
     private FirebaseUser user;
 
-    public informationRetrieval(){
+    public InformationRetrieval(){
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -52,10 +52,9 @@ public class informationRetrieval {
 
     }
 
-
-    public static informationRetrieval getInstance() {
+    public static InformationRetrieval getInstance() {
         if (ourInstance == null){
-            ourInstance = new informationRetrieval();
+            ourInstance = new InformationRetrieval();
         }
         return ourInstance;
     }
@@ -65,5 +64,4 @@ public class informationRetrieval {
         return studentDocumentID;
 
     }
-
 }
