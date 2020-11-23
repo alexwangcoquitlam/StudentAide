@@ -6,7 +6,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class loadingscreen extends AppCompatActivity {
+public class LoadingScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +15,7 @@ public class loadingscreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){
-                Intent loadingScreen = new Intent(loadingscreen.this, loginActivity.class);
+                Intent loadingScreen = new Intent(LoadingScreen.this, LoginActivity.class);
                 startActivity(loadingScreen);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
