@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
+
     private Button loginScreen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
