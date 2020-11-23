@@ -26,11 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,11 +39,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.group04.studentaide.SharedPreferencesUtility.KEY_email;
-import static com.group04.studentaide.SharedPreferencesUtility.KEY_firstName;
-import static com.group04.studentaide.SharedPreferencesUtility.KEY_lastName;
-import static com.group04.studentaide.ServerURL.REGISTER_URL;
 
 public class Registration extends AppCompatActivity {
 

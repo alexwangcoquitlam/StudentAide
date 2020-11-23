@@ -56,7 +56,7 @@ public class User {
 
 
     /*User class Constructor*/
-    //V1 we sayin fuck da boolean
+    //V1 we sayin da boolean
     public User(String userName, String firstName, String lastName) {
         this.userName = userName;
         //this.password = password;

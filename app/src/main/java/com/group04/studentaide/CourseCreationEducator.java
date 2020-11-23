@@ -28,11 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
-
 Use information Retrieval
-
 Educator created account -> inside of Educator Field will need UID field
-
 */
 
 public class CourseCreationEducator extends AppCompatActivity {

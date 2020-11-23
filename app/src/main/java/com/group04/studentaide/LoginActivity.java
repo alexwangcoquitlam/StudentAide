@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Log.v("LoginActivityy", String.valueOf((user == null)));
+
         if (user != null) {
             if (user.getDisplayName() == null) {
                 Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);

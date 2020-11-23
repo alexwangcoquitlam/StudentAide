@@ -98,9 +98,9 @@ public class StudyStatistics extends AppCompatActivity {
 				counter++;
 			}
 
-			courseSpinner = findViewById(R.id.chooseCourseStats);
-			timeCount = findViewById(R.id.totalTimeCount);
-			chart = findViewById(R.id.chart);
+			courseSpinner = (Spinner) findViewById(R.id.chooseCourseStats);
+			timeCount = (TextView) findViewById(R.id.totalTimeCount);
+			chart = (PieChart) findViewById(R.id.chart);
 
 			chart.setRotationEnabled(true);
 			chart.setHoleRadius(25f);
