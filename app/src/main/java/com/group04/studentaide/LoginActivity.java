@@ -43,10 +43,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (user != null){
-            Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
-            Toast.makeText(LoginActivity.this, "Welcome back, " + user.getDisplayName().toUpperCase(), Toast.LENGTH_LONG).show();
-            startActivity(mainAc);
+        if (user != null) {
+            if (user.getDisplayName() == null) {
+                Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
+                startActivity(mainAc);
+            } else {
+                Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
+                Toast.makeText(LoginActivity.this, "Welcome back, " + user.getDisplayName().toUpperCase(), Toast.LENGTH_LONG).show();
+                startActivity(mainAc);
+            }
         }
 
         logInButton = (Button) findViewById(R.id.login);
