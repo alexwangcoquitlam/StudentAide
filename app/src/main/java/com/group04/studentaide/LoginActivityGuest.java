@@ -24,10 +24,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivityGuest extends AppCompatActivity {
@@ -42,6 +45,7 @@ public class LoginActivityGuest extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +116,7 @@ public class LoginActivityGuest extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa135", "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                infoRetrieve.updateID();
                                 Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
                                 Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
                                 startActivity(returnMain);
@@ -134,6 +139,7 @@ public class LoginActivityGuest extends AppCompatActivity {
     private void signOut(){
         if (user != null) {
             mAuth.signOut();
+            infoRetrieve.updateID();
             Toast.makeText(LoginActivityGuest.this, "You have signed out.", Toast.LENGTH_LONG).show();
             Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
             startActivity(returnMain);
