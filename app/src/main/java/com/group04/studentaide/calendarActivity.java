@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class calendarActivity extends AppCompatActivity {
+public class CalendarActivity extends AppCompatActivity {
 
     private TextView eventDisplay, eventDisplay2, eventDisplay3;
     private EditText event;
@@ -173,7 +173,7 @@ public class calendarActivity extends AppCompatActivity {
                 startActivity(calendar);
             }
             else{
-                Toast.makeText(calendarActivity.this, "There is no app that can support this action.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CalendarActivity.this, "There is no app that can support this action.", Toast.LENGTH_SHORT).show();
             }
 
             if(user != null) {
@@ -204,7 +204,7 @@ public class calendarActivity extends AppCompatActivity {
             else{}
         }
         else{
-            Toast.makeText(calendarActivity.this, "Please specify an event.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CalendarActivity.this, "Please specify an event.", Toast.LENGTH_SHORT).show();
         }
     }
 }
