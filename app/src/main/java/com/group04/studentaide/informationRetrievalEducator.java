@@ -12,58 +12,57 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
+public class informationRetrievalEducator {
 
-public class informationRetrieval {
-
-    private static informationRetrieval ourInstance = null;
-
+    private static informationRetrievalEducator ourInstance = null;
+    private String educatorDocumentID;
+    private String institutionID;
+    private FirebaseUser user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private String studentDocumentID;
-    private FirebaseUser user;
-
-    public informationRetrieval(){
+    public informationRetrievalEducator() {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
+            String UID = user.getUid();
 
-            String uid = user.getUid();
-            db.collection("Students")
-                    .whereEqualTo("User_ID", uid)
+            db.collection("Educators")
+                    .whereEqualTo("User_ID", UID)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("documentIDGet", "Document ID is: " + document.getId());
-                                    studentDocumentID = document.getId();
+                                    educatorDocumentID = document.getId();
+                                    institutionID = document.getString("Institution_ID");
+
+                                    Log.d("WDF", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
                                 }
                             } else {
-                                Log.v("signedinwrong", "you're signed into the wrong account for testing");
+                                Log.d("WDF", "Error retrieving educator document ID");
                             }
                         }
                     });
-
         }
 
     }
 
-
-    public static informationRetrieval getInstance() {
+    public static informationRetrievalEducator getInstance(){
         if (ourInstance == null){
-            ourInstance = new informationRetrieval();
+            ourInstance = new informationRetrievalEducator();
         }
+
         return ourInstance;
     }
 
-    public String getDocumentID() {
+    public String getEducatorDocumentID(){
+        return educatorDocumentID;
+    }
 
-        return studentDocumentID;
-
+    public String getInstitutionID(){
+        return institutionID;
     }
 
 }

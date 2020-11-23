@@ -152,43 +152,9 @@ public class coursesActivity extends AppCompatActivity {
     }
 
 
-    /*
-    //This is code for spinner --> need arrayadapter and hashmap key values in the spinner
-    //Get a reference to the new update Hashmap and arraylist when reopening activity
-
-    CourseSingleton courseList = CourseSingleton.getInstance();
-    ArrayList<String> hashKeys = courseList.courseKeys;
-
-    Spinner coursesDisplay = findViewById(R.id.courseDropdown);
-    //Set spinner adapter
-    ArrayAdapter<String> arrAdapt = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, hashKeys);
-    coursesDisplay.setAdapter(arrAdapt);
-    coursesDisplay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String choice = parent.getItemAtPosition(position).toString();
-            //random data inserted to see what appears
-            courseList.setStudyTime("General", 16.3);
-            courseList.setStudyTime(choice, 12.3);
-            Double choiceTime = courseList.getStudyTime(choice);
-            Double time = courseList.getStudyTime("General");
-            Toast.makeText(getApplicationContext(), "General: " + time + choice + ":" + choiceTime, Toast.LENGTH_SHORT).show();
-        }
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    });
-    */
-
-
-
-    /*
-    To be completed in later versions
-    public void courseSelect(){
+    public void educatorRegister(View view){
+        Intent educator = new Intent(this, courseCreationEducator.class);
+        startActivity(educator);
     }
-    public void courseJoin(){
-    }
-     */
 
 }

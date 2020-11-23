@@ -132,10 +132,10 @@ public class joinCourseActivity extends AppCompatActivity {
 
 
         //Setup view ID's for respective widgets
-        mInstitutionSpinner = (Spinner) findViewById(R.id.institution_spinner);
-        mEducatorSpinner = (Spinner) findViewById(R.id.educator_spinner);
-        mCourseSpinner = (Spinner) findViewById(R.id.joinCourseSpinner);
-        mJoinCourseButton = (Button) findViewById(R.id.join_course_button);
+        mInstitutionSpinner = findViewById(R.id.institution_spinner);
+        mEducatorSpinner = findViewById(R.id.educator_spinner);
+        mCourseSpinner = findViewById(R.id.joinCourseSpinner);
+        mJoinCourseButton = findViewById(R.id.join_course_button);
 
         Log.d(TAG, "Current UserID: " + UID);
 
