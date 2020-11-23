@@ -1,12 +1,12 @@
 /*
-*Written by: Yufeng Luo
-* UNTESTED
-*
-* User login will check information entered serverside and use StringRequest response to determine whether or not credentials are known in database
-* On successful login, new Intent will be created taking users to MainActivity
-*
-*
-* */
+ *Written by: Yufeng Luo
+ * UNTESTED
+ *
+ * User login will check information entered serverside and use StringRequest response to determine whether or not credentials are known in database
+ * On successful login, new Intent will be created taking users to MainActivity
+ *
+ *
+ * */
 
 package com.group04.studentaide;
 
@@ -29,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class loginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     Button logInButton;
     EditText inputEmail;
@@ -44,8 +44,8 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         if (user != null){
-            Intent mainAc = new Intent (loginActivity.this, MainActivity.class);
-            Toast.makeText(loginActivity.this, "Welcome back, " + user.getDisplayName().toUpperCase(), Toast.LENGTH_LONG).show();
+            Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
+            Toast.makeText(LoginActivity.this, "Welcome back, " + user.getDisplayName().toUpperCase(), Toast.LENGTH_LONG).show();
             startActivity(mainAc);
         }
 
@@ -66,7 +66,7 @@ public class loginActivity extends AppCompatActivity {
 
     //Register button clicked, open register activity
     public void register(View view){
-        Intent register = new Intent(this, com.group04.studentaide.registration.class);
+        Intent register = new Intent(this, com.group04.studentaide.Registration.class);
         startActivity(register);
     }
 
@@ -97,13 +97,13 @@ public class loginActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa135", "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Intent returnMain = new Intent(loginActivity.this, MainActivity.class);
-                                Toast.makeText(loginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                Intent returnMain = new Intent(LoginActivity.this, MainActivity.class);
+                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                                 startActivity(returnMain);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("hwa136", "signInWithEmail:failure", task.getException());
-                                Toast.makeText(loginActivity.this, "Please check your email and password.",
+                                Toast.makeText(LoginActivity.this, "Please check your email and password.",
                                         Toast.LENGTH_LONG).show();
                                 // ...
                             }
@@ -117,7 +117,7 @@ public class loginActivity extends AppCompatActivity {
     }
 
     public void continueAsGuest(View view){
-        Intent main = new Intent(loginActivity.this, MainActivity.class);
+        Intent main = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(main);
     }
 
