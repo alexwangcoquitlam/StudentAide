@@ -62,7 +62,7 @@ public class courseCreation extends AppCompatActivity {
         mCreateCourse = findViewById(R.id.createButton);
 
         //Create our LinkedHashMap object from singleton
-        CourseSingleton courseList = CourseSingleton.getInstance();
+        //CourseSingleton courseList = CourseSingleton.getInstance();
 
         //After user enters details and clicks create course
         //They will be taken back to the main course activity page
