@@ -48,9 +48,9 @@ import java.util.Map;
 import static com.group04.studentaide.SharedPreferencesUtility.KEY_email;
 import static com.group04.studentaide.SharedPreferencesUtility.KEY_firstName;
 import static com.group04.studentaide.SharedPreferencesUtility.KEY_lastName;
-import static com.group04.studentaide.serverURL.REGISTER_URL;
+import static com.group04.studentaide.ServerURL.REGISTER_URL;
 
-public class registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity {
 
     //Initialize buttons globally
     Button registerButton;
@@ -95,7 +95,7 @@ public class registration extends AppCompatActivity {
     }
 
     public void educatorRegister(View view){
-        Intent educator = new Intent(registration.this, registrationEducator.class);
+        Intent educator = new Intent(Registration.this, RegistrationEducator.class);
         startActivity(educator);
     }
 
@@ -180,13 +180,13 @@ public class registration extends AppCompatActivity {
                                                 Log.w("studentAddFail", "Error adding document", e);
                                             }
                                         });
-                                Intent returnLogin = new Intent(registration.this, loginActivity.class);
-                                Toast.makeText(registration.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                Intent returnLogin = new Intent(Registration.this, LoginActivity.class);
+                                Toast.makeText(Registration.this, "Registration successful", Toast.LENGTH_SHORT).show();
                                 startActivity(returnLogin);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("hwa134", "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(registration.this, "Authentication failed.",
+                                Toast.makeText(Registration.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
