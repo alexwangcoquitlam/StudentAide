@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-black"
         android:text="StudentAide"
         android:textColor="#FFFFFF"
@@ -30,10 +29,11 @@
         android:id="@+id/loadingLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/loadingLabel"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="@+id/loadingLabel"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.377"
         app:srcCompat="@drawable/applogo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
