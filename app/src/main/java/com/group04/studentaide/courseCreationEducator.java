@@ -3,6 +3,7 @@ package com.group04.studentaide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +55,12 @@ public class courseCreationEducator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_creation_educator);
 
-        grabDocumentReference();
+        getEducatorDocument(new Callback() {
+            @Override
+            public void call() {
+
+            }
+        });
 
         mInputCourseName = findViewById(R.id.inputCourseName);
         mInputInstitutionName = findViewById(R.id.institutionInput);
@@ -67,27 +76,6 @@ public class courseCreationEducator extends AppCompatActivity {
 
 
     }
-
-
-    public void grabDocumentReference() {
-
-        educatorDocumentID = infoRetrieve.getEducatorDocumentID();
-        educatorRef = db.collection("Educators").document(educatorDocumentID);
-        institutionID = infoRetrieve.getInstitutionID();
-
-    }
-
-    /*
-
-    Educator Fields
-    -
-
-    Create new doucment in Courses collection with:
-     Course fields
-    -Course_Name -> Taken from user
-    -Educator_SA_ID -> query for UID and get documentID
-    -Institution_ID -> Query for UID and get institutionID
-     */
 
     public void createCourseEducator(){
 
@@ -118,23 +106,57 @@ public class courseCreationEducator extends AppCompatActivity {
         inputMap.put("Course_Name", courseName);
         inputMap.put("Educator_SA_ID", educatorDocumentID);
         inputMap.put("Institution_SA_ID", institutionID);
+        inputMap.put("allowQuizzes", quiz);
 
-        db.collection("Educators")
+        db.collection("Courses")
                 .add(inputMap)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                    public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(getActivity(), courseName + " created.", Toast.LENGTH_SHORT).show();
+                        Log.d("WDF", courseName + " " + educatorDocumentID + " " + institutionID);
 
                         Intent intent = new Intent(getActivity(),coursesActivity.class);
                         startActivity(intent);
                     }
                 });
 
+
     }
 
     public courseCreationEducator getActivity(){
         return this;
+    }
+
+    public interface Callback{
+        void call();
+    }
+
+    public void getEducatorDocument(Callback callback){
+
+        if (user != null) {
+            String UID = user.getUid();
+
+            db.collection("Educators")
+                    .whereEqualTo("User_ID", UID)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    educatorDocumentID = document.getId();
+                                    institutionID = document.getString("Institution_ID");
+
+                                    Log.d("WDF", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
+                                }
+                                callback.call();
+                            } else {
+                                Log.d("WDF", "Error retrieving educator document ID");
+                            }
+                        }
+                    });
+        }
     }
 
 }

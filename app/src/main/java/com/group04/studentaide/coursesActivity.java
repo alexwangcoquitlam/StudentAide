@@ -48,11 +48,14 @@ public class coursesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
 
-        joinCourseClicked = (Button)findViewById(R.id.courseJoin);
+        joinCourseClicked = findViewById(R.id.courseJoin);
 
 
         if (user != null) {
             uid = user.getUid();
+
+            Log.d("WDF", "Current UID: " + uid);
+
         } else {
             uid = "No associated user";
         }
