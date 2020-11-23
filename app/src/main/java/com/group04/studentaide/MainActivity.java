@@ -30,14 +30,10 @@ public class MainActivity extends AppCompatActivity {
         loginScreen = findViewById(R.id.loginOpen);
         loginScreen.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent loginGuest = new Intent(MainActivity.this, loginActivityGuest.class);
+                Intent loginGuest = new Intent(MainActivity.this, LoginActivityGuest.class);
                 startActivity(loginGuest);
             }
         });
-
-        informationRetrieval infoRetrieve = informationRetrieval.getInstance();
-        String userDocID = infoRetrieve.getDocumentID();
-        Log.v("Loginn", "Test: " + userDocID);
 
     }
 
@@ -47,22 +43,22 @@ public class MainActivity extends AppCompatActivity {
     //and the new Intent is created, startActivity will open the class that is associated with the Intent
 
     public void calendarScreen(View view){
-        Intent calendar = new Intent(this, calendarActivity.class);
+        Intent calendar = new Intent(this, CalendarActivity.class);
         startActivity(calendar);
     }
 
     public void statsScreen(View view){
-        Intent stats = new Intent(this, studyStatistics.class);
+        Intent stats = new Intent(this, StudyStatistics.class);
         startActivity(stats);
     }
 
     public void coursesScreen(View view){
-        Intent courses = new Intent(this, coursesActivity.class);
+        Intent courses = new Intent(this, CoursesActivity.class);
         startActivity(courses);
     }
 
     public void studyScreen(View view){
-        Intent study = new Intent(this, studySession.class);
+        Intent study = new Intent(this, StudySession.class);
         startActivity(study);
     }
 }
