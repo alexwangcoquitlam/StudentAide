@@ -34,10 +34,6 @@ InstitutionList: <Name, documentID>
 EducatorList: <Name, documentID>
 CourseList: <Name, DocumentID>
 
-
-AM I JUST GONNA USE A DAMN GLOBAL VARIABLE AND PASS THE COURSE DOCUMENT ID?????
-
-
  */
 
 import android.content.Intent;
@@ -60,6 +56,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -98,6 +95,7 @@ public class JoinCourseActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     //Current user's UID, used to add them into course
     String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     //ArrayLists to hold the appropriate names and populate spinners
     ArrayList<String> institutionList = new ArrayList<String>();
@@ -120,6 +118,12 @@ public class JoinCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_join);
 
+        
+        if (user == null){
+            Toast.makeText(this, "Please sign in.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, CoursesActivity.class);
+            startActivity(intent);
+        }
 
         //Sets up Spinners so that the first option is not an item that can be chosen
         institutionList.add(0, "Choose an Institution");
