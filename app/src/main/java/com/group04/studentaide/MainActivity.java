@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        infoRetrieve.updateID();
+
         loginScreen = findViewById(R.id.loginOpen);
         loginScreen.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -38,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
 
     //Yufeng: I'm not sure if View view needs to be passed into these functions because when the functions are called
     //and the new Intent is created, startActivity will open the class that is associated with the Intent

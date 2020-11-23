@@ -1,11 +1,9 @@
 /*
- *Written by: Yufeng Luo, Alexander Wang
+ * Written by: Yufeng Luo, Alexander Wang
  * UNTESTED
- *
- * User login will check information entered serverside and use StringRequest response to determine whether or not credentials are known in database
- * On successful login, new Intent will be created taking users to MainActivity
- *
- *
+ * This page is presented to the user on startup, and if the user is already signed in, then they are redirected to the main page.
+ * The user has the option to continue as a guest account, but will have limited features
+ * There is also the possibility to register for an account
  * */
 
 package com.group04.studentaide;
@@ -80,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(register);
     }
 
+    // Checks if the textboxes are empty, then checks Firebase authentication to log the user in.
     private void loginFire(){
         inputEmail = findViewById(R.id.emailInputLogin);
         inputPassword = findViewById(R.id.password);

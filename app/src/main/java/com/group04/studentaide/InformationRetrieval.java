@@ -1,3 +1,8 @@
+/*
+    Written by Alexander Wang, Jason Leung
+    1. A class that is used to retrieve various pieces of information about the user, such as document reference ID
+ */
+
 package com.group04.studentaide;
 
 import android.util.Log;
@@ -24,6 +29,7 @@ public class InformationRetrieval {
     private String studentDocumentID;
     private FirebaseUser user;
 
+    // Constructor
     public InformationRetrieval(){
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -52,6 +58,7 @@ public class InformationRetrieval {
 
     }
 
+    // When the user changes accounts, update the document ID
     public void updateID() {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -91,6 +98,8 @@ public class InformationRetrieval {
         return ourInstance;
     }
 
+
+    // Returns the user's document ID
     public String getDocumentID() {
 
         Log.v("Hareye", studentDocumentID);

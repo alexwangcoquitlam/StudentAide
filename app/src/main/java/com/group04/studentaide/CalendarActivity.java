@@ -1,3 +1,11 @@
+/*
+    Written by Alexander Wang
+    1. Events are stored into both the phone's local calendar and the StudentAide database
+    2. Events created through the app can be displayed on the app, events created through other apps will not be retrieved
+    3. Events are stored with a date, userID and event name
+
+ */
+
 package com.group04.studentaide;
 
 import android.content.Intent;
@@ -44,7 +52,7 @@ public class CalendarActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    //https://medium.com/@Patel_Prashant_/android-custom-calendar-with-events-fa48dfca8257
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,8 @@ public class CalendarActivity extends AppCompatActivity {
         eventDisplay2 = findViewById(R.id.eventLabel1);
         eventDisplay3 = findViewById(R.id.eventLabel2);
 
+
+        // Define a date format for storing the date into the database
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         date = sdf.format(calendarDisplay.getDate());
         dateOccur = calendarDisplay.getDate();
@@ -102,6 +112,7 @@ public class CalendarActivity extends AppCompatActivity {
                     }
                 });
 
+        // The calendar displays the events that are pulled from the database, but only the top 3
         calendarDisplay.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             //show the selected date as a toast
             @Override
@@ -160,6 +171,7 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
+    // Putting the event into the database, if that is successful then the event is put into the local calendar
     private void createEvent(){
         if(!event.getText().toString().isEmpty()){
             Intent calendar = new Intent(Intent.ACTION_INSERT);

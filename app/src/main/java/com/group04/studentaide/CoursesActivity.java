@@ -20,14 +20,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
-
 
 public class CoursesActivity extends AppCompatActivity {
 
@@ -37,8 +36,11 @@ public class CoursesActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 
-    String uid = null;
+    DocumentReference studentRef;
+    String studentDocumentId;
+
     ArrayList<String> courses = new ArrayList<String>();
 
     @Override
@@ -48,61 +50,33 @@ public class CoursesActivity extends AppCompatActivity {
 
         joinCourseClicked = findViewById(R.id.courseJoin);
 
+        if (user == null) {
 
-        if (user != null) {
-            uid = user.getUid();
+            Log.v("Hareye", "Test");
+
         } else {
-            uid = "No associated user";
+
+            grabDocumentReference();
+
+            joinCourseClicked.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getApplicationContext(), JoinCourseActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            coursesDisplay = findViewById(R.id.courseDropdown);
+            grabCourses(new Callback() {
+                @Override
+                public void call() {
+                    ArrayAdapter<String> courseAdapter= new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courses);
+                    coursesDisplay.setAdapter(courseAdapter);
+                }
+            });
+
         }
-
-
-        joinCourseClicked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), JoinCourseActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        /*createCourseClicked.findViewById(R.id.courseCreate);
-        createCourseClicked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                courseCreate(v);
-            }
-        });*/
-
-        CourseSingleton courseList = CourseSingleton.getInstance();
-        ArrayList<String> hashKeys = courseList.courseKeys;
-
-        coursesDisplay = findViewById(R.id.courseDropdown);
-        grabCourses(new Callback() {
-            @Override
-            public void call() {
-                ArrayAdapter<String> courseAdapter= new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courses);
-                coursesDisplay.setAdapter(courseAdapter);
-            }
-        });
-        ArrayAdapter<String> courseAdapter= new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, courses);
-        coursesDisplay.setAdapter(courseAdapter);
-
-        /*
-        ArrayAdapter<String> arrAdapt = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, hashKeys);
-        coursesDisplay.setAdapter(arrAdapt);
-        coursesDisplay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String choice = parent.getItemAtPosition(position).toString();
-                //random data inserted to see what appears
-                //Double choiceTime = courseList.getStudyTime(choice);
-                //Toast.makeText(getApplicationContext(), choice + ": " + choiceTime, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        */
 
     }
 
@@ -112,21 +86,29 @@ public class CoursesActivity extends AppCompatActivity {
 
     }
 
+    // Return current users document ID and document reference path
+    public void grabDocumentReference() {
+
+        studentDocumentId = infoRetrieve.getDocumentID();
+        studentRef = db.collection("Students").document(studentDocumentId);
+
+    }
+
     private void grabCourses(Callback callback) {
 
-        db.collection("Courses")
-                .whereEqualTo("owner uid", uid)
+        db.collection("StudentCourses")
+                .whereEqualTo("Student_SA_ID", studentRef)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String courseName = (String) document.get("name");
+                                String courseName = (String) document.get("CourseName");
 
                                 courses.add(courseName);
-                                callback.call();
                             }
+                            callback.call();
                         } else {
                             Log.v("CoursesActivity", "Error occurred when getting data from Firebase.");
                         }
@@ -143,6 +125,12 @@ public class CoursesActivity extends AppCompatActivity {
     public void courseCreate(View view){
         Intent create = new Intent(this, CourseCreation.class);
         startActivity(create);
+    }
+
+
+    public void educatorRegister(View view){
+        Intent educator = new Intent(this, CourseCreationEducator.class);
+        startActivity(educator);
     }
 
 }
