@@ -1,7 +1,5 @@
 /*
-
 Written by: Yufeng Luo, Jason Leung
-
  */
 package com.group04.studentaide;
 
@@ -53,7 +51,6 @@ public class CoursesActivity extends AppCompatActivity {
 
         if (user != null) {
             uid = user.getUid();
-
         } else {
             uid = "No associated user";
         }
@@ -69,7 +66,6 @@ public class CoursesActivity extends AppCompatActivity {
         });
 
         /*createCourseClicked.findViewById(R.id.courseCreate);
-
         createCourseClicked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +88,6 @@ public class CoursesActivity extends AppCompatActivity {
         coursesDisplay.setAdapter(courseAdapter);
 
         /*
-
         ArrayAdapter<String> arrAdapt = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, hashKeys);
         coursesDisplay.setAdapter(arrAdapt);
         coursesDisplay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -105,10 +100,8 @@ public class CoursesActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
         */
 
     }
