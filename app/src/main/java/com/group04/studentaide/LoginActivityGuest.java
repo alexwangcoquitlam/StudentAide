@@ -33,7 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class loginActivityGuest extends AppCompatActivity {
+public class LoginActivityGuest extends AppCompatActivity {
 
 
     Button mlogInButton;
@@ -68,7 +68,7 @@ public class loginActivityGuest extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent registerScreen = new Intent(loginActivityGuest.this, registration.class);
+                Intent registerScreen = new Intent(LoginActivityGuest.this, Registration.class);
                 startActivity(registerScreen);
             }
         });
@@ -115,13 +115,13 @@ public class loginActivityGuest extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa135", "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Intent returnMain = new Intent(loginActivityGuest.this, MainActivity.class);
-                                Toast.makeText(loginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
+                                Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
                                 startActivity(returnMain);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("hwa136", "signInWithEmail:failure", task.getException());
-                                Toast.makeText(loginActivityGuest.this, "Please check your email and password.",
+                                Toast.makeText(LoginActivityGuest.this, "Please check your email and password.",
                                         Toast.LENGTH_LONG).show();
                                 // ...
                             }
@@ -137,12 +137,12 @@ public class loginActivityGuest extends AppCompatActivity {
     private void signOut(){
         if (user != null) {
             mAuth.signOut();
-            Toast.makeText(loginActivityGuest.this, "You have signed out.", Toast.LENGTH_LONG).show();
-            Intent returnMain = new Intent(loginActivityGuest.this, MainActivity.class);
+            Toast.makeText(LoginActivityGuest.this, "You have signed out.", Toast.LENGTH_LONG).show();
+            Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
             startActivity(returnMain);
         }
         else
-            Toast.makeText(loginActivityGuest.this, "You are not signed in.", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivityGuest.this, "You are not signed in.", Toast.LENGTH_LONG).show();
     }
 
 
