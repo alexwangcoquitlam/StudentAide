@@ -35,7 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class courseCreation extends AppCompatActivity {
+public class CourseCreation extends AppCompatActivity {
 
     EditText mInputCourseName;
     EditText mInputInstitution;
@@ -44,7 +44,7 @@ public class courseCreation extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    informationRetrieval infoRetrieve = informationRetrieval.getInstance();
+    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 
     DocumentReference studentRef;
     String studentDocumentId;
@@ -126,8 +126,8 @@ public class courseCreation extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d("courseAdded", "DocumentSnapshot added with ID: " + documentReference.getId());
-                            Toast.makeText(courseCreation.this, "Course created", Toast.LENGTH_LONG).show();
-                            Intent returnCourses = new Intent(courseCreation.this, coursesActivity.class);
+                            Toast.makeText(CourseCreation.this, "Course created", Toast.LENGTH_LONG).show();
+                            Intent returnCourses = new Intent(CourseCreation.this, CoursesActivity.class);
                             startActivity(returnCourses);
                         }
                     })
