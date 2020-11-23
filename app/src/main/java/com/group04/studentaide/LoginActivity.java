@@ -1,5 +1,5 @@
 /*
- *Written by: Yufeng Luo
+ *Written by: Yufeng Luo, Alexander Wang
  * UNTESTED
  *
  * User login will check information entered serverside and use StringRequest response to determine whether or not credentials are known in database
@@ -133,4 +133,3 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 }
-

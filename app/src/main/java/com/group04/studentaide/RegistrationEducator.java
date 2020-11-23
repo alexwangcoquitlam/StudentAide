@@ -1,3 +1,10 @@
+/*
+    Written by Alexander Wang
+
+    User chooses to create an educator account, the app will ask for more information than a regular account.
+    The data is stored in a separate collection.
+ */
+
 package com.group04.studentaide;
 
 import androidx.annotation.NonNull;

@@ -1,5 +1,5 @@
 /*
- * Written by: Yufeng Luo
+ * Written by: Yufeng Luo, Alexander Wang
  *
  * UNTESTED
  *
