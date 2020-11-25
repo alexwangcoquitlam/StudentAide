@@ -157,6 +157,7 @@ public class RegistrationEducator extends AppCompatActivity {
         firstName = mFirstNameInput.getText().toString().trim();
         lastName = mLastNameInput.getText().toString().trim();
         phoneNumber = mPhoneNumberInput.getText().toString().trim();
+        getInstitutionID();
         name = firstName + " " + lastName;
         name = name.toLowerCase();
         Log.d("nameCheck", name);
@@ -330,6 +331,7 @@ public class RegistrationEducator extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             for(QueryDocumentSnapshot document : task.getResult()) {
                                 String institutionIDString = document.getId();
+                                Log.d("InstitutionIDString", institutionIDString);
                                 institutionID = db.collection("Institutions").document(institutionIDString);
                             }
                         }
