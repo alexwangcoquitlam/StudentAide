@@ -8,50 +8,9 @@
     tools:context=".RegistrationEducator">
 
     <EditText
-        android:id="@+id/facultyInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="@string/faculty"
-        android:inputType="textPersonName"
-        android:textColor="#000000"
-        android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#4C4C4C"
-        android:textColorLink="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/emailInput2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/emailInput2"
-        app:layout_constraintTop_toBottomOf="@+id/institutionInputRegister"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/institutionInputRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="@string/institution_hint"
-        android:inputType="textPersonName"
-        android:textColor="#000000"
-        android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#4C4C4C"
-        android:textColorLink="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/emailInput2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/emailInput2"
-        app:layout_constraintTop_toBottomOf="@+id/emailInput2"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
         android:id="@+id/phoneInputEducator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
         android:background="#FFFFFF"
         android:ems="10"
         android:hint="@string/phone_number_hint"
@@ -64,8 +23,8 @@
         app:layout_constraintEnd_toEndOf="@+id/emailInput2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/emailInput2"
-        app:layout_constraintTop_toBottomOf="@+id/facultyInput"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/facultySpinnerRegister"
+        app:layout_constraintVertical_bias="0.056" />
 
     <EditText
         android:id="@+id/firstNameInput2"
@@ -90,7 +49,6 @@
         android:id="@+id/lastNameInput2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
         android:background="#FFFFFF"
         android:ems="10"
         android:hint="@string/last_name"
@@ -104,7 +62,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/firstNameInput2"
         app:layout_constraintTop_toBottomOf="@+id/firstNameInput2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <EditText
         android:id="@+id/inputPassword2"
@@ -158,7 +116,6 @@
         android:id="@+id/emailInput2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
         android:background="#FFFFFF"
         android:ems="10"
         android:hint="@string/prompt_email"
@@ -172,7 +129,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/lastNameInput2"
         app:layout_constraintTop_toBottomOf="@+id/lastNameInput2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <TextView
         android:id="@+id/educatorRegisterLabel"
@@ -187,4 +144,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
+
+    <Spinner
+        android:id="@+id/institutionSpinnerRegister"
+        android:layout_width="207dp"
+        android:layout_height="24dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/emailInput2"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/emailInput2"
+        app:layout_constraintTop_toBottomOf="@+id/emailInput2"
+        app:layout_constraintVertical_bias="0.034" />
+
+    <Spinner
+        android:id="@+id/facultySpinnerRegister"
+        android:layout_width="209dp"
+        android:layout_height="25dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/institutionSpinnerRegister"
+        app:layout_constraintVertical_bias="0.052" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
