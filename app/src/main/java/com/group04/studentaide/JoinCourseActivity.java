@@ -49,10 +49,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +72,7 @@ public class JoinCourseActivity extends AppCompatActivity {
 
     private final static String TAG = "institutionList";
 
+    //Document References -> moving away from String field
     String courseChosen;
     String courseChosenID;
     String studentDocumentID;
@@ -233,12 +237,15 @@ public class JoinCourseActivity extends AppCompatActivity {
                     Toast.makeText(getActivity(),"Please choose a course.", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    getCurrentStudentDocument(UID, new StudentDocumentCallback() {
+                    getCurrentStudentDocument(new StudentDocumentCallback() {
                         @Override
                         public void onDocumentCallback(String StudentDocumentID) {
                             Log.d(TAG, "student document ID: " + StudentDocumentID);
-                            //Pass in courseChosenID here
-                            joinSelectedCourse(courseChosen, courseChosenID, StudentDocumentID);
+                            DocumentReference studentRef = db.collection(studentsDB).document(StudentDocumentID);
+                            DocumentReference courseRef = db.collection(courseDB).document(courseChosenID);
+
+                            //Passed in Document References now
+                            joinSelectedCourse(courseChosen, courseRef, studentRef);
                             Log.d(TAG, "Join course called, course: " + courseChosen + " added");
 
                             //Log.d(TAG, "Starting new activity");
@@ -280,25 +287,31 @@ public class JoinCourseActivity extends AppCompatActivity {
     //Queries against the current documents inside of "Students" collection
     //Finds the document where the UID matches
     //And gets the students unique Document ID to be added to the course
-    public void getCurrentStudentDocument(String userID, StudentDocumentCallback callback){
+    public void getCurrentStudentDocument(StudentDocumentCallback callback){
 
-        db.collection(studentsDB)
-                .whereEqualTo("User_ID", userID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for(QueryDocumentSnapshot document : task.getResult()){
-                                studentDocumentID = document.getId();
-                                Log.d(TAG, "StudentdocumentID inside of method: " + studentDocumentID);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            String uid = user.getUid();
+            db.collection(studentsDB)
+                    .whereEqualTo("User_ID", uid)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    studentDocumentID = document.getId();
+                                    Log.d(TAG, "StudentdocumentID inside of method: " + studentDocumentID);
+                                }
+                                callback.onDocumentCallback(studentDocumentID);
+                            } else {
+                                Log.d(TAG, "Error retrieving document ID");
                             }
-                            callback.onDocumentCallback(studentDocumentID);
-                        }else{
-                            Log.d(TAG, "Error retrieving document ID");
                         }
-                    }
-                });
+                    });
+        }
     }
 
     //Queries against the institution name chosen
@@ -393,10 +406,11 @@ public class JoinCourseActivity extends AppCompatActivity {
     public void getAllCourses(String educatorID, courseCallback callback){
         Log.d(TAG, "Inside of getAllCourses");
 
-        String educatorSearch = "Educators/" + educatorID;
+        DocumentReference educatorDocRef = db.collection(educatorDB).document(educatorID);
+        //String educatorSearch = "Educators/" + educatorID;
 
         db.collection(courseDB)
-                .whereEqualTo("Educator_SA_ID", educatorSearch)
+                .whereEqualTo("Educator_SA_ID", educatorDocRef)
                 .orderBy("Course_Name", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -427,15 +441,15 @@ public class JoinCourseActivity extends AppCompatActivity {
     - New document is created inside of StudentCourses with fields
     course name, course_SA_ID, and student_SA_ID filled
      */
-    public void joinSelectedCourse(String courseName, String courseChosenSAID, String studentDocumentID){
+    public void joinSelectedCourse(String courseName, DocumentReference courseChosenDocReference, DocumentReference studentDocReference){
 
         CollectionReference studentDocRef = db.collection(studentCoursesDB);
 
         //Store information that is passed in
         Map<String, Object> inputMap = new HashMap<>();
         inputMap.put("CourseName", courseName);
-        inputMap.put("Course_SA_ID", "Courses/" + courseChosenSAID);
-        inputMap.put("STUDENT_SA_ID", "Students/" + studentDocumentID);
+        inputMap.put("Course_SA_ID", courseChosenDocReference);
+        inputMap.put("STUDENT_SA_ID", studentDocReference);
 
         studentDocRef.document().set(inputMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
