@@ -176,11 +176,11 @@ public class RegistrationEducator extends AppCompatActivity {
             mEmailInput.setError("Please enter a valid email");
             mEmailInput.requestFocus();
         }
-        if(TextUtils.isEmpty(institutionName) || institutionName == null){
+        if(institutionName.equals("Choose an Institution") || institutionName == null){
             Toast.makeText(RegistrationEducator.this, "Please choose an institution.", Toast.LENGTH_SHORT).show();
             mInstitution.requestFocus();
         }
-        if(TextUtils.isEmpty(facultyName) || facultyName == null){
+        if(facultyName.equals("Choose a Faculty") || facultyName == null){
             Toast.makeText(RegistrationEducator.this, "Please choose a faculty.", Toast.LENGTH_SHORT).show();
             mFaculty.requestFocus();
         }
