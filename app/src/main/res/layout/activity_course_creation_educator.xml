@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#01003B"
     tools:context=".CourseCreation">
 
     <ImageView
@@ -16,13 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courseCreateLabel2"
         app:layout_constraintVertical_bias="0.063"
-        app:srcCompat="@drawable/applogo" />
+        app:srcCompat="@drawable/applogobluebackground" />
 
     <Button
         android:id="@+id/createButton2"
         android:layout_width="197dp"
         android:layout_height="37dp"
-        android:text="Create"
+        android:text="@string/create_button"
+        android:background="#FFFFFF"
+        android:textColor="#01003B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,8 +51,10 @@
         android:layout_width="213dp"
         android:layout_height="14dp"
         android:background="#FFFFFF"
-        android:text="Quizzes?"
+        android:text="@string/quiz_switch"
         android:textSize="18sp"
+        android:textColor="#01003B"
+        android:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +67,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="Course name"
+        android:hint="@string/course_name_hint"
         android:inputType="textPersonName"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -79,7 +83,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="Institution"
+        android:hint="@string/institution_hint"
         android:inputType="textPersonName"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"

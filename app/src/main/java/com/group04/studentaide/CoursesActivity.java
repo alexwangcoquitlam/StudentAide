@@ -6,6 +6,7 @@ package com.group04.studentaide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -49,6 +51,8 @@ public class CoursesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_courses);
 
         joinCourseClicked = findViewById(R.id.courseJoin);
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         if (user == null) {
 
@@ -79,6 +83,27 @@ public class CoursesActivity extends AppCompatActivity {
         }
 
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch(item.getItemId()){
+                        case R.id.nav_study:
+                            Intent study = new Intent(CoursesActivity.this, StudySession.class);
+                            startActivity(study);
+                            break;
+                        case R.id.nav_courses:
+                            Intent courses = new Intent(CoursesActivity.this, CoursesActivity.class);
+                            startActivity(courses);
+                            break;
+                        case R.id.nav_home:
+                            Intent main = new Intent(CoursesActivity.this, MainActivity.class);
+                            startActivity(main);
+                    }
+                    return true;
+                }
+            };
 
     private CoursesActivity getActivity() {
 

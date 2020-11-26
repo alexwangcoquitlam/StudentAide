@@ -4,21 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#01003B"
     tools:context=".MainActivity">
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        app:itemIconTint="#01003B"
+        app:itemTextColor="#01003B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statsOpen"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_navigation" />
 
     <ImageView
         android:id="@+id/mainImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:layout_constraintBottom_toTopOf="@+id/mainLabel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105"
-        app:srcCompat="@drawable/applogo" />
+        app:layout_constraintVertical_bias="0.032"
+        app:srcCompat="@drawable/applogobluebackground" />
 
     <TextView
         android:id="@+id/mainLabel"
@@ -27,72 +43,65 @@
         android:fontFamily="sans-serif-black"
         android:text="@string/app_name"
         android:textColor="#FFFFFF"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/loginOpen"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainImage" />
+        app:layout_constraintTop_toBottomOf="@+id/mainImage"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/calendarOpen"
-        android:layout_width="match_parent"
+        android:layout_width="166dp"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:onClick="calendarScreen"
-        android:text="Calendar"
-        app:layout_constraintBottom_toTopOf="@+id/statsOpen"
+        android:text="@string/calendar_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/studyOpen" />
-
-    <Button
-        android:id="@+id/coursesOpen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="coursesScreen"
-        android:text="Courses"
-        app:layout_constraintBottom_toTopOf="@+id/studyOpen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginOpen" />
-
-    <Button
-        android:id="@+id/studyOpen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="studyScreen"
-        android:text="Study"
-        app:layout_constraintBottom_toTopOf="@+id/calendarOpen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coursesOpen" />
+        app:layout_constraintTop_toBottomOf="@+id/loginOpen"
+        app:layout_constraintVertical_bias="0.131" />
 
     <Button
         android:id="@+id/statsOpen"
-        android:layout_width="match_parent"
+        android:layout_width="166dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="#FFFFFF"
         android:onClick="statsScreen"
-        android:text="My Stats"
+        android:text="@string/stats_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarOpen"
-        app:layout_constraintVertical_bias="0.238" />
+        app:layout_constraintVertical_bias="0.207" />
 
     <Button
         android:id="@+id/loginOpen"
-        android:layout_width="match_parent"
+        android:layout_width="166dp"
         android:layout_height="wrap_content"
-        android:text="Login and Sign up"
-        app:layout_constraintBottom_toTopOf="@+id/coursesOpen"
+        android:background="#FFFFFF"
+        android:text="@string/login_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/greetingLabelMain"
+        app:layout_constraintVertical_bias="0.204" />
+
+    <TextView
+        android:id="@+id/greetingLabelMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainLabel"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
