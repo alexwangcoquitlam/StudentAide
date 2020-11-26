@@ -54,23 +54,29 @@ public class CourseCreation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_creation); // Set to study session XML
 
-        grabDocumentReference();
+        //Bring user back to Courses main page if no account
+        if (user == null) {
+            Toast.makeText(this, "Please Log In.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, CoursesActivity.class);
+            startActivity(intent);
 
-        mInputCourseName = findViewById(R.id.inputCourseName);
-        mCreateCourse = findViewById(R.id.createButton);
+        } else {
 
-        //Create our LinkedHashMap object from singleton
-        CourseSingleton courseList = CourseSingleton.getInstance();
+            grabDocumentReference();
 
-        //After user enters details and clicks create course
-        //They will be taken back to the main course activity page
-        mCreateCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createCourseFire();
-            }
-        });
+            mInputCourseName = findViewById(R.id.inputCourseName);
+            mCreateCourse = findViewById(R.id.createButton);
 
+            //After user enters details and clicks create course
+            //They will be taken back to the main course activity page
+            mCreateCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createCourseFire();
+                }
+            });
+
+        }
     }
 
     public void educatorCreateCourse(View view){
