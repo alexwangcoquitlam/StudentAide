@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String greeting;
     InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 
     @Override
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(mainAc);
             } else {
                 Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
-                Toast.makeText(LoginActivity.this, "Welcome back, " + user.getDisplayName().toUpperCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, createGreeting(), Toast.LENGTH_LONG).show();
                 startActivity(mainAc);
             }
         }
@@ -129,6 +130,16 @@ public class LoginActivity extends AppCompatActivity {
     public void continueAsGuest(View view){
         Intent main = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(main);
+    }
+
+    private String createGreeting(){
+        String fullName = user.getDisplayName();
+        String arr[] = fullName.split(" ", 2);
+
+        String firstName = arr[0];
+        firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+        greeting = "Welcome back, " + firstName + ".";
+        return greeting;
     }
 
 }
