@@ -5,6 +5,8 @@
     <string name="login_button">Sign in or Register</string>
 
     <string name="calendar">Calendar</string>
+    <string name="eventButton">Add Event</string>
+    <string name="eventTextBox">Event Name</string>
 
     <string name="title_activity_login">login</string>
 
@@ -29,6 +31,8 @@
     <string name="courses_label">Courses</string>
     <string name="create_button">Create</string>
     <string name="create_label">Create a Course</string>
+    <string name="courseTextBox">Course Name</string>
+    <string name="educatorCourseButton">Creating an educator course?</string>
     <string name="course_name_hint">Course Name</string>
     <string name="institution_hint">Institution</string>
     <string name="create_educator_course">Creating an educator course?</string>
