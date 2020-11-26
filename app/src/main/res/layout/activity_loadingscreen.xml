@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    tools:context=".Loadingscreen">
+    android:background="#01003B"
+    tools:context=".LoadingScreen">
 
     <TextView
         android:id="@+id/loadingLabel"
@@ -35,5 +35,5 @@
         app:layout_constraintStart_toStartOf="@+id/loadingLabel"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.377"
-        app:srcCompat="@drawable/applogo" />
+        app:srcCompat="@drawable/applogobluebackground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

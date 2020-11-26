@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#01003B"
     tools:context=".RegistrationEducator">
 
     <EditText
@@ -59,10 +59,10 @@
         android:textColorLink="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/firstNameInput2"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/firstNameInput2"
         app:layout_constraintTop_toBottomOf="@+id/firstNameInput2"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.038" />
 
     <EditText
         android:id="@+id/inputPassword2"
@@ -106,6 +106,8 @@
         android:layout_height="37dp"
         android:layout_marginTop="27dp"
         android:text="@string/register"
+        android:textColor="#01003B"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +131,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/lastNameInput2"
         app:layout_constraintTop_toBottomOf="@+id/lastNameInput2"
-        app:layout_constraintVertical_bias="0.025" />
+        app:layout_constraintVertical_bias="0.041" />
 
     <TextView
         android:id="@+id/educatorRegisterLabel"
@@ -152,10 +154,10 @@
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/emailInput2"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="@+id/emailInput2"
         app:layout_constraintTop_toBottomOf="@+id/emailInput2"
-        app:layout_constraintVertical_bias="0.034" />
+        app:layout_constraintVertical_bias="0.048" />
 
     <Spinner
         android:id="@+id/facultySpinnerRegister"
@@ -164,9 +166,9 @@
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/institutionSpinnerRegister"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintVertical_bias="0.048" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

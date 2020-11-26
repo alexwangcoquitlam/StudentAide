@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#01003B"
     tools:context=".CourseCreation">
 
     <ImageView
@@ -16,13 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courseCreateLabel2"
         app:layout_constraintVertical_bias="0.063"
-        app:srcCompat="@drawable/applogo" />
+        app:srcCompat="@drawable/applogobluebackground" />
 
     <Button
         android:id="@+id/createButton2"
         android:layout_width="197dp"
         android:layout_height="37dp"
         android:text="Create"
+        android:background="#FFFFFF"
+        android:textColor="#01003B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +53,8 @@
         android:background="#FFFFFF"
         android:text="Quizzes?"
         android:textSize="18sp"
+        android:textColor="#01003B"
+        android:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

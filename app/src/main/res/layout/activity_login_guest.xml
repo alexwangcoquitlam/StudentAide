@@ -4,20 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#01003B"
     tools:context=".LoginActivityGuest">
 
     <Button
         android:id="@+id/register2"
         android:layout_width="197dp"
         android:layout_height="37dp"
+        android:background="#FFFFFF"
         android:text="@string/register"
+        android:textColor="#01003B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/login2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/login2"
         app:layout_constraintTop_toBottomOf="@+id/login2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.053" />
 
     <EditText
         android:id="@+id/password2"
@@ -57,6 +59,8 @@
         android:layout_height="37dp"
         android:layout_marginTop="1dp"
         android:text="@string/login"
+        android:textColor="#01003B"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/password2"
         app:layout_constraintHorizontal_bias="0.538"
@@ -74,7 +78,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginLabel2"
         app:layout_constraintVertical_bias="0.032"
-        app:srcCompat="@drawable/applogo" />
+        app:srcCompat="@drawable/applogobluebackground" />
 
     <TextView
         android:id="@+id/loginLabel2"

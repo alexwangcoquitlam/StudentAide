@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#01003B"
     tools:context=".CourseCreation">
 
     <ImageView
@@ -16,13 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courseCreateLabel"
         app:layout_constraintVertical_bias="0.033"
-        app:srcCompat="@drawable/applogo" />
+        app:srcCompat="@drawable/applogobluebackground" />
 
     <Button
         android:id="@+id/createButton"
         android:layout_width="197dp"
         android:layout_height="37dp"
         android:text="@string/create_button"
+        android:textColor="#01003B"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
