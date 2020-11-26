@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -66,6 +68,8 @@ public class CalendarActivity extends AppCompatActivity {
         eventDisplay2 = findViewById(R.id.eventLabel1);
         eventDisplay3 = findViewById(R.id.eventLabel2);
 
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         // Define a date format for storing the date into the database
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -170,6 +174,28 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch(item.getItemId()){
+                        case R.id.nav_study:
+                            Intent study = new Intent(CalendarActivity.this, StudySession.class);
+                            startActivity(study);
+                            break;
+                        case R.id.nav_courses:
+                            Intent courses = new Intent(CalendarActivity.this, CoursesActivity.class);
+                            startActivity(courses);
+                            break;
+                        case R.id.nav_home:
+                            Intent main = new Intent(CalendarActivity.this, MainActivity.class);
+                            startActivity(main);
+                    }
+                    return true;
+                }
+            };
+
 
     // Putting the event into the database, if that is successful then the event is put into the local calendar
     private void createEvent(){
