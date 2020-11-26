@@ -55,7 +55,6 @@ public class CourseCreationEducator extends AppCompatActivity {
         getEducatorDocument(new Callback() {
             @Override
             public void call() {
-
             }
         });
 
