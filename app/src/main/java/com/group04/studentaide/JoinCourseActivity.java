@@ -358,13 +358,13 @@ public class JoinCourseActivity extends AppCompatActivity {
      */
     public void getAllEducators(String institutionID, educatorCallback callback){
 
-        //String institutionID = institutionsHM.get(institutionName);
-        String institutionSearch = "Institutions/" + institutionID;
+        DocumentReference institutionDocRef = db.collection(institutionDb).document(institutionID);
+       // String institutionSearch = "Institutions/" + institutionID;
 
         Log.d(TAG, "INSIDE OF getAllEducators");
 
         db.collection(educatorDB)
-                .whereEqualTo("Institution_ID", institutionSearch)
+                .whereEqualTo("Institution_ID", institutionDocRef)
                 .orderBy("Last_Names", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
