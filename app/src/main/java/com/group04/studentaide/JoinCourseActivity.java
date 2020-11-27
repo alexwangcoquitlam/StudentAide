@@ -66,6 +66,7 @@ import java.util.Map;
 public class JoinCourseActivity extends AppCompatActivity {
 
     Spinner mInstitutionSpinner;
+    Spinner mFacultySpinner;
     Spinner mEducatorSpinner;
     Spinner mCourseSpinner;
     Button mJoinCourseButton;
@@ -98,6 +99,7 @@ public class JoinCourseActivity extends AppCompatActivity {
 
     //Basic Adapters for spinners
     ArrayAdapter<String> institutionAdapter;
+    ArrayAdapter<String> facultyAdapter;
     ArrayAdapter<String> educatorAdapter;
     ArrayAdapter<String> courseAdapter;
 
@@ -127,6 +129,7 @@ public class JoinCourseActivity extends AppCompatActivity {
 
         //Setup view ID's for respective widgets
         mInstitutionSpinner = findViewById(R.id.institution_spinner);
+        mFacultySpinner = findViewById(R.id.faculty_spinner); // Needs to be made in xml
         mEducatorSpinner = findViewById(R.id.educator_spinner);
         mCourseSpinner = findViewById(R.id.joinCourseSpinner);
         mJoinCourseButton = findViewById(R.id.join_course_button);
@@ -150,20 +153,43 @@ public class JoinCourseActivity extends AppCompatActivity {
 
                 if (!choice.equals("Choose an Institution")) {
 
-                    String institutionChoiceID = institutionsHM.get(choice);
+                    //String institutionChoiceID = institutionsHM.get(choice);
 
-                    Log.d(TAG, "InstitutionID: " + institutionChoiceID);
+                    //Log.d(TAG, "InstitutionID: " + institutionChoiceID);
 
-                    getAllEducators(institutionChoiceID, new educatorCallback() {
+                    getAllFaculties(choice, new facultyCallback() {
                         @Override
-                        public void onEducatorCallback(ArrayList<String> educatorList) {
-
-                            educatorAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, educatorList);
-                            mEducatorSpinner.setAdapter(educatorAdapter);
-
+                        public void onFacultyCallback(ArrayList<String> facultyList) {
+                            facultyAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, facultyList);
+                            mFacultySpinner.setAdapter(facultyAdapter);
                         }
                     });
 
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mFacultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String choice = mFacultySpinner.getItemAtPosition(position).toString();
+
+                String facultyID = institutionsHM.get(choice);
+
+                if (!choice.equals("Choose a Faculty")){
+                    getAllEducators(facultyID, new educatorCallback() {
+                        @Override
+                        public void onEducatorCallback(ArrayList<String> educatorList) {
+                            educatorAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, educatorList);
+                            mEducatorSpinner.setAdapter(educatorAdapter);
+                        }
+                    });
                 }
 
             }
@@ -271,6 +297,10 @@ public class JoinCourseActivity extends AppCompatActivity {
         void onDocumentCallback(String StudentDocumentID);
     }
 
+    public interface facultyCallback{
+        void onFacultyCallback(ArrayList<String> facultyList);
+    }
+
     public interface educatorCallback{
         void onEducatorCallback(ArrayList<String> educatorList);
     }
@@ -331,20 +361,47 @@ public class JoinCourseActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()){
-                                String institution = document.getString("Name") + " " + document.getString("Faculty");
+                                String institution = document.getString("Name");
                                 String institutionID = document.getId();
                                 //Log.d(TAG, "Institution from Firestore: " + institution);
-                                //if (!institutionList.contains(institution)){
-                                institutionList.add(institution);
+                                if (!institutionList.contains(institution)){
+                                    institutionList.add(institution);
 
                                 //Insert key value pair to retreive document ID's
-                                institutionsHM.put(institution, institutionID);
+                                //institutionsHM.put(institution, institutionID);
 
-                                //}
+                                }
                             }
                             callback.call();
                         }else{
                             Log.d(TAG, "Error retrieving documents.");
+                        }
+                    }
+                });
+    }
+
+    public void getAllFaculties(String institutionName, facultyCallback callback){
+
+        db.collection(institutionDb)
+                .whereEqualTo("Name", institutionName)
+                .orderBy("Faculty", Query.Direction.ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<String> facultyList = new ArrayList<>();
+                        facultyList.add(0, "Choose a Faculty");
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                String facultyName = document.getString("Faculty");
+                                String documentID = document.getId();
+                                facultyList.add(facultyName);
+
+                                institutionsHM.put(facultyName, documentID);
+                            }
+                            callback.onFacultyCallback(facultyList);
+                        }else{
+                            Log.d(TAG, "Error retrieving faculties");
                         }
                     }
                 });
