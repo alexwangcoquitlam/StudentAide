@@ -27,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,12 +98,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createGreeting(){
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
         String fullName = user.getDisplayName();
         String arr[] = fullName.split(" ", 2);
 
         String firstName = arr[0];
         firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
-        greeting.setText("Hello, " + firstName + ".");
+
+        if(timeOfDay >= 0 && timeOfDay < 3){
+            greeting.setText("Studying so late " + firstName + "?");
+        }else if(timeOfDay >= 3 && timeOfDay < 6){
+            greeting.setText("Awake so early " + firstName + "?");
+        }else if(timeOfDay >= 6 && timeOfDay < 12){
+            greeting.setText("Good Morning, " + firstName);
+        }else if(timeOfDay >= 12 && timeOfDay < 18){
+            greeting.setText("Good Afternoon, " + firstName);
+        }else if(timeOfDay >= 18 && timeOfDay < 21){
+            greeting.setText("Good Evening, " + firstName);
+        }else if(timeOfDay >= 21 && timeOfDay < 24){
+            greeting.setText("Studying so late " + firstName + "?");
+        }
     }
 
 }
