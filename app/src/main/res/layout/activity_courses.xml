@@ -69,6 +69,7 @@
         android:id="@+id/courseJoin"
         android:layout_width="143dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="476dp"
         android:background="@drawable/buttonbackground"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/join_course_label"
@@ -76,8 +77,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseDropdown"
-        app:layout_constraintVertical_bias="0.747" />
+        app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
+        app:layout_constraintVertical_bias="0.072" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
