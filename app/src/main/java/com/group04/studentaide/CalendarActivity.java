@@ -121,6 +121,9 @@ public class CalendarActivity extends AppCompatActivity {
             //show the selected date as a toast
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                eventDisplay.setText("");
+                eventDisplay2.setText("");
+                eventDisplay3.setText("");
                 Calendar c = Calendar.getInstance();
                 c.set(year, month, day);
                 dateOccur = c.getTimeInMillis(); //this is what you want to use later
