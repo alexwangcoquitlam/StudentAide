@@ -380,6 +380,12 @@ public class JoinCourseActivity extends AppCompatActivity {
                 });
     }
 
+    /*
+    Queries against the institution name
+    Display all faculties with the matching institution field
+    DocumentID of respective institution+faculty is stored under faculty name in hashmap
+    */
+
     public void getAllFaculties(String institutionName, facultyCallback callback){
 
         db.collection(institutionDb)

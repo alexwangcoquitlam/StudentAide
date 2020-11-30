@@ -19,11 +19,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,6 +127,41 @@ public class CourseCreationEducator extends AppCompatActivity {
 
     public interface Callback{
         void call();
+    }
+
+    public interface institutionCallback{
+        void call(ArrayList<String> institutionList);
+    }
+
+    public void getInstitutionList(institutionCallback callback){
+        CollectionReference institutionID = db.document("Educators").collection(educatorDocumentID);
+
+        institutionID.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            ArrayList<String> institutionList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                String institutionName = document.getString("Name");
+                                String facultyName = document.getString("Faculty");
+                                String fullString = institutionName + " " + facultyName;
+
+                                //String institution
+
+                                institutionList.add(fullString);
+                            }
+                            callback.call(institutionList);
+                        }else{
+                            Log.d("He", "Error retrieving institution names");
+                        }
+                    }
+                });
+
+    }
+
+    public void getFacultyList(){
+
     }
 
     public void getEducatorDocument(Callback callback){
