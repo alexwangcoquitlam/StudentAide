@@ -1,11 +1,8 @@
 package com.group04.studentaide;
 
 /*
-
 ** Will need to pass in whatever quiz they clicked on as an intent extra **
-
 Written By: Yufeng Luo
-
 */
 
 import android.os.Bundle;
@@ -61,7 +58,7 @@ public class QuizActivity extends AppCompatActivity {
         currentQuestionIndex = 0;
         correctAnswers = 0;
 
-        getAllQuestions(quizDocID, new QuizCallback() {
+        /*getAllQuestions(quizDocID, new QuizCallback() {
             @Override
             public void onQuizCallback(ArrayList<QuizQuestions> quizQuestions) {
                 //Then use quizList outside
@@ -69,6 +66,8 @@ public class QuizActivity extends AppCompatActivity {
                 setQuizQuestion(currentQuestionIndex);
             }
         });
+
+         */
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,15 +143,15 @@ public class QuizActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()){
-                                //This will only look at one document
-                                ArrayList<QuizQuestions> quizQuestions = new ArrayList<QuizQuestions>();
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()){
-                                    //Hopefully this populates arrayList with only the questions
-                                    quizQuestions = document.toObject(QuizDocument.class).quiz;
-                                    //Call method that builds quiz
-                                }
-                                callback.onQuizCallback(quizQuestions);
+                            //This will only look at one document
+                            ArrayList<QuizQuestions> quizQuestions = new ArrayList<QuizQuestions>();
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()){
+                                //Hopefully this populates arrayList with only the questions
+                                quizQuestions = document.toObject(QuizDocument.class).quiz;
+                                //Call method that builds quiz
+                            }
+                            callback.onQuizCallback(quizQuestions);
                         }else{
                             Log.d(TAG, "Error retrieving Quiz questions");
                         }

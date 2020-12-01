@@ -107,6 +107,7 @@ public class StudyStatistics extends AppCompatActivity {
 			BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 			bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+			chart.setNoDataText("No Study Sessions Found.");
 			chart.setRotationEnabled(true);
 			chart.setHoleRadius(25f);
 			chart.setTransparentCircleAlpha(0);
@@ -242,6 +243,7 @@ public class StudyStatistics extends AppCompatActivity {
 		PieDataSet pieDataSet = new PieDataSet(yEntrys, "Total");
 		pieDataSet.setSliceSpace(2);
 		pieDataSet.setValueTextSize(12);
+
 
 		ArrayList<Integer> colors = new ArrayList<>();
 

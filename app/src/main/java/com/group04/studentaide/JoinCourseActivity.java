@@ -367,8 +367,8 @@ public class JoinCourseActivity extends AppCompatActivity {
                                 if (!institutionList.contains(institution)){
                                     institutionList.add(institution);
 
-                                //Insert key value pair to retreive document ID's
-                                //institutionsHM.put(institution, institutionID);
+                                    //Insert key value pair to retreive document ID's
+                                    //institutionsHM.put(institution, institutionID);
 
                                 }
                             }
@@ -422,7 +422,7 @@ public class JoinCourseActivity extends AppCompatActivity {
     public void getAllEducators(String institutionID, educatorCallback callback){
 
         DocumentReference institutionDocRef = db.collection(institutionDb).document(institutionID);
-       // String institutionSearch = "Institutions/" + institutionID;
+        // String institutionSearch = "Institutions/" + institutionID;
 
         Log.d(TAG, "INSIDE OF getAllEducators");
 

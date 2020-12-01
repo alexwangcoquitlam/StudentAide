@@ -1,9 +1,7 @@
 package com.group04.studentaide;
 
 /*
-
 Written By: Yufeng Luo
-
 */
 
 import android.os.Bundle;
@@ -50,7 +48,7 @@ public class QuizCreate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_creation); //Needs to be set
 
-        quizList = new ArrayList<QuizQuestions>();
+        /*quizList = new ArrayList<QuizQuestions>();
 
         //Onclicklisteners
         mAddButton.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +63,7 @@ public class QuizCreate extends AppCompatActivity {
             public void onClick(View v) {
                 addQuizDefinition(quizList);
             }
-        });
+        });*/
     }
 
     /*
@@ -73,7 +71,7 @@ public class QuizCreate extends AppCompatActivity {
     Object is then added to ArrayList holding QuizQuestion objects, this ArrayList will then be stored into Firestore
     After question is added to the list, EditText fields will be cleared.
     */
-    public void addQuestion(){
+    /*public void addQuestion(){
 
         String inputQuestion = mQuestionText.getText().toString().trim();
         String inputOption1 = mOption1.getText().toString().trim();
@@ -151,6 +149,7 @@ public class QuizCreate extends AppCompatActivity {
                 });
 
 
-    }
+    }*/
 
 }
+
