@@ -52,15 +52,15 @@
         android:layout_width="213dp"
         android:layout_height="14dp"
         android:background="#FFFFFF"
-        android:text="@string/quiz_switch"
-        android:textSize="18sp"
-        android:textColor="#01003B"
         android:backgroundTint="#FFFFFF"
+        android:text="@string/quiz_switch"
+        android:textColor="#01003B"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/institutionInput2"
-        app:layout_constraintVertical_bias="0.132" />
+        app:layout_constraintTop_toBottomOf="@+id/inputCourseName2"
+        app:layout_constraintVertical_bias="0.116" />
 
     <EditText
         android:id="@+id/inputCourseName2"
@@ -77,21 +77,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courseCreateLogo2"
         app:layout_constraintVertical_bias="0.093" />
-
-    <EditText
-        android:id="@+id/institutionInput2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="@string/institution_hint"
-        android:inputType="textPersonName"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputCourseName2"
-        app:layout_constraintVertical_bias="0.095" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

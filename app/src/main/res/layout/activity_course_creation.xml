@@ -63,19 +63,4 @@
         app:layout_constraintTop_toBottomOf="@+id/courseCreateLogo"
         app:layout_constraintVertical_bias="0.053" />
 
-    <TextView
-        android:id="@+id/educatorCourseCreation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/educatorCourseButton"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:onClick="educatorCreateCourse"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createButton"
-        app:layout_constraintVertical_bias="0.095" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

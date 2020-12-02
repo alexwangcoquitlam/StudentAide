@@ -34,10 +34,10 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.826"
+        app:layout_constraintHorizontal_bias="0.696"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseCourseStats"
-        app:layout_constraintVertical_bias="0.112" />
+        app:layout_constraintVertical_bias="0.109" />
 
     <TextView
         android:id="@+id/totalTimeCount"
@@ -48,10 +48,10 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/minutesLabel"
-        app:layout_constraintHorizontal_bias="0.552"
+        app:layout_constraintHorizontal_bias="0.697"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseCourseStats"
-        app:layout_constraintVertical_bias="0.112" />
+        app:layout_constraintVertical_bias="0.113" />
 
     <TextView
         android:id="@+id/statslabel"
