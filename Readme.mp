@@ -1,1 +1,1 @@
-Repository for CMPT276 Developent Project
+Repository for CMPT276 Development Project
