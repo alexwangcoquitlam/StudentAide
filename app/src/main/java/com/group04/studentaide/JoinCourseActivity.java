@@ -117,7 +117,7 @@ public class JoinCourseActivity extends AppCompatActivity {
         User educatorCheck = new User();
         boolean isEducator = educatorCheck.getEducator();
 
-        if (user == null){
+        if (user == null) {
             Toast.makeText(this, "Please sign in.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, CoursesActivity.class);
             startActivity(intent);
@@ -184,7 +184,7 @@ public class JoinCourseActivity extends AppCompatActivity {
 
                 String facultyID = institutionsHM.get(choice);
 
-                if (!choice.equals("Choose a Faculty")){
+                if (!choice.equals("Choose a Faculty")) {
                     getAllEducators(facultyID, new educatorCallback() {
                         @Override
                         public void onEducatorCallback(ArrayList<String> educatorList) {
@@ -208,7 +208,7 @@ public class JoinCourseActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String choice = mEducatorSpinner.getItemAtPosition(position).toString();
 
-                if (!choice.equals("Choose an Educator")){
+                if (!choice.equals("Choose an Educator")) {
 
                     String choiceID = educatorsHM.get(choice);
                     Log.d(TAG, "EducatorDocumentID: " + choiceID);
@@ -228,6 +228,7 @@ public class JoinCourseActivity extends AppCompatActivity {
                     });
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -262,7 +263,7 @@ public class JoinCourseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (courseChosen.equals("Choose a Course")) {
-                    Toast.makeText(getActivity(),"Please choose a course.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please choose a course.", Toast.LENGTH_SHORT).show();
                 } else {
 
                     getCurrentStudentDocument(new StudentDocumentCallback() {
@@ -291,27 +292,27 @@ public class JoinCourseActivity extends AppCompatActivity {
     //Create callback methods
     //Callback methods used because Firestore API is asynchronous
     //Need to wait for method to grab data before moving on in application
-    public interface Callback{
+    public interface Callback {
         void call();
     }
 
-    public interface StudentDocumentCallback{
+    public interface StudentDocumentCallback {
         void onDocumentCallback(String StudentDocumentID);
     }
 
-    public interface facultyCallback{
+    public interface facultyCallback {
         void onFacultyCallback(ArrayList<String> facultyList);
     }
 
-    public interface educatorCallback{
+    public interface educatorCallback {
         void onEducatorCallback(ArrayList<String> educatorList);
     }
 
-    public interface courseCallback{
+    public interface courseCallback {
         void onCourseCallback(ArrayList<String> courseList);
     }
 
-    public JoinCourseActivity getActivity(){
+    public JoinCourseActivity getActivity() {
         return this;
     }
 
@@ -319,7 +320,7 @@ public class JoinCourseActivity extends AppCompatActivity {
     //Queries against the current documents inside of "Students" collection
     //Finds the document where the UID matches
     //And gets the students unique Document ID to be added to the course
-    public void getCurrentStudentDocument(StudentDocumentCallback callback){
+    public void getCurrentStudentDocument(StudentDocumentCallback callback) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -355,27 +356,27 @@ public class JoinCourseActivity extends AppCompatActivity {
     Queries the institution database upon opening app to prompt user with list of institutions
     Hashmap is used to associate the name chosen with its documentID quickly
      */
-    public void getAllInstitutions(Callback callback){
+    public void getAllInstitutions(Callback callback) {
         db.collection(institutionDb)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()){
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 String institution = document.getString("Name");
                                 String institutionID = document.getId();
                                 //Log.d(TAG, "Institution from Firestore: " + institution);
-                                if (!institutionList.contains(institution)){
+                                if (!institutionList.contains(institution)) {
                                     institutionList.add(institution);
 
-                                //Insert key value pair to retreive document ID's
-                                //institutionsHM.put(institution, institutionID);
+                                    //Insert key value pair to retreive document ID's
+                                    //institutionsHM.put(institution, institutionID);
 
                                 }
                             }
                             callback.call();
-                        }else{
+                        } else {
                             Log.d(TAG, "Error retrieving documents.");
                         }
                     }
@@ -388,7 +389,7 @@ public class JoinCourseActivity extends AppCompatActivity {
     DocumentID of respective institution+faculty is stored under faculty name in hashmap
     */
 
-    public void getAllFaculties(String institutionName, facultyCallback callback){
+    public void getAllFaculties(String institutionName, facultyCallback callback) {
 
         db.collection(institutionDb)
                 .whereEqualTo("Name", institutionName)
@@ -399,8 +400,8 @@ public class JoinCourseActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         ArrayList<String> facultyList = new ArrayList<>();
                         facultyList.add(0, "Choose a Faculty");
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()){
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 String facultyName = document.getString("Faculty");
                                 String documentID = document.getId();
                                 facultyList.add(facultyName);
@@ -408,7 +409,7 @@ public class JoinCourseActivity extends AppCompatActivity {
                                 institutionsHM.put(facultyName, documentID);
                             }
                             callback.onFacultyCallback(facultyList);
-                        }else{
+                        } else {
                             Log.d(TAG, "Error retrieving faculties");
                         }
                     }
@@ -421,10 +422,10 @@ public class JoinCourseActivity extends AppCompatActivity {
     - Will list all educators associated with the institutionID
     - Name of the educator is then stored in a hashmap along with the respective documentID for quick lookup
      */
-    public void getAllEducators(String institutionID, educatorCallback callback){
+    public void getAllEducators(String institutionID, educatorCallback callback) {
 
         DocumentReference institutionDocRef = db.collection(institutionDb).document(institutionID);
-       // String institutionSearch = "Institutions/" + institutionID;
+        // String institutionSearch = "Institutions/" + institutionID;
 
         Log.d(TAG, "INSIDE OF getAllEducators");
 
@@ -468,7 +469,7 @@ public class JoinCourseActivity extends AppCompatActivity {
     Educators documentID, then all courses are populated into an ArrayList
     Hashmap is used to quickly look up respective documentID's when choosing a string in spinner
      */
-    public void getAllCourses(String educatorID, courseCallback callback){
+    public void getAllCourses(String educatorID, courseCallback callback) {
         Log.d(TAG, "Inside of getAllCourses");
 
         DocumentReference educatorDocRef = db.collection(educatorDB).document(educatorID);
@@ -481,10 +482,10 @@ public class JoinCourseActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             ArrayList<String> courseList = new ArrayList<>();
                             courseList.add(0, "Choose a Course");
-                            for(QueryDocumentSnapshot document : task.getResult()){
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 String course = document.getString("Course_Name");
                                 String courseID = document.getId();
                                 courseList.add(course);
@@ -495,8 +496,8 @@ public class JoinCourseActivity extends AppCompatActivity {
                             }
                             Log.d(TAG, "CourseList callback");
                             callback.onCourseCallback(courseList);
-                        }else{
-                            Log.d(TAG,"Error retrieving documents.");
+                        } else {
+                            Log.d(TAG, "Error retrieving documents.");
                         }
                     }
                 });
@@ -506,7 +507,7 @@ public class JoinCourseActivity extends AppCompatActivity {
     - New document is created inside of StudentCourses with fields
     course name, course_SA_ID, and student_SA_ID filled
      */
-    public void joinSelectedCourse(String courseName, DocumentReference courseChosenDocReference, DocumentReference studentDocReference){
+    public void joinSelectedCourse(String courseName, DocumentReference courseChosenDocReference, DocumentReference studentDocReference) {
 
         CollectionReference studentDocRef = db.collection(studentCoursesDB);
 
@@ -530,3 +531,4 @@ public class JoinCourseActivity extends AppCompatActivity {
                     }
                 });
     }
+}
