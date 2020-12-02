@@ -9,6 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".QuizQuestionsCreate"></activity>
+        <activity android:name=".CoursesActivityEducator"
+            android:parentActivityName=".MainActivityEducator"/>
+        <activity android:name=".MainActivityEducator" />
+        <activity android:name=".QuizActivity" />
+        <activity android:name=".QuizCreate"
+            android:parentActivityName=".CoursesActivityEducator"/>
         <activity
             android:name=".LoginActivityGuest"
             android:parentActivityName=".MainActivity" />
@@ -38,10 +45,10 @@
             android:parentActivityName=".LoginActivityGuest" />
         <activity
             android:name=".CourseCreationEducator"
-            android:parentActivityName=".CourseCreation"/>
+            android:parentActivityName=".CoursesActivityEducator" />
         <activity
             android:name=".JoinCourseActivity"
-            android:parentActivityName=".CoursesActivity"/>
+            android:parentActivityName=".CoursesActivity" />
         <activity
             android:name=".LoadingScreen"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
