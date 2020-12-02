@@ -1,12 +1,14 @@
+
 package com.group04.studentaide;
 
 /*  This class is used to save key-data of the user, allowing them to not have to login everytime they open the app
 * Data is lost when: application is uninstalled or clearing application data through the settings
 *
 *
-* */
+*
+*/
 
-
+/*///
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,6 +42,9 @@ public class SharedPreferencesUtility {
 
     /* Methods*/
 
+
+    /*///
+
     //Save user credentials into shared preferences
     public void userLogin(User user){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(KEY_preferenceName, Context.MODE_PRIVATE);
@@ -50,6 +55,8 @@ public class SharedPreferencesUtility {
         editor.putString(KEY_email, user.getEmail());
         editor.apply();
     }
+
+
 
     //Check if user is already logged in when opening application
     //App uses email as username when logging in
@@ -83,3 +90,4 @@ public class SharedPreferencesUtility {
     }
 
 }
+*/

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -47,22 +48,20 @@ public class CourseCreationEducator extends AppCompatActivity {
     InformationRetrievalEducator infoRetrieve = InformationRetrievalEducator.getInstance();
 
     DocumentReference educatorRef;
-    String educatorDocumentID;
-    String institutionID;
+    DocumentReference educatorDocumentID;
+    DocumentReference institutionID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_creation_educator);
 
-        getEducatorDocument(new Callback() {
-            @Override
-            public void call() {
-            }
-        });
+        getEducatorDocument();
 
         mInputCourseName = findViewById(R.id.inputCourseName2);
+        //mInstitutionSpinner = findViewById(R.id.institutionInput2);
         mCreateCourse = findViewById(R.id.createButton2);
+        mQuizzes = findViewById(R.id.allowQuiz2);
 
         mCreateCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,18 +79,11 @@ public class CourseCreationEducator extends AppCompatActivity {
         String courseName = mInputCourseName.getText().toString().trim();
 
 
-        //Make institution choice a spinner because the options will be statically set
-        String institution = mInputInstitutionName.getText().toString().trim();
-
         if (TextUtils.isEmpty(courseName)){
             mInputCourseName.setError("Please enter a course name");
             mInputCourseName.requestFocus(); // requestFocus will make the focus go to this box that is empty
         }
 
-        if (TextUtils.isEmpty(institution)){
-            mInputInstitutionName.setError("Please enter an institution name");
-            mInputCourseName.requestFocus(); // requestFocus will make the focus go to this box that is empty
-        }
 
         if (mQuizzes.isChecked()) {
             quiz = "true";
@@ -99,7 +91,7 @@ public class CourseCreationEducator extends AppCompatActivity {
             quiz = "false";
         }
 
-        Map<String, String> inputMap = new HashMap<>();
+        Map<String, Object> inputMap = new HashMap<>();
         inputMap.put("Course_Name", courseName);
         inputMap.put("Educator_SA_ID", educatorDocumentID);
         inputMap.put("Institution_SA_ID", institutionID);
@@ -111,7 +103,7 @@ public class CourseCreationEducator extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(getActivity(), courseName + " created.", Toast.LENGTH_SHORT).show();
-                        Log.d("WDF", courseName + " " + educatorDocumentID + " " + institutionID);
+                        //Log.d("WDF", courseName + " " + educatorDocumentID + " " + institutionID);
 
                         Intent intent = new Intent(getActivity(),CoursesActivity.class);
                         startActivity(intent);
@@ -133,38 +125,8 @@ public class CourseCreationEducator extends AppCompatActivity {
         void call(ArrayList<String> institutionList);
     }
 
-    public void getInstitutionList(institutionCallback callback){
-        CollectionReference institutionID = db.document("Educators").collection(educatorDocumentID);
 
-        institutionID.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            ArrayList<String> institutionList = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                String institutionName = document.getString("Name");
-                                String facultyName = document.getString("Faculty");
-                                String fullString = institutionName + " " + facultyName;
-
-                                //String institution
-
-                                institutionList.add(fullString);
-                            }
-                            callback.call(institutionList);
-                        }else{
-                            Log.d("He", "Error retrieving institution names");
-                        }
-                    }
-                });
-
-    }
-
-    public void getFacultyList(){
-
-    }
-
-    public void getEducatorDocument(Callback callback){
+    public void getEducatorDocument(){
 
         if (user != null) {
             String UID = user.getUid();
@@ -177,12 +139,12 @@ public class CourseCreationEducator extends AppCompatActivity {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    educatorDocumentID = document.getId();
-                                    institutionID = document.getString("Institution_ID");
+                                    educatorDocumentID = document.getReference();
+                                    institutionID = document.getDocumentReference("Institution_ID");
 
                                     Log.d("WDF", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
                                 }
-                                callback.call();
+
                             } else {
                                 Log.d("WDF", "Error retrieving educator document ID");
                             }
@@ -190,5 +152,3 @@ public class CourseCreationEducator extends AppCompatActivity {
                     });
         }
     }
-
-}

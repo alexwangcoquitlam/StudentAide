@@ -19,12 +19,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -57,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
         infoRetrieve.updateID();
 
         if(user != null){
-            createGreeting();
+            //createGreeting();
+            User educatorCheck = new User();
+            educatorCheck.setIsEducator(false);
+            getEducator();
         }
         else{
             greeting.setText("Welcome back.");
@@ -125,6 +133,27 @@ public class MainActivity extends AppCompatActivity {
         }else if(timeOfDay >= 21 && timeOfDay < 24){
             greeting.setText("Studying so late " + firstName + "?");
         }
+    }
+
+    private void getEducator(){
+        String uid = user.getUid();
+
+        db.collection("Educators")
+                .whereEqualTo("User_ID", uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                User educatorChecker = new User();
+                                educatorChecker.setIsEducator(true);
+                                Log.d("Yu", "Educator checker set");
+                            }
+                        }
+                    }
+                });
+
     }
 
 }

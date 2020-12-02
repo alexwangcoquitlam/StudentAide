@@ -1,7 +1,9 @@
 package com.group04.studentaide;
 
 /*
+
 Written By: Yufeng Luo
+
 */
 
 import android.os.Bundle;
@@ -46,9 +48,9 @@ public class QuizCreate extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz_creation); //Needs to be set
+        //setContentView(R.layout.activity_quiz_creation); //Needs to be set
 
-        /*quizList = new ArrayList<QuizQuestions>();
+        quizList = new ArrayList<QuizQuestions>();
 
         //Onclicklisteners
         mAddButton.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +65,7 @@ public class QuizCreate extends AppCompatActivity {
             public void onClick(View v) {
                 addQuizDefinition(quizList);
             }
-        });*/
+        });
     }
 
     /*
@@ -71,13 +73,16 @@ public class QuizCreate extends AppCompatActivity {
     Object is then added to ArrayList holding QuizQuestion objects, this ArrayList will then be stored into Firestore
     After question is added to the list, EditText fields will be cleared.
     */
-    /*public void addQuestion(){
+    public void addQuestion(){
 
         String inputQuestion = mQuestionText.getText().toString().trim();
         String inputOption1 = mOption1.getText().toString().trim();
         String inputOption2 = mOption2.getText().toString().trim();
         String inputOption3 = mOption3.getText().toString().trim();
+        //Add android:inputType=numberSigned to xml file
         String inputAnswer = mAnswerText.getText().toString().trim();
+
+        int value = Integer.parseInt(inputAnswer);
 
         if (TextUtils.isEmpty(inputQuestion)){
             mQuestionText.setError("Please enter a question.");
@@ -104,7 +109,7 @@ public class QuizCreate extends AppCompatActivity {
             mAnswerText.requestFocus();
         }
 
-        QuizQuestions question = new QuizQuestions(inputQuestion, inputOption1, inputOption2, inputOption3, inputAnswer);
+        QuizQuestions question = new QuizQuestions(inputQuestion, inputOption1, inputOption2, inputOption3, value);
 
         quizList.add(question);
 
@@ -131,6 +136,7 @@ public class QuizCreate extends AppCompatActivity {
         Map<String, Object> dataMap = new HashMap<>();
 
         //Fill these in
+        /*
         dataMap.put("Course_SA_ID",);
         dataMap.put("Educator_SA_ID", );
         dataMap.put("Name", name);
@@ -138,6 +144,8 @@ public class QuizCreate extends AppCompatActivity {
         dataMap.put("Sequence",);
 
         dataMap.put("Quiz", quizList);
+
+         */
 
         db.collection(QUIZ_DB)
                 .add(dataMap)
@@ -149,7 +157,6 @@ public class QuizCreate extends AppCompatActivity {
                 });
 
 
-    }*/
+    }
 
 }
-

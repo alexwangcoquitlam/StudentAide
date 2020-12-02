@@ -1,8 +1,11 @@
 package com.group04.studentaide;
 
 /*
+
 ** Will need to pass in whatever quiz they clicked on as an intent extra **
+
 Written By: Yufeng Luo
+
 */
 
 import android.os.Bundle;
@@ -52,13 +55,14 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz); //Needs to be created
+        //setContentView(R.layout.activity_quiz); //Needs to be created
 
         quizList = new ArrayList<QuizQuestions>();
         currentQuestionIndex = 0;
         correctAnswers = 0;
 
-        /*getAllQuestions(quizDocID, new QuizCallback() {
+        /*
+        getAllQuestions(quizDocID, new QuizCallback() {
             @Override
             public void onQuizCallback(ArrayList<QuizQuestions> quizQuestions) {
                 //Then use quizList outside
@@ -123,8 +127,12 @@ public class QuizActivity extends AppCompatActivity {
         double timeElapsed = (finish - start) / 1000000000;
         quizList.get(currentQuestionIndex).setTimeElapsed(timeElapsed);
 
-        currentQuestionIndex = (currentQuestionIndex + 1) % quizList.size();
-        setQuizQuestion(currentQuestionIndex);
+        if (currentQuestionIndex < quizList.size()){
+            currentQuestionIndex++;
+            setQuizQuestion(currentQuestionIndex);
+        }
+
+        //currentQuestionIndex = (currentQuestionIndex + 1) % quizList.size()
     }
 
     public void checkAnswer(){
@@ -143,15 +151,15 @@ public class QuizActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()){
-                            //This will only look at one document
-                            ArrayList<QuizQuestions> quizQuestions = new ArrayList<QuizQuestions>();
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()){
-                                //Hopefully this populates arrayList with only the questions
-                                quizQuestions = document.toObject(QuizDocument.class).quiz;
-                                //Call method that builds quiz
-                            }
-                            callback.onQuizCallback(quizQuestions);
+                                //This will only look at one document
+                                ArrayList<QuizQuestions> quizQuestions = new ArrayList<QuizQuestions>();
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()){
+                                    //Hopefully this populates arrayList with only the questions
+                                    quizQuestions = document.toObject(QuizDocument.class).Quiz;
+                                    //Call method that builds quiz
+                                }
+                                callback.onQuizCallback(quizQuestions);
                         }else{
                             Log.d(TAG, "Error retrieving Quiz questions");
                         }

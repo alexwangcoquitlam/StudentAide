@@ -54,13 +54,17 @@ public class CourseCreation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_creation); // Set to study session XML
 
+        User educatorCheck = new User();
+        boolean isEducator = educatorCheck.getEducator();
         //Bring user back to Courses main page if no account
         if (user == null) {
             Toast.makeText(this, "Please Log In.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, CoursesActivity.class);
             startActivity(intent);
 
-        } else {
+        } else if(isEducator) {
+            Log.d("Yu", "Do nothing.");
+        }else{
 
             grabDocumentReference();
 
