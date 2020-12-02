@@ -44,6 +44,7 @@ public class LoginActivityGuest extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
+    InformationRetrievalEducator infoRetrieveEd = InformationRetrievalEducator.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +119,18 @@ public class LoginActivityGuest extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa135", "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                infoRetrieve.updateID();
-                                Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
-                                Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                startActivity(returnMain);
+                                if (infoRetrieveEd.getEducatorDocumentID() != null){
+                                    infoRetrieveEd.updateID();
+                                    Intent returnMain = new Intent(LoginActivityGuest.this, MainActivityEducator.class);
+                                    Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                    startActivity(returnMain);
+                                }
+                                else {
+                                    infoRetrieve.updateID();
+                                    Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
+                                    Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                    startActivity(returnMain);
+                                }
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("hwa136", "signInWithEmail:failure", task.getException());

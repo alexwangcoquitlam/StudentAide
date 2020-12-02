@@ -68,4 +68,36 @@ public class InformationRetrievalEducator {
         return institutionID;
     }
 
+    public void updateID() {
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            String uid = user.getUid();
+            db.collection("Students")
+                    .whereEqualTo("User_ID", uid)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("documentIDGet", "Document ID is: " + document.getId());
+                                    educatorDocumentID = document.getId();
+                                }
+                            } else {
+                                Log.v("signedinwrong", "you're signed into the wrong account for testing");
+                            }
+                        }
+                    });
+
+        } else {
+
+            educatorDocumentID = null;
+
+        }
+
+    }
+
 }

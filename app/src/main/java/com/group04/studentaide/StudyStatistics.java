@@ -39,27 +39,22 @@ import java.util.Map;
 /*  File Name: studyStatistics.java
     Team: ProjectTeam04
     Written By: Jason Leung
-
     Description:
     	This class implements the STATISTICS page in StudentAide. This class will grab data from the Cloud Firestore in order to display the users
     	stats on the page. There will be a Spinner at the top populated with the users courses, along with a Total option. When total is selected,
     	display a pie chart that will show the time studied in each individual course. When a course is selected, display a pie chart that will
     	show the time studied in that course compared to every other course displayed as one whole.
-
     Changes:
         November 7th - Draft 1 of Version 1
         November 8th - Draft 2 of Version 1
         November 9th - Finalized Version 1
         November 18th - Draft 1 of Version 2
         November 20th - Finalized Version 2
-
     External Libraries Used:
     	MPAndroidChart by PhilJay
     		https://weeklycoding.com/mpandroidchart/
-
     Bugs:
     	Haven't tested.
-
  */
 
 public class StudyStatistics extends AppCompatActivity {

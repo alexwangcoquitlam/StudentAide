@@ -38,10 +38,9 @@ public class MainActivityEducator extends AppCompatActivity {
             .setPersistenceEnabled(true)
             .build();
 
-    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
+    InformationRetrievalEducator infoRetrieve = InformationRetrievalEducator.getInstance();
 
-    private Button loginScreen;
-    private TextView greeting;
+    private Button loginScreen, coursesScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +48,10 @@ public class MainActivityEducator extends AppCompatActivity {
         setContentView(R.layout.activity_main_educator);
 
         loginScreen = findViewById(R.id.loginOpen);
-        greeting = findViewById(R.id.greetingLabelMain);
-
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        coursesScreen = findViewById(R.id.coursesOpen);
 
         infoRetrieve.updateID();
 
-        if(user != null){
-            createGreeting();
-        }
-        else{
-            greeting.setText("Welcome back.");
-        }
         loginScreen.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent loginGuest = new Intent(MainActivityEducator.this, LoginActivityGuest.class);
@@ -68,44 +59,15 @@ public class MainActivityEducator extends AppCompatActivity {
             }
         });
 
+        coursesScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent courses = new Intent(MainActivityEducator.this, CoursesActivityEducator.class);
+                startActivity(courses);
+            }
+        });
+
     }
 
-    //Yufeng: I'm not sure if View view needs to be passed into these functions because when the functions are called
-    //and the new Intent is created, startActivity will open the class that is associated with the Intent
-
-    public void calendarScreen(View view){
-        Intent calendar = new Intent(this, CalendarActivity.class);
-        startActivity(calendar);
-    }
-
-    public void statsScreen(View view){
-        Intent stats = new Intent(this, StudyStatistics.class);
-        startActivity(stats);
-    }
-
-    private void createGreeting(){
-        Calendar c = Calendar.getInstance();
-        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-
-        String fullName = user.getDisplayName();
-        String arr[] = fullName.split(" ", 2);
-
-        String firstName = arr[0];
-        firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
-
-        if(timeOfDay >= 0 && timeOfDay < 3){
-            greeting.setText("Studying so late " + firstName + "?");
-        }else if(timeOfDay >= 3 && timeOfDay < 6){
-            greeting.setText("Awake so early " + firstName + "?");
-        }else if(timeOfDay >= 6 && timeOfDay < 12){
-            greeting.setText("Good Morning, " + firstName);
-        }else if(timeOfDay >= 12 && timeOfDay < 18){
-            greeting.setText("Good Afternoon, " + firstName);
-        }else if(timeOfDay >= 18 && timeOfDay < 21){
-            greeting.setText("Good Evening, " + firstName);
-        }else if(timeOfDay >= 21 && timeOfDay < 24){
-            greeting.setText("Studying so late " + firstName + "?");
-        }
-    }
 
 }

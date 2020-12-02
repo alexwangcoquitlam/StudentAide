@@ -54,13 +54,6 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        //Check if user is already logged in, if so go straight to app homepage
-        if (SharedPreferencesUtility.getInstance(this).isLoggedIn()){
-            finish();
-            //
-            startActivity(new Intent(this, MainActivity.class));
-        }
-
         registerButton = (Button) findViewById(R.id.registerButton);
         inputFirstName = (EditText) findViewById(R.id.firstNameInput);
         inputLastName = (EditText) findViewById(R.id.lastNameInput);

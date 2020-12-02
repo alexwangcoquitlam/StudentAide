@@ -73,13 +73,13 @@ public class CourseCreationEducator extends AppCompatActivity {
 
     }
 
-    public void createCourseEducator(){
+    public void createCourseEducator() {
 
         String quiz;
         String courseName = mInputCourseName.getText().toString().trim();
 
 
-        if (TextUtils.isEmpty(courseName)){
+        if (TextUtils.isEmpty(courseName)) {
             mInputCourseName.setError("Please enter a course name");
             mInputCourseName.requestFocus(); // requestFocus will make the focus go to this box that is empty
         }
@@ -87,7 +87,7 @@ public class CourseCreationEducator extends AppCompatActivity {
 
         if (mQuizzes.isChecked()) {
             quiz = "true";
-        }else {
+        } else {
             quiz = "false";
         }
 
@@ -105,7 +105,7 @@ public class CourseCreationEducator extends AppCompatActivity {
                         Toast.makeText(getActivity(), courseName + " created.", Toast.LENGTH_SHORT).show();
                         //Log.d("WDF", courseName + " " + educatorDocumentID + " " + institutionID);
 
-                        Intent intent = new Intent(getActivity(),CoursesActivity.class);
+                        Intent intent = new Intent(getActivity(), CoursesActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -113,20 +113,20 @@ public class CourseCreationEducator extends AppCompatActivity {
 
     }
 
-    public CourseCreationEducator getActivity(){
+    public CourseCreationEducator getActivity() {
         return this;
     }
 
-    public interface Callback{
+    public interface Callback {
         void call();
     }
 
-    public interface institutionCallback{
+    public interface institutionCallback {
         void call(ArrayList<String> institutionList);
     }
 
 
-    public void getEducatorDocument(){
+    public void getEducatorDocument() {
 
         if (user != null) {
             String UID = user.getUid();
@@ -152,3 +152,4 @@ public class CourseCreationEducator extends AppCompatActivity {
                     });
         }
     }
+}
