@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class QuizDocument {
 
-    public ArrayList<QuizQuestions> quiz;
+    public ArrayList<QuizQuestions> Quiz;
 
     public QuizDocument(){
     }

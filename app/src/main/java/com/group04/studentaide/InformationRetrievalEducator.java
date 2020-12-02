@@ -8,15 +8,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 public class InformationRetrievalEducator {
 
     private static InformationRetrievalEducator ourInstance = null;
     private String educatorDocumentID;
-    private String institutionID;
+    private DocumentReference institutionID;
     private FirebaseUser user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -36,7 +39,7 @@ public class InformationRetrievalEducator {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     educatorDocumentID = document.getId();
-                                    institutionID = document.getString("Institution_ID");
+                                    institutionID = document.getDocumentReference("Institution_ID");
 
                                     Log.d("WDF", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
                                 }
@@ -61,7 +64,7 @@ public class InformationRetrievalEducator {
         return educatorDocumentID;
     }
 
-    public String getInstitutionID(){
+    public DocumentReference getInstitutionID(){
         return institutionID;
     }
 

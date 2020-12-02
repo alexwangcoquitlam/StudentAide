@@ -54,7 +54,14 @@ public class CoursesActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        if (user == null) {
+        User educatorCheck = new User();
+
+        boolean isEducator = educatorCheck.getEducator();
+        String str = Boolean.toString(isEducator);
+        Log.d("Yu", str);
+
+        //user == null here
+        if (isEducator) {
 
             Log.v("Hareye", "Test");
 

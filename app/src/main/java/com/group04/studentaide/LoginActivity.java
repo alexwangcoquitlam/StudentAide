@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(mainAc);
             } else {
                 Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
-                Toast.makeText(LoginActivity.this, createGreeting(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(LoginActivity.this, createGreeting(), Toast.LENGTH_LONG).show();
                 startActivity(mainAc);
             }
         }

@@ -55,12 +55,13 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz); //Needs to be created
+        //setContentView(R.layout.activity_quiz); //Needs to be created
 
         quizList = new ArrayList<QuizQuestions>();
         currentQuestionIndex = 0;
         correctAnswers = 0;
 
+        /*
         getAllQuestions(quizDocID, new QuizCallback() {
             @Override
             public void onQuizCallback(ArrayList<QuizQuestions> quizQuestions) {
@@ -69,6 +70,8 @@ public class QuizActivity extends AppCompatActivity {
                 setQuizQuestion(currentQuestionIndex);
             }
         });
+
+         */
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,8 +127,12 @@ public class QuizActivity extends AppCompatActivity {
         double timeElapsed = (finish - start) / 1000000000;
         quizList.get(currentQuestionIndex).setTimeElapsed(timeElapsed);
 
-        currentQuestionIndex = (currentQuestionIndex + 1) % quizList.size();
-        setQuizQuestion(currentQuestionIndex);
+        if (currentQuestionIndex < quizList.size()){
+            currentQuestionIndex++;
+            setQuizQuestion(currentQuestionIndex);
+        }
+
+        //currentQuestionIndex = (currentQuestionIndex + 1) % quizList.size()
     }
 
     public void checkAnswer(){
@@ -149,7 +156,7 @@ public class QuizActivity extends AppCompatActivity {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()){
                                     //Hopefully this populates arrayList with only the questions
-                                    quizQuestions = document.toObject(QuizDocument.class).quiz;
+                                    quizQuestions = document.toObject(QuizDocument.class).Quiz;
                                     //Call method that builds quiz
                                 }
                                 callback.onQuizCallback(quizQuestions);

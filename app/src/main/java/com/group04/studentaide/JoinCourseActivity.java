@@ -114,6 +114,8 @@ public class JoinCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_join);
 
+        User educatorCheck = new User();
+        boolean isEducator = educatorCheck.getEducator();
 
         if (user == null){
             Toast.makeText(this, "Please sign in.", Toast.LENGTH_SHORT).show();
