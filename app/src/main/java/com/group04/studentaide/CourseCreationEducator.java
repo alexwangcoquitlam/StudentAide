@@ -152,5 +152,3 @@ public class CourseCreationEducator extends AppCompatActivity {
                     });
         }
     }
-
-}

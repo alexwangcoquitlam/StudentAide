@@ -1,11 +1,8 @@
 package com.group04.studentaide;
 
 /*
-
 Written By: Yufeng Luo
-
 This class object will be used to take in and hold Quiz Questions in format ArrayList<QuizQuestions> quizList
-
 */
 
 public class QuizQuestions {

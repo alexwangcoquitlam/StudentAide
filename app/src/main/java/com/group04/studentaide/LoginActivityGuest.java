@@ -88,6 +88,9 @@ public class LoginActivityGuest extends AppCompatActivity {
 
     // Same login function as LoginActivity
     private void loginFire(){
+        mAuth.signOut();
+        infoRetrieve.updateID();
+
         minputEmail = findViewById(R.id.emailInputLogin2);
         minputPassword = findViewById(R.id.password2);
         String email = minputEmail.getText().toString().trim();

@@ -530,5 +530,3 @@ public class JoinCourseActivity extends AppCompatActivity {
                     }
                 });
     }
-
-}

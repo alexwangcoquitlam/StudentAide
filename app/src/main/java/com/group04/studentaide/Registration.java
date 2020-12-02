@@ -52,17 +52,14 @@ public class Registration extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration); // CHANGE TO NAME OF PROPER XML FILE
+        setContentView(R.layout.activity_registration);
 
         //Check if user is already logged in, if so go straight to app homepage
-        /*
         if (SharedPreferencesUtility.getInstance(this).isLoggedIn()){
             finish();
             //
             startActivity(new Intent(this, MainActivity.class));
         }
-
-         */
 
         registerButton = (Button) findViewById(R.id.registerButton);
         inputFirstName = (EditText) findViewById(R.id.firstNameInput);
