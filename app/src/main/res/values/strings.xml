@@ -55,4 +55,21 @@
     <string name="home_button">Home</string>
     <string name="study_button">Study</string>
     <string name="courses_button">Courses</string>
+
+    <string name="quiz_create_label">Create Quiz</string>
+    <string name="quiz_name_hint">Quiz Name</string>
+    <string name="set_quiz_name">Create Questions</string>
+    <string name="quiz_create_open">Create Quiz</string>
+    <string name="question_name">Question</string>
+    <string name="answer_1">Option 1</string>
+    <string name="answer_2">Option 2</string>
+    <string name="answer_3">Option 3</string>
+    <string name="new_question">New Question</string>
+    <string name="finish_quiz">Finish</string>
+
+    <string name="do_quiz_label">Quiz __</string>
+    <string name="question_label">Question #</string>
+    <string name="question_name_label">Question</string>
+    <string name="next_question">Next</string>
+
 </resources>
