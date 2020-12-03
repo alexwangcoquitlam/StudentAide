@@ -9,13 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".QuizQuestionsCreate"></activity>
-        <activity android:name=".CoursesActivityEducator"
+        <activity android:name=".QuizQuestionsCreate"/>
+        <activity
+            android:name=".CoursesActivityEducator"
             android:parentActivityName=".MainActivityEducator"/>
         <activity android:name=".MainActivityEducator" />
         <activity android:name=".QuizActivity" />
         <activity android:name=".QuizCreate"
             android:parentActivityName=".CoursesActivityEducator"/>
+        <activity android:name=".CoursesHomepage"/>
         <activity
             android:name=".LoginActivityGuest"
             android:parentActivityName=".MainActivity" />
