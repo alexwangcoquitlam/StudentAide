@@ -50,12 +50,29 @@ public class LoginActivity extends AppCompatActivity {
 
         if (user != null) {
             if (user.getDisplayName() == null) {
-                Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
-                startActivity(mainAc);
+                if (infoRetrieveEd.getEducatorDocumentID() != null){
+                    infoRetrieveEd.updateID();
+                    Intent returnMain = new Intent(LoginActivity.this, MainActivityEducator.class);
+                    startActivity(returnMain);
+                }
+                else {
+                    infoRetrieve.updateID();
+                    Intent returnMain = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(returnMain);
+                }
             } else {
-                Intent mainAc = new Intent (LoginActivity.this, MainActivity.class);
-                //Toast.makeText(LoginActivity.this, createGreeting(), Toast.LENGTH_LONG).show();
-                startActivity(mainAc);
+                if (infoRetrieveEd.getEducatorDocumentID() != null){
+                    infoRetrieveEd.updateID();
+                    Intent returnMain = new Intent(LoginActivity.this, MainActivityEducator.class);
+                    Toast.makeText(LoginActivity.this, createGreeting(), Toast.LENGTH_LONG).show();
+                    startActivity(returnMain);
+                }
+                else {
+                    infoRetrieve.updateID();
+                    Intent returnMain = new Intent(LoginActivity.this, MainActivity.class);
+                    Toast.makeText(LoginActivity.this, createGreeting(), Toast.LENGTH_LONG).show();
+                    startActivity(returnMain);
+                }
             }
         }
 
