@@ -31,13 +31,14 @@ public class CoursesHomepage extends AppCompatActivity {
 
     Spinner mCoursesSpinner;
 
-    private Map<String, Object> coursesHM;
+    private Map<String, DocumentReference> coursesHM;
     ArrayAdapter<String> courseAdapter;
 
     private static final String STUDENT_DB = "Students";
     private static final String STUDENT_COURSES_DB = "StudentCourses";
     private String studentDocumentID;
     private DocumentReference studentDocRef;
+    private DocumentReference chosenDocRef;
 
     InformationRetrieval studentRetrieval = InformationRetrieval.getInstance();
 
@@ -49,10 +50,13 @@ public class CoursesHomepage extends AppCompatActivity {
 
         mCoursesSpinner = findViewById(R.id.courseSpinner); //Fill in
 
+        //Get chosen options documentID to be used in new activities
         mCoursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Set buttons here for user to use
+                String courseChosen = mCoursesSpinner.getItemAtPosition(position).toString();
+                chosenDocRef = coursesHM.get(courseChosen);
             }
 
             @Override
@@ -60,7 +64,6 @@ public class CoursesHomepage extends AppCompatActivity {
 
             }
         });
-
     }
 
     public interface CourseCallback{

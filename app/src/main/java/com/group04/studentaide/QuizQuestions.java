@@ -5,7 +5,9 @@ Written By: Yufeng Luo
 This class object will be used to take in and hold Quiz Questions in format ArrayList<QuizQuestions> quizList
 */
 
-public class QuizQuestions {
+import java.io.Serializable;
+
+public class QuizQuestions implements Serializable {
 
     private String question;
     private String choice1;
