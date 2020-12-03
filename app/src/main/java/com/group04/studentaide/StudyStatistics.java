@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +23,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,22 +37,28 @@ import java.util.Map;
 /*  File Name: studyStatistics.java
     Team: ProjectTeam04
     Written By: Jason Leung
+
     Description:
     	This class implements the STATISTICS page in StudentAide. This class will grab data from the Cloud Firestore in order to display the users
     	stats on the page. There will be a Spinner at the top populated with the users courses, along with a Total option. When total is selected,
     	display a pie chart that will show the time studied in each individual course. When a course is selected, display a pie chart that will
     	show the time studied in that course compared to every other course displayed as one whole.
+
     Changes:
         November 7th - Draft 1 of Version 1
         November 8th - Draft 2 of Version 1
         November 9th - Finalized Version 1
         November 18th - Draft 1 of Version 2
         November 20th - Finalized Version 2
+        December 2nd - Draft 1 of Version 3
+
     External Libraries Used:
     	MPAndroidChart by PhilJay
     		https://weeklycoding.com/mpandroidchart/
+
     Bugs:
     	Haven't tested.
+
  */
 
 public class StudyStatistics extends AppCompatActivity {
@@ -62,7 +66,6 @@ public class StudyStatistics extends AppCompatActivity {
 	PieChart chart;
 	TextView timeCount;
 	Spinner courseSpinner;
-	double totalTime;
 
 	FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 	FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -72,6 +75,10 @@ public class StudyStatistics extends AppCompatActivity {
 	ArrayList<String> courses = new ArrayList<String>();
 	ArrayList<String> courseName = new ArrayList<String>();
 	ArrayList<Double> duration = new ArrayList<Double>();
+	ArrayList<Double> distracted = new ArrayList<Double>();
+
+	float totalStudied = 0;
+	float totalDistracted = 0;
 
 	DocumentReference studentRef;
 	String studentDocumentId;
@@ -99,10 +106,6 @@ public class StudyStatistics extends AppCompatActivity {
 			timeCount = (TextView) findViewById(R.id.totalTimeCount);
 			chart = (PieChart) findViewById(R.id.chart);
 
-			BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-			bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-			chart.setNoDataText("No Study Sessions Found.");
 			chart.setRotationEnabled(true);
 			chart.setHoleRadius(25f);
 			chart.setTransparentCircleAlpha(0);
@@ -120,20 +123,50 @@ public class StudyStatistics extends AppCompatActivity {
 			chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 				@Override
 				public void onValueSelected(Entry e, Highlight h) {
+					String spinnerValue = courseSpinner.getSelectedItem().toString();
+
 					String entry = e.toString();
 					int pos = entry.indexOf("y: ");
 
 					String time = e.toString().substring(pos + 3);
-					String name = "Other Courses";
+					String display = "NA";
 
-					for (int i = 0; i < courseName.size(); i++) {
-						if (duration.get(i) == Double.parseDouble(time)) {
-							name = courseName.get(i);
-							break;
+					if (spinnerValue.equals("Total")) {
+
+						for (int i = 0; i < courseName.size(); i++) {
+							if (totalDistracted == (float) Double.parseDouble(time)) {
+								display = "Time Distracted: " + totalDistracted;
+								break;
+							}
 						}
+
+						for (int i = 0; i < courseName.size(); i++) {
+							if (totalStudied == (float) Double.parseDouble(time)) {
+								display = "Time Studied: " + totalStudied;
+								break;
+							}
+						}
+
+					} else {
+
+						for (int i = 0; i < courseName.size(); i++) {
+							if (distracted.get(i) == Double.parseDouble(time)) {
+								display = "Time Distracted: " + distracted.get(i);
+								break;
+							}
+						}
+
+						for (int i = 0; i < courseName.size(); i++) {
+							if (duration.get(i) == Double.parseDouble(time)) {
+								display = "Time Studied: " + duration.get(i).toString();
+								break;
+							}
+						}
+
 					}
 
-					Toast.makeText(getApplicationContext(), "Course: " + name, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), display, Toast.LENGTH_SHORT).show();
+
 				}
 				@Override
 				public void onNothingSelected() {
@@ -158,7 +191,7 @@ public class StudyStatistics extends AppCompatActivity {
 							if (choice.equals(courses.get(0))) {
 
 								// Populate grabTotalTime with users totalTimeStudied
-								String displayTotal = df.format(totalTime);
+								String displayTotal = df.format(totalStudied);
 								timeCount.setText(displayTotal);
 
 								chart.setCenterText("Total Time Studied");
@@ -193,27 +226,6 @@ public class StudyStatistics extends AppCompatActivity {
 
 	}
 
-	private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-			new BottomNavigationView.OnNavigationItemSelectedListener() {
-				@Override
-				public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-					switch(item.getItemId()){
-						case R.id.nav_study:
-							Intent study = new Intent(StudyStatistics.this, StudySession.class);
-							startActivity(study);
-							break;
-						case R.id.nav_courses:
-							Intent courses = new Intent(StudyStatistics.this, CoursesActivity.class);
-							startActivity(courses);
-							break;
-						case R.id.nav_home:
-							Intent main = new Intent(StudyStatistics.this, MainActivity.class);
-							startActivity(main);
-					}
-					return true;
-				}
-			};
-
 	// Return current activity
 	private StudyStatistics getActivity() {
 
@@ -227,9 +239,8 @@ public class StudyStatistics extends AppCompatActivity {
 		ArrayList<PieEntry> yEntrys = new ArrayList<>();
 		ArrayList<String> xEntrys = new ArrayList<>();
 
-		for (int i = 0; i < duration.size(); i++) {
-			yEntrys.add(new PieEntry(duration.get(i).floatValue(), i));
-		}
+		yEntrys.add(new PieEntry(totalStudied, 0));
+		yEntrys.add(new PieEntry(totalDistracted, 1));
 
 		for (int i = 0; i < courseName.size(); i++) {
 			xEntrys.add(courseName.get(i));
@@ -239,62 +250,12 @@ public class StudyStatistics extends AppCompatActivity {
 		pieDataSet.setSliceSpace(2);
 		pieDataSet.setValueTextSize(12);
 
-
 		ArrayList<Integer> colors = new ArrayList<>();
 
-		// Blue
-		colors.add(Color.rgb(0, 0, 255)); // Pure Blue
-		colors.add(Color.rgb(73, 73, 255)); // Ultramarine Blue
+		colors.add(Color.rgb(56, 123, 225)); // Royal Blue
 		colors.add(Color.rgb(135, 206, 235)); // Sky Blue
-		colors.add(Color.rgb(181, 126, 220)); // Lavender
-		colors.add(Color.rgb(0, 191, 188)); // Yellow
 
-		// Green
-		colors.add(Color.rgb(64, 224, 208)); // Turquoise
-		colors.add(Color.rgb(63, 122, 77)); // Green
-		colors.add(Color.rgb(57, 255, 20)); // Neon Green
-		colors.add(Color.rgb(227, 255, 0)); // Lemon Lime
-		colors.add(Color.rgb(0, 232, 107)); // Jade
-
-		// Red
-		colors.add(Color.rgb(255, 192, 203)); // Pink
-		colors.add(Color.rgb(222, 23, 56)); // Red
-		colors.add(Color.rgb(255, 131, 0)); // Orange
-		colors.add(Color.rgb(255, 203, 164)); // Peach
-		colors.add(Color.rgb(181, 101, 29)); // Light Brown
-
-		pieDataSet.setColors(colors);
-
-		PieData pieData = new PieData(pieDataSet);
-		chart.setData(pieData);
-		chart.invalidate();
-
-	}
-
-	// Changes pie chart to display the specific courses stats when a course is selected
-	public void addCourseChart(String choice) {
-
-		ArrayList<PieEntry> yEntrys = new ArrayList<>();
-		ArrayList<String> xEntrys = new ArrayList<>();
-		float toSubtract = 0;
-
-		for (int i = 0; i < duration.size(); i++) {
-			if (courseName.get(i).equals(choice)) {
-				toSubtract = duration.get(i).floatValue();
-				yEntrys.add(new PieEntry(duration.get(i).floatValue(), i + 1));
-			}
-		}
-		yEntrys.add(new PieEntry((float) (totalTime - toSubtract), 0));
-
-		for (int i = 0; i < courseName.size(); i++) {
-			xEntrys.add(courseName.get(i));
-		}
-
-		PieDataSet pieDataSet = new PieDataSet(yEntrys, "Courses");
-		pieDataSet.setSliceSpace(2);
-		pieDataSet.setValueTextSize(12);
-
-		ArrayList<Integer> colors = new ArrayList<>();
+		/* Extra Colors
 
 		// Red
 		colors.add(Color.rgb(255, 192, 203)); // Pink
@@ -316,6 +277,67 @@ public class StudyStatistics extends AppCompatActivity {
 		colors.add(Color.rgb(57, 255, 20)); // Neon Green
 		colors.add(Color.rgb(227, 255, 0)); // Lemon Lime
 		colors.add(Color.rgb(0, 168, 107)); // Jade
+
+		*/
+
+		pieDataSet.setColors(colors);
+
+		PieData pieData = new PieData(pieDataSet);
+		chart.setData(pieData);
+		chart.invalidate();
+
+	}
+
+	// Changes pie chart to display the specific courses stats when a course is selected
+	public void addCourseChart(String choice) {
+
+		ArrayList<PieEntry> yEntrys = new ArrayList<>();
+		ArrayList<String> xEntrys = new ArrayList<>();
+
+		for (int i = 0; i < duration.size(); i++) {
+			if (courseName.get(i).equals(choice)) {
+				yEntrys.add(new PieEntry(duration.get(i).floatValue(), i + 1));
+				yEntrys.add(new PieEntry(distracted.get(i).floatValue(), 0));
+			}
+		}
+
+		for (int i = 0; i < courseName.size(); i++) {
+			xEntrys.add(courseName.get(i));
+		}
+
+		PieDataSet pieDataSet = new PieDataSet(yEntrys, "Courses");
+		pieDataSet.setSliceSpace(2);
+		pieDataSet.setValueTextSize(12);
+
+		ArrayList<Integer> colors = new ArrayList<>();
+
+		colors.add(Color.rgb(222, 23, 56)); // Red
+		colors.add(Color.rgb(255, 192, 203)); // Pink
+
+		/* Extra Colors
+
+		// Red
+		colors.add(Color.rgb(255, 192, 203)); // Pink
+		colors.add(Color.rgb(222, 23, 56)); // Red
+		colors.add(Color.rgb(255, 131, 0)); // Orange
+		colors.add(Color.rgb(255, 203, 164)); // Peach
+		colors.add(Color.rgb(181, 101, 29)); // Light Brown
+
+		// Blue
+		colors.add(Color.rgb(192, 5, 248)); // Neon Purple
+		colors.add(Color.rgb(56, 123, 225)); // Royal Blue
+		colors.add(Color.rgb(135, 206, 235)); // Sky Blue
+		colors.add(Color.rgb(181, 126, 220)); // Lavender
+		colors.add(Color.rgb(255, 255, 0)); // Yellow
+
+		// Green
+		colors.add(Color.rgb(64, 224, 208)); // Turquoise
+		colors.add(Color.rgb(63, 122, 77)); // Green
+		colors.add(Color.rgb(57, 255, 20)); // Neon Green
+		colors.add(Color.rgb(227, 255, 0)); // Lemon Lime
+		colors.add(Color.rgb(0, 168, 107)); // Jade
+
+		 */
 
 		pieDataSet.setColors(colors);
 
@@ -345,6 +367,7 @@ public class StudyStatistics extends AppCompatActivity {
 						if (task.isSuccessful()) {
 							for (QueryDocumentSnapshot document : task.getResult()) {
 								Map<String, Double> coursesTimeStudied = (Map<String, Double>) document.get("coursesTimeStudied");
+								Map<String, Double> timeDistracted = (Map<String, Double>) document.get("timeDistracted");
 
 								for (Map.Entry<String, Double> entry : coursesTimeStudied.entrySet()) {
 									String k = entry.getKey();
@@ -354,10 +377,18 @@ public class StudyStatistics extends AppCompatActivity {
 									duration.add(Double.parseDouble(df.format(v / 60)));
 								}
 
-								Double total = (Double) document.get("totalTimeStudied");
-								totalTime = Double.parseDouble(df.format(total / 60));
-								callback.call();
+								for (Map.Entry<String, Double> entry : timeDistracted.entrySet()) {
+									Double v = entry.getValue();
+
+									distracted.add(Double.parseDouble(df.format(v / 60)));
+								}
+
+								Double totalTimeStudied = (Double) document.get("totalTimeStudied");
+								Double totalTimeDistracted= (Double) document.get("totalTimeDistracted");
+								totalStudied = (float) Double.parseDouble(df.format(totalTimeStudied / 60));
+								totalDistracted = (float) Double.parseDouble(df.format(totalTimeDistracted / 60));
 							}
+							callback.call();
 						} else {
 							Log.v("StudyStatistics", "Error occurred when getting data from Firebase.");
 						}
