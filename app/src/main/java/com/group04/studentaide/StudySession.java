@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -157,6 +159,9 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
             setTime = findViewById(R.id.setTime);
             textCountdownTimer = findViewById(R.id.timeLeft);
             startTime = findViewById(R.id.startTime);
+            
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setOnNavigationItemSelectedListener(navListener);
             //resetTime = findViewById(R.id.resetTimer);
 
             // Add a none selected value to the array that will be used to populate courseSpinner and selectSession
@@ -436,6 +441,27 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
         timer.setAccelZ(accelZ);
 
     }
+    
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch(item.getItemId()){
+                        case R.id.nav_study:
+                            Intent study = new Intent(StudySession.this, StudySession.class);
+                            startActivity(study);
+                            break;
+                        case R.id.nav_courses:
+                            Intent courses = new Intent(StudySession.this, CoursesActivity.class);
+                            startActivity(courses);
+                            break;
+                        case R.id.nav_home:
+                            Intent main = new Intent(StudySession.this, MainActivity.class);
+                            startActivity(main);
+                    }
+                    return true;
+                }
+            };
 
     // Return current activity
     private StudySession getActivity() {
