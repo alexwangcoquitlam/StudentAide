@@ -51,8 +51,21 @@
     <string name="plan_label">Plan</string>
     <string name="pause_label">Pause</string>
     <string name="fresh_timer">00:00</string>
-
+    <string name="quiz_create_label">Create a Quiz</string>
+    <string name="quiz_name_hint">Enter Quiz Name</string>
+    <string name="set_quiz_name">Set Quiz Name</string>
+    <string name="question_name">Enter Question</string>
+    <string name="answer_1">Answer 1</string>
+    <string name="answer_2">Answer 2</string>
+    <string name="answer_3">Answer 3</string>
+    <string name="new_question">New Question</string>
+    <string name="finish_quiz">Create Quiz</string>
+    <string name="quiz_create_open">Create a Quiz</string>
     <string name="home_button">Home</string>
     <string name="study_button">Study</string>
     <string name="courses_button">Courses</string>
+    <string name="do_quiz_label">Quiz</string>
+    <string name="question_label">Question</string>
+    <string name="question_name_label">Question here</string>
+    <string name="next_question">Next Question</string>
 </resources>
