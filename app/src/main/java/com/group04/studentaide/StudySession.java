@@ -78,6 +78,10 @@ import javax.security.auth.callback.Callback;
 /*  To-Do List (For V3):
         Need a way to remove planned study session once the date has passed - Write a function that updates and removes study sessions that have passed
 
+        Check for app in foreground to add to timeStudied or timeDistracted
+
+        Check if whether time counts to studied or distracted when phone is turned off
+
  */
 
 public class StudySession extends AppCompatActivity implements SensorEventListener {
@@ -109,6 +113,9 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
     Timer timer = Timer.getInstance(this);
+
+    // Needs to be after Timer.getInstance since it will be grabbing the instance of Timer (which should not be null)
+    ForegroundCheck foreground = ForegroundCheck.getInstance();
 
     // Used to fill Spinner
     ArrayList<String> courses = new ArrayList<String>();
@@ -271,8 +278,9 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
 
                         // If timer is running
 
-                        Log.v("Hareye", "Accelerometer disabled.");
+                        Log.v("Hareye", "Accelerometer and ForegroundCheck disabled.");
                         sensorManager.unregisterListener(StudySession.this, accel);
+                        foreground.stopForegroundCheck();
 
                         // Grabs the users current stats before storing and updating database with new stats
                         grabStats(new Callback() {
@@ -306,8 +314,9 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
                         Toast.makeText(getApplicationContext(), "Timer is already running.", Toast.LENGTH_SHORT).show();
                     } else {
                         if (sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null) {
-                            Log.v("Hareye", "Accelerometer initialized.");
+                            Log.v("Hareye", "Accelerometer and ForegroundCheck initialized.");
                             accel = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+                            foreground.startForegroundCheck();
                             sensorManager.registerListener(StudySession.this, accel, SensorManager.SENSOR_DELAY_NORMAL);
                         } else {
                             Toast.makeText(getApplicationContext(), "No accelerometer detected.", Toast.LENGTH_SHORT).show();
@@ -439,6 +448,14 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
         timer.setAccelX(accelX);
         timer.setAccelY(accelY);
         timer.setAccelZ(accelZ);
+
+    }
+
+    public void finishTimer() {
+
+        Log.v("Hareye", "Accelerometer and ForegroundCheck disabled.");
+        sensorManager.unregisterListener(StudySession.this, accel);
+        foreground.stopForegroundCheck();
 
     }
     
@@ -608,6 +625,7 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
         if (documentId.isEmpty() == false) {
 
             double totalTimeStudied = 0;
+            double totalTimeDistracted = 0;
 
             Map<String, Double> courseStats = new HashMap<>();
             Map<String, Double> distractedStats = new HashMap<>();
@@ -626,12 +644,17 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
             for (int i = 0; i < duration.size(); i++) {
                 totalTimeStudied += Math.round(duration.get(i));
             }
+            for (int i = 0; i < distracted.size(); i++) {
+                totalTimeDistracted += Math.round(distracted.get(i));
+            }
 
             totalTimeStudied += Math.round(timeStudied);
+            totalTimeDistracted += Math.round(timeDistracted);
 
             DocumentReference userRef = db.collection("Statistics").document(documentId.get(0));
             userRef
-                    .update("totalTimeStudied", totalTimeStudied, "coursesTimeStudied", courseStats, "timeDistracted", distractedStats)
+                    .update("totalTimeStudied", totalTimeStudied, "totalTimeDistracted", totalTimeDistracted,
+                            "coursesTimeStudied", courseStats, "timeDistracted", distractedStats)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -724,6 +747,7 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
                     Map<String, Object> stats = new HashMap<>();
                     stats.put("Student_SA_ID", studentRef);
                     stats.put("totalTimeStudied", 0.0);
+                    stats.put("totalTimeDistracted", 0.0);
                     stats.put("timeDistracted", distractedStats);
                     stats.put("coursesTimeStudied", courseStats);
 
