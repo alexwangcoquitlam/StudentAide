@@ -9,56 +9,35 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+
+import org.w3c.dom.Document;
 
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class QuizDocument implements Parcelable {
+public class QuizDocument{
 
 
     private Timestamp quizDate;
     private String quizName;
-    private String educatorDocRef;
-    private String courseDocRef;
-
-    public ArrayList<QuizQuestions> Quiz;
+    private DocumentReference educatorDocRef;
+    private DocumentReference courseDocRef;
+    public ArrayList<QuizQuestions> quiz;
 
     public QuizDocument(){
     }
 
-    public QuizDocument(String courseDocRef, String educatorDocRef, String quizName, ArrayList<QuizQuestions> quizQuestionsArrayList, Timestamp releaseDate){
+    public QuizDocument(DocumentReference courseDocRef, DocumentReference educatorDocRef, String quizName, ArrayList<QuizQuestions> quizQuestionsArrayList, Timestamp releaseDate){
         this.courseDocRef = courseDocRef;
         this.educatorDocRef = educatorDocRef;
         this.quizName = quizName;
-        this.Quiz = quizQuestionsArrayList;
+        this.quiz = quizQuestionsArrayList;
         this.quizDate = releaseDate;
     }
 
-    protected QuizDocument(Parcel in) {
-        quizDate = in.readParcelable(Timestamp.class.getClassLoader());
-        quizName = in.readString();
-        educatorDocRef = in.readString();
-        courseDocRef = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<QuizDocument> CREATOR = new Creator<QuizDocument>() {
-        @Override
-        public QuizDocument createFromParcel(Parcel in) {
-            return new QuizDocument(in);
-        }
-
-        @Override
-        public QuizDocument[] newArray(int size) {
-            return new QuizDocument[size];
-        }
-    };
 
     public Timestamp getQuizDate() {
         return quizDate;
@@ -76,37 +55,27 @@ public class QuizDocument implements Parcelable {
         this.quizName = quizName;
     }
 
-    public String getEducatorDocRef() {
+    public DocumentReference getEducatorDocRef() {
         return educatorDocRef;
     }
 
-    public void setEducatorDocRef(String educatorDocRef) {
+    public void setEducatorDocRef(DocumentReference educatorDocRef) {
         this.educatorDocRef = educatorDocRef;
     }
 
-    public String getCourseDocRef() {
+    public DocumentReference getCourseDocRef() {
         return courseDocRef;
     }
 
-    public void setCourseDocRef(String courseDocRef) {
+    public void setCourseDocRef(DocumentReference courseDocRef) {
         this.courseDocRef = courseDocRef;
     }
 
     public ArrayList<QuizQuestions> getQuiz() {
-        return Quiz;
+        return quiz;
     }
 
     public void setQuiz(ArrayList<QuizQuestions> quiz) {
-        Quiz = quiz;
-    }
-
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-        dest.writeParcelable(quizDate, flags);
-        dest.writeString(quizName);
-        dest.writeString(educatorDocRef);
-        dest.writeString(courseDocRef);
+        this.quiz = quiz;
     }
 }

@@ -40,7 +40,7 @@ public class QuizQuestionsCreate extends AppCompatActivity {
     EditText mQuestionText, mOption1, mOption2, mOption3, mAnswerText;
     Button mCreateQuestions, mFinishQuiz;
 
-    QuizDocument extraQuiz;
+    QuizCreateHelper extraQuiz;
     Timestamp releaseDate;
     String course_SA_ID;
     String quizName;
@@ -61,6 +61,7 @@ public class QuizQuestionsCreate extends AppCompatActivity {
         releaseDate = extraQuiz.getQuizDate();
         educatorDocRef = db.collection("Educators").document(educator_SA_ID);
         course_SA_ID = extraQuiz.getCourseDocRef();
+        //courseDocRef = db.collection("Courses").document(course_SA_ID);
         quizName = extraQuiz.getQuizName();
 
         mCreateQuestions = findViewById(R.id.newQuestionButton);
@@ -155,9 +156,7 @@ public class QuizQuestionsCreate extends AppCompatActivity {
 
     //Need to pass in course name as intent and search
     public void addQuizDefinition(){
-
-        //String name = mCourseName.getText().toString().trim();
-
+        /*
         Map<String, Object> dataMap = new HashMap<>();
 
         dataMap.put("Course_SA_ID", course_SA_ID);
@@ -167,10 +166,13 @@ public class QuizQuestionsCreate extends AppCompatActivity {
 
 
         dataMap.put("Quiz", quizList);
+         */
+
+        QuizDocument quizDocument = new QuizDocument(null, educatorDocRef, quizName, quizList, releaseDate);
 
 
         db.collection(QUIZ_DB)
-                .add(dataMap)
+                .add(quizDocument)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
