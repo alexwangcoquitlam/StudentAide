@@ -37,7 +37,7 @@ public class QuizActivity extends AppCompatActivity {
     RadioButton mChoice1;
     RadioButton mChoice2;
     RadioButton mChoice3;
-    Button mSubmitButton;
+    Button mNextButton;
 
     private final String QUIZDB = "QuizDef";
     private final static String TAG = "QuizActivity";
@@ -52,24 +52,28 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_quiz); //Needs to be created
+        setContentView(R.layout.activity_quiz);
 
-        quizList = new ArrayList<QuizQuestions>();
+        mQuestionText = findViewById(R.id.questionLabel);
+        mAllChoices = findViewById(R.id.radioGroup);
+        mNextButton = findViewById(R.id.nextButton);
+
         currentQuestionIndex = 0;
         correctAnswers = 0;
 
-        /*
-        getAllQuestions(quizDocID, new QuizCallback() {
+        //put quizDocID
+        getAllQuestions("SEE0TEnnRsmhc9QFg7ay", new QuizCallback() {
             @Override
             public void onQuizCallback(ArrayList<QuizQuestions> quizQuestions) {
                 //Then use quizList outside
                 quizList = quizQuestions;
+                Log.d("Yu", "ArrayList is not populated?");
                 setQuizQuestion(currentQuestionIndex);
             }
         });
-         */
 
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+
+        mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(answerIsCorrect()){
@@ -140,6 +144,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void getAllQuestions(String documentID, QuizCallback callback){
+        Log.d("Yu", "Getting all questions");
         DocumentReference quizDocRef = db.collection(QUIZDB).document(documentID);
 
         quizDocRef.get()
@@ -148,11 +153,14 @@ public class QuizActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()){
                             //This will only look at one document
-                            ArrayList<QuizQuestions> quizQuestions = new ArrayList<QuizQuestions>();
+                            QuizDocument quizDocument = new QuizDocument();
+                            ArrayList<QuizQuestions> quizQuestions = new ArrayList<>();
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()){
                                 //Hopefully this populates arrayList with only the questions
-                                quizQuestions = document.toObject(QuizDocument.class).Quiz;
+                                quizDocument = document.toObject(QuizDocument.class);
+                                quizQuestions = quizDocument.getQuiz();
+                                Log.d("Yu" ,"Building quiz questions object");
                                 //Call method that builds quiz
                             }
                             callback.onQuizCallback(quizQuestions);

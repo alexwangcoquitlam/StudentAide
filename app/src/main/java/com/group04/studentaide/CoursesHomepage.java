@@ -46,9 +46,9 @@ public class CoursesHomepage extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_courses_homepage); //fill in
+        //setContentView(R.layout.activity_courses_homepage); //fill in
 
-        mCoursesSpinner = findViewById(R.id.courseSpinner); //Fill in
+        //mCoursesSpinner = findViewById(R.id.courseSpinner); //Fill in
 
         //Get chosen options documentID to be used in new activities
         mCoursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

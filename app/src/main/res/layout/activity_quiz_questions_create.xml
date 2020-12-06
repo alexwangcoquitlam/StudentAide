@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newQuestionButton"
-        app:layout_constraintVertical_bias="0.169" />
+        app:layout_constraintVertical_bias="0.281" />
 
     <EditText
         android:id="@+id/option3"
@@ -35,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option2"
-        app:layout_constraintVertical_bias="0.197" />
+        app:layout_constraintVertical_bias="0.071" />
 
     <EditText
         android:id="@+id/option2"
@@ -47,10 +47,10 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option1"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintVertical_bias="0.086" />
 
     <EditText
         android:id="@+id/questionBox"
@@ -82,6 +82,20 @@
         app:layout_constraintTop_toBottomOf="@+id/questionBox"
         app:layout_constraintVertical_bias="0.096" />
 
+
+    <EditText
+        android:id="@+id/quizAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="@string/answer_option"
+        android:inputType="numberSigned"
+        app:layout_constraintBottom_toTopOf="@+id/newQuestionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/option3" />
+
     <TextView
         android:id="@+id/quizCreateLabel2"
         android:layout_width="wrap_content"
@@ -109,6 +123,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option3"
-        app:layout_constraintVertical_bias="0.185" />
+        app:layout_constraintVertical_bias="0.498" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

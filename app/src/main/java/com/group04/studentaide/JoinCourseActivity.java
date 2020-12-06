@@ -515,7 +515,7 @@ public class JoinCourseActivity extends AppCompatActivity {
         Map<String, Object> inputMap = new HashMap<>();
         inputMap.put("CourseName", courseName);
         inputMap.put("Course_SA_ID", courseChosenDocReference);
-        inputMap.put("STUDENT_SA_ID", studentDocReference);
+        inputMap.put("Student_SA_ID", studentDocReference);
 
         studentDocRef.document().set(inputMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

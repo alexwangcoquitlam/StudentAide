@@ -64,6 +64,7 @@
     <string name="answer_1">Option 1</string>
     <string name="answer_2">Option 2</string>
     <string name="answer_3">Option 3</string>
+    <string name="answer_option">Answer (Ex. Option 1 = 1)</string>
     <string name="new_question">New Question</string>
     <string name="finish_quiz">Finish</string>
 

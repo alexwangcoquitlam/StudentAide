@@ -20,6 +20,7 @@ public class InformationRetrievalEducator {
     private static InformationRetrievalEducator ourInstance = null;
     private String educatorDocumentID;
     private DocumentReference institutionID;
+    private DocumentReference educatorDocRef;
     private FirebaseUser user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -39,6 +40,7 @@ public class InformationRetrievalEducator {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     educatorDocumentID = document.getId();
+                                    educatorDocRef = document.getReference();
                                     institutionID = document.getDocumentReference("Institution_ID");
 
                                     Log.d("WDF", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
@@ -66,6 +68,10 @@ public class InformationRetrievalEducator {
 
     public DocumentReference getInstitutionID(){
         return institutionID;
+    }
+
+    public DocumentReference getEducatorDocRef(){
+        return educatorDocRef;
     }
 
     public void updateID() {

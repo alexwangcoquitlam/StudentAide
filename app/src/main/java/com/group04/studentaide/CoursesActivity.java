@@ -29,11 +29,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CoursesActivity extends AppCompatActivity {
 
     Button createCourseClicked;
     Button joinCourseClicked;
+    Button openQuizzes;
     Spinner coursesDisplay;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -42,8 +45,11 @@ public class CoursesActivity extends AppCompatActivity {
 
     DocumentReference studentRef;
     String studentDocumentId;
+    String chosenCourseID;
+    String choice;
 
     ArrayList<String> courses = new ArrayList<String>();
+    Map<String, String> coursesHM = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +84,48 @@ public class CoursesActivity extends AppCompatActivity {
                 }
             });
 
+            openQuizzes = findViewById(R.id.openQuizzes);
             coursesDisplay = findViewById(R.id.courseDropdown);
+            courses.add(0, "Choose a Course");
+
             grabCourses(new Callback() {
                 @Override
                 public void call() {
                     ArrayAdapter<String> courseAdapter= new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, courses);
                     coursesDisplay.setAdapter(courseAdapter);
+                }
+            });
+
+            coursesDisplay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    choice = coursesDisplay.getItemAtPosition(position).toString();
+
+                    if(!choice.equals("Choose a Course")){
+                        chosenCourseID = coursesHM.get(choice);
+
+                        //Show buttons
+                        openQuizzes.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            openQuizzes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(choice.equals("Choose a Course")){
+                        Toast.makeText(getActivity(), "Please choose a course.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Intent intent = new Intent(getActivity(), QuizActivity.class);
+                        intent.putExtra("Course_SA_ID", chosenCourseID);
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -123,20 +165,39 @@ public class CoursesActivity extends AppCompatActivity {
 
         studentDocumentId = infoRetrieve.getDocumentID();
         studentRef = db.collection("Students").document(studentDocumentId);
+        Log.d("Yu", "Student ref grabbed.");
 
     }
 
     private void grabCourses(Callback callback) {
 
+        Log.d("Yu", "Now grabbing courses");
+
         db.collection("StudentCourses")
                 .whereEqualTo("Student_SA_ID", studentRef)
+                .orderBy("CourseName", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            //courses.add(0, "Choose a Course");
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String courseName = (String) document.get("CourseName");
+
+                                String path;
+                                String courseName = document.getString("CourseName");
+
+                                DocumentReference course_SA_ID;
+                                if(document.getDocumentReference("Course_SA_ID") != null){
+                                    course_SA_ID = document.getDocumentReference("Course_SA_ID");
+
+                                    if(course_SA_ID.getId() != null){
+                                        path = course_SA_ID.getId();
+                                        Log.d("Yu", "Course_SA_ID = " + path);
+                                        coursesHM.put(courseName, path);
+                                    }
+
+                                }
 
                                 courses.add(courseName);
                             }
