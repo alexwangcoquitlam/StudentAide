@@ -46,12 +46,18 @@ public class Timer {
     float accelZ;
     boolean distracted;
 
+    ForegroundCheck foreground = ForegroundCheck.getInstance();
+
     public Timer(StudySession activity) {
         study = activity;
     }
 
     public void setInstance(StudySession activity) {
         study = activity;
+    }
+
+    public static Timer getInstance() {
+        return ourInstance;
     }
 
     public static Timer getInstance(StudySession activity) {
@@ -133,6 +139,7 @@ public class Timer {
             public void onFinish() {
 
                 study.finishStore();
+                study.finishTimer();
 
             }
 
@@ -187,7 +194,7 @@ public class Timer {
 
     public void isDistracted() {
 
-        if (accelX > 0.1 || accelX < -0.1 || accelY > 0.1 || accelY < -0.1 || accelZ > 0.1 || accelZ < -0.1) {
+        if (accelX > 0.1 || accelX < -0.1 || accelY > 0.1 || accelY < -0.1 || accelZ > 0.1 || accelZ < -0.1 || foreground.paused == true) {
             if (distracted == false) {
                 Log.v("Hareye", "Is Distracted");
                 distracted = true;
