@@ -17,7 +17,6 @@
         <activity android:name=".QuizActivity" />
         <activity android:name=".QuizCreate"
             android:parentActivityName=".CoursesActivityEducator"/>
-        <activity android:name=".CoursesHomepage"/>
         <activity
             android:name=".LoginActivityGuest"
             android:parentActivityName=".MainActivity" />

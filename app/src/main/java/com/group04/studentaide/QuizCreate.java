@@ -36,7 +36,7 @@ public class QuizCreate extends AppCompatActivity {
     private Spinner dueDay, dueMonth, dueYear, dueHour, dueMinute;
 
     InformationRetrievalEducator mInformationRetrievalEducator = InformationRetrievalEducator.getInstance();
-    QuizDocument partialQuiz;
+    QuizCreateHelper partialQuiz;
 
     private String educatorDocRef;
     private String courseDocRef;
@@ -88,7 +88,7 @@ public class QuizCreate extends AppCompatActivity {
         //Date finalUserInputDate = userInputDate;
         quizQuestionsCreateOpen.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                QuizDocument intentQuiz = createQuiz();
+                QuizCreateHelper intentQuiz = createQuiz();
                 Intent quizQuestionsCreate = new Intent(QuizCreate.this, QuizQuestionsCreate.class);
                 quizQuestionsCreate.putExtra("partialQuiz", intentQuiz);
 
@@ -105,9 +105,9 @@ public class QuizCreate extends AppCompatActivity {
 
     }
 
-    private QuizDocument createQuiz(){
+    private QuizCreateHelper createQuiz(){
         
-        QuizDocument partialQuiz = null;
+        QuizCreateHelper partialQuiz = null;
         String nameInput = quizName.getText().toString();
         String yearInput = dueYear.getSelectedItem().toString();
         String monthInput = dueMonth.getSelectedItem().toString();
@@ -183,7 +183,7 @@ public class QuizCreate extends AppCompatActivity {
         if (quizDate.isBefore(currentDate)){
             Toast.makeText(this, "Date has already passed.", Toast.LENGTH_SHORT).show();
         }else{
-            partialQuiz = new QuizDocument(null, educatorDocRef, nameInput, null, quizReleaseDate);
+            partialQuiz = new QuizCreateHelper(null, educatorDocRef, nameInput, quizReleaseDate);
         }
 
         return partialQuiz;
