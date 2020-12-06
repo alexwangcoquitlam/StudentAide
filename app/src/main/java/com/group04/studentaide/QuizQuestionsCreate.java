@@ -4,8 +4,10 @@ package com.group04.studentaide;
 Written By: Yufeng Luo
 */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,17 +33,18 @@ public class QuizQuestionsCreate extends AppCompatActivity {
     private static final String QUIZ_DB = "QuizDefs";
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ArrayList<QuizQuestions> quizList;
+    ArrayList<QuizQuestions> quizList = new ArrayList<>();
+    DocumentReference courseDocRef;
+    DocumentReference educatorDocRef;
 
-    EditText mQuestionText;
-    EditText mCourseName;
-    EditText mOption1;
-    EditText mOption2;
-    EditText mOption3;
-    EditText mAnswerText;
-    Button mAddButton;
+    EditText mQuestionText, mOption1, mOption2, mOption3, mAnswerText;
+    Button mCreateQuestions, mFinishQuiz;
 
-    Button mSubmitButton;
+    QuizDocument extraQuiz;
+    Timestamp releaseDate;
+    String course_SA_ID;
+    String quizName;
+    String educator_SA_ID;
 
     private int count = 0;
 
@@ -48,20 +53,37 @@ public class QuizQuestionsCreate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_questions_create);
 
-        quizList = new ArrayList<QuizQuestions>();
+        if(getIntent().getExtras() != null){
+            extraQuiz = getIntent().getParcelableExtra("partialQuiz");
+        }
+
+        educator_SA_ID = extraQuiz.getEducatorDocRef();
+        releaseDate = extraQuiz.getQuizDate();
+        educatorDocRef = db.collection("Educators").document(educator_SA_ID);
+        course_SA_ID = extraQuiz.getCourseDocRef();
+        quizName = extraQuiz.getQuizName();
+
+        mCreateQuestions = findViewById(R.id.newQuestionButton);
+        mFinishQuiz = findViewById(R.id.finishQuizButton);
+        mQuestionText = findViewById(R.id.questionBox);
+        mOption1 = findViewById(R.id.option1);
+        mOption2 = findViewById(R.id.option2);
+        mOption3 = findViewById(R.id.option3);
+        mAnswerText = findViewById(R.id.quizAnswer);
+
 
         //Onclicklisteners
-        mAddButton.setOnClickListener(new View.OnClickListener() {
+        mCreateQuestions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addQuestion();
             }
         });
 
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+        mFinishQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addQuizDefinition(quizList);
+                addQuizDefinition();
             }
         });
     }
@@ -71,7 +93,9 @@ public class QuizQuestionsCreate extends AppCompatActivity {
     Object is then added to ArrayList holding QuizQuestion objects, this ArrayList will then be stored into Firestore
     After question is added to the list, EditText fields will be cleared.
     */
+
     public void addQuestion(){
+
 
         String inputQuestion = mQuestionText.getText().toString().trim();
         String inputOption1 = mOption1.getText().toString().trim();
@@ -120,6 +144,9 @@ public class QuizQuestionsCreate extends AppCompatActivity {
         mAnswerText.setText("");
 
         Toast.makeText(getActivity(), "Question " + count + " added.", Toast.LENGTH_SHORT).show();
+
+
+
     }
 
     public QuizQuestionsCreate getActivity(){
@@ -127,28 +154,29 @@ public class QuizQuestionsCreate extends AppCompatActivity {
     }
 
     //Need to pass in course name as intent and search
-    public void addQuizDefinition(ArrayList<QuizQuestions> quizList){
+    public void addQuizDefinition(){
 
-        String name = mCourseName.getText().toString().trim();
+        //String name = mCourseName.getText().toString().trim();
 
         Map<String, Object> dataMap = new HashMap<>();
 
-        //Fill these in
-        /*
-        dataMap.put("Course_SA_ID",);
-        dataMap.put("Educator_SA_ID", );
-        dataMap.put("Name", name);
-        dataMap.put("ReleaseDate",);
-        dataMap.put("Sequence",);
+        dataMap.put("Course_SA_ID", course_SA_ID);
+        dataMap.put("Educator_SA_ID",educatorDocRef);
+        dataMap.put("Name", quizName);
+        dataMap.put("ReleaseDate", releaseDate);
+
+
         dataMap.put("Quiz", quizList);
-         */
+
 
         db.collection(QUIZ_DB)
                 .add(dataMap)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-
+                        Toast.makeText(getActivity(), "Quiz created.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), CoursesActivityEducator.class);
+                        startActivity(intent);
                     }
                 });
 

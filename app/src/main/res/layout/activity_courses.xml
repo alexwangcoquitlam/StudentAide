@@ -53,18 +53,6 @@
         app:layout_constraintTop_toBottomOf="@+id/courseJoin"
         app:layout_constraintVertical_bias="0.26" />
 
-    <Spinner
-        android:id="@+id/courseDropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
-        app:layout_constraintVertical_bias="0.041" />
-
     <Button
         android:id="@+id/courseJoin"
         android:layout_width="143dp"
@@ -79,6 +67,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
         app:layout_constraintVertical_bias="0.072" />
+
+    <Spinner
+        android:id="@+id/courseDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F1EDED"
+        app:layout_constraintBottom_toTopOf="@+id/courseJoin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
+        app:layout_constraintVertical_bias="0.247" />
+
+    <Button
+        android:id="@+id/openQuizzes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quizzes"
+        app:layout_constraintBottom_toTopOf="@+id/courseJoin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseDropdown"
+        app:layout_constraintVertical_bias="0.329"
+        android:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
