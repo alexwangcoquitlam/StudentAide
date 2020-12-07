@@ -7,6 +7,9 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoadingScreen extends AppCompatActivity {
+    
+    InformationRetrievalEducator infoRetrieveEd = InformationRetrievalEducator.getInstance();
+    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
