@@ -31,6 +31,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import javax.security.auth.callback.Callback;
+
 public class LoginActivityGuest extends AppCompatActivity {
 
 
@@ -50,6 +52,7 @@ public class LoginActivityGuest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_guest);
+        Log.d("loginGuestReached", "Hi");
 
         signedInUser = findViewById(R.id.signedInUserLabel);
         mlogInButton = (Button) findViewById(R.id.login2);
@@ -89,8 +92,6 @@ public class LoginActivityGuest extends AppCompatActivity {
     // Same login function as LoginActivity
     private void loginFire(){
         mAuth.signOut();
-        infoRetrieve.updateID();
-        infoRetrieveEd.updateID();
 
         minputEmail = findViewById(R.id.emailInputLogin2);
         minputPassword = findViewById(R.id.password2);
@@ -118,21 +119,26 @@ public class LoginActivityGuest extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa135", "signInWithEmail:success");
+                                Log.v("Hareye", "Logging in from LoginActivityGuest");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                infoRetrieveEd.updateID();
-                                infoRetrieve.updateID();
-                                if (infoRetrieveEd.getEducatorDocumentID() != null){
-                                    Log.d("loginGuestCheck", "Educator");
-                                    Intent returnMain = new Intent(LoginActivityGuest.this, MainActivityEducator.class);
-                                    Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                    startActivity(returnMain);
-                                }
-                                else {
-                                    Log.d("loginGuestCheck", "Student");
-                                    Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
-                                    Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                    startActivity(returnMain);
-                                }
+
+                                updateID(new Callback() {
+                                    @Override
+                                    public void call() {
+                                        Log.v("Hareye", "Callback");
+                                        if (infoRetrieveEd.getEducatorDocumentID() != null){
+                                            Intent returnMain = new Intent(LoginActivityGuest.this, MainActivityEducator.class);
+                                            Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                            startActivity(returnMain);
+                                        }
+                                        else {
+                                            Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
+                                            Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                            startActivity(returnMain);
+                                        }
+                                    }
+                                });
+
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("hwa136", "signInWithEmail:failure", task.getException());
@@ -149,6 +155,23 @@ public class LoginActivityGuest extends AppCompatActivity {
 
     }
 
+    private void updateID(Callback callback) {
+
+        infoRetrieveEd.updateID(new InformationRetrievalEducator.CallbackEd() {
+            @Override
+            public void callEd() {
+                callback.call();
+            }
+        });
+        infoRetrieve.updateID(new InformationRetrieval.CallbackSt() {
+            @Override
+            public void callSt() {
+                callback.call();
+            }
+        });
+
+    }
+
     // Uses Firebase authentication to sign the user out.
     private void signOut(){
         if (user != null) {
@@ -162,5 +185,9 @@ public class LoginActivityGuest extends AppCompatActivity {
             Toast.makeText(LoginActivityGuest.this, "You are not signed in.", Toast.LENGTH_LONG).show();
     }
 
+    // Callback function
+    public interface Callback {
+        void call();
+    }
 
 }
