@@ -111,7 +111,7 @@ public class CourseCreation extends AppCompatActivity {
             Map<String, Object> Courses = new HashMap<>();
             Courses.put("CourseName", name);
             Courses.put("Student_SA_ID", studentRef);
-            Courses.put("Course_SA_ID", placeholder);
+            Courses.put("Course_SA_ID", null);
 
             db.collection("StudentCourses")
                     .add(Courses)
