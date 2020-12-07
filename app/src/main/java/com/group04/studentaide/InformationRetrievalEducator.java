@@ -15,10 +15,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
 
+import javax.security.auth.callback.Callback;
+
 public class InformationRetrievalEducator {
 
     private static InformationRetrievalEducator ourInstance = null;
-    private String educatorDocumentID;
+    String educatorDocumentID = null;
     private DocumentReference institutionID;
     private DocumentReference educatorDocRef;
     private FirebaseUser user;
@@ -40,8 +42,12 @@ public class InformationRetrievalEducator {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     educatorDocumentID = document.getId();
+                                    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
+                                    infoRetrieve.studentDocumentID = null;
                                     educatorDocRef = document.getReference();
                                     institutionID = document.getDocumentReference("Institution_ID");
+
+                                    Log.v("Hareye", "Grabbing educatorDocumentID");
 
                                     Log.d("WDF", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
                                 }
@@ -90,7 +96,10 @@ public class InformationRetrievalEducator {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d("documentIDGet", "Document ID is: " + document.getId());
+                                    Log.v("Hareye", "Updating Educator ID");
                                     educatorDocumentID = document.getId();
+                                    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
+                                    infoRetrieve.studentDocumentID = null;
                                 }
                             } else {
                                 Log.v("signedinwrong", "you're signed into the wrong account for testing");
@@ -104,6 +113,47 @@ public class InformationRetrievalEducator {
 
         }
 
+    }
+
+    public void updateID(CallbackEd callback) {
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            String uid = user.getUid();
+            db.collection("Educators")
+                    .whereEqualTo("User_ID", uid)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("documentIDGet", "Document ID is: " + document.getId());
+                                    Log.v("Hareye", "Updating Educator ID");
+                                    educatorDocumentID = document.getId();
+                                    InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
+                                    infoRetrieve.studentDocumentID = null;
+                                    callback.callEd();
+                                }
+                            } else {
+                                Log.v("signedinwrong", "you're signed into the wrong account for testing");
+                            }
+                        }
+                    });
+
+        } else {
+
+            educatorDocumentID = null;
+
+        }
+
+    }
+
+    // Callback function
+    public interface CallbackEd {
+        void callEd();
     }
 
 }
