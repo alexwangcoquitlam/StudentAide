@@ -7,6 +7,20 @@
     android:background="#01003B"
     tools:context=".CoursesActivity">
 
+    <Button
+        android:id="@+id/openQuizzes"
+        android:layout_width="143dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonbackground"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/open_quizzes"
+        android:textColor="#01003B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
+        app:layout_constraintVertical_bias="0.677" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -51,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courseJoin"
-        app:layout_constraintVertical_bias="0.147" />
+        app:layout_constraintVertical_bias="0.123" />
 
     <Button
         android:id="@+id/courseJoin"
@@ -64,10 +78,9 @@
         android:textColor="#01003B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <Spinner
         android:id="@+id/courseDropdown"
@@ -80,19 +93,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
         app:layout_constraintVertical_bias="0.247" />
-
-    <Button
-        android:id="@+id/openQuizzes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/retrieve_quiz"
-        app:layout_constraintBottom_toTopOf="@+id/courseJoin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseDropdown"
-        app:layout_constraintVertical_bias="0.329"
-        android:visibility="gone"/>
 
     <Spinner
         android:id="@+id/quizDropDown"

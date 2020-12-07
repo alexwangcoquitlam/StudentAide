@@ -19,9 +19,10 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/questionNumberLabel"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintVertical_bias="0.09" />
 
     <TextView
         android:id="@+id/questionNumberLabel"
@@ -57,7 +58,6 @@
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="132dp"
         android:background="@drawable/buttonbackground"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/next_question"
@@ -65,17 +65,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintVertical_bias="0.098" />
 
     <RadioGroup
 
         android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="157dp"
+        android:layout_height="91dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/quizLabel">
+        app:layout_constraintTop_toBottomOf="@+id/questionLabel"
+        app:layout_constraintVertical_bias="0.111">
 
         <RadioButton
             android:id="@+id/questionAnswer1"
@@ -86,13 +90,7 @@
             android:textColor="#01003B"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#FFFFFF"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.513"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionLabel"
-            app:layout_constraintVertical_bias="0.083" />
+            android:textSize="20sp" />
 
         <RadioButton
             android:id="@+id/questionAnswer2"

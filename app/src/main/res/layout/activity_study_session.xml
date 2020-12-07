@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="49dp"
         android:background="#FFFFFF"
         app:itemIconTint="#01003B"
         app:itemTextColor="#01003B"
@@ -20,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/planSession"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/bottom_navigation" />
 
@@ -28,7 +27,7 @@
         android:id="@+id/courses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@drawable/buttonbackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -40,17 +39,31 @@
         android:id="@+id/startTime"
         android:layout_width="224dp"
         android:layout_height="40dp"
-        android:layout_marginTop="197dp"
         android:background="@drawable/buttonbackground"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/start_label"
         android:textColor="#01003B"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeInput"
-        app:layout_constraintVertical_bias="0.133" />
+        app:layout_constraintVertical_bias="0.641" />
+
+    <Button
+        android:id="@+id/pauseTime"
+        android:layout_width="224dp"
+        android:layout_height="40dp"
+        android:background="@drawable/buttonbackground"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/pause_label"
+        android:textColor="#01003B"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startTime"
+        app:layout_constraintVertical_bias="0.163" />
 
     <Button
         android:id="@+id/planSession"
@@ -60,27 +73,12 @@
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/plan_label"
         android:textColor="#01003B"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pauseTime"
-        app:layout_constraintVertical_bias="0.137" />
-
-    <Button
-        android:id="@+id/pauseTime"
-        android:layout_width="224dp"
-        android:layout_height="40dp"
-        android:text="@string/pause_label"
-        android:textColor="#01003B"
-        android:background="@drawable/buttonbackground"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startTime"
-        app:layout_constraintVertical_bias="0.091" />
+        app:layout_constraintVertical_bias="0.357" />
 
     <TextView
         android:id="@+id/timeLeft"
@@ -88,7 +86,7 @@
         android:layout_height="wrap_content"
         android:text="@string/fresh_timer"
         android:textColor="#FFFFFF"
-        android:textSize="100sp"
+        android:textSize="80sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -151,11 +149,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/buttonbackground"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/startTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courses"
-        app:layout_constraintVertical_bias="0.223" />
+        app:layout_constraintVertical_bias="0.343" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
