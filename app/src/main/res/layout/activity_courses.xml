@@ -85,7 +85,7 @@
         android:id="@+id/openQuizzes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quizzes"
+        android:text="@string/retrieve_quiz"
         app:layout_constraintBottom_toTopOf="@+id/courseJoin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -93,6 +93,18 @@
         app:layout_constraintTop_toBottomOf="@+id/courseDropdown"
         app:layout_constraintVertical_bias="0.329"
         android:visibility="gone"/>
+
+    <Spinner
+        android:id="@+id/quizDropDown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/courseJoin"
+        android:background="#F1EDED"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseDropdown"
+        app:layout_constraintVertical_bias="0.161" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

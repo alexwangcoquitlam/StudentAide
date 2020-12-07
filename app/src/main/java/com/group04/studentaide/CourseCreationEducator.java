@@ -32,14 +32,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
-Use information Retrieval
-Educator created account -> inside of Educator Field will need UID field
+Written By: Yufeng Luo
+
+Educators can create new courses where students will then be able to join
+Through this Course Document ID, we will be able to determine who is enrolled in the class
+
+** NOT IMPLEMENTED **
+- Usage of quizzes field
 */
 
 public class CourseCreationEducator extends AppCompatActivity {
 
     EditText mInputCourseName;
-    EditText mInputInstitutionName;
     Switch mQuizzes;
     Button mCreateCourse;
 
@@ -56,21 +60,25 @@ public class CourseCreationEducator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_creation_educator);
 
-        getEducatorDocument();
+        if(user == null){
+            Toast.makeText(this, "Please sign in.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), CoursesActivityEducator.class);
+            startActivity(intent);
+        }else {
 
-        mInputCourseName = findViewById(R.id.inputCourseName2);
-        //mInstitutionSpinner = findViewById(R.id.institutionInput2);
-        mCreateCourse = findViewById(R.id.createButton2);
-        mQuizzes = findViewById(R.id.allowQuiz2);
+            getEducatorDocument();
 
-        mCreateCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createCourseEducator();
-            }
-        });
+            mInputCourseName = findViewById(R.id.inputCourseName2);
+            mCreateCourse = findViewById(R.id.createButton2);
+            mQuizzes = findViewById(R.id.allowQuiz2);
 
-
+            mCreateCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createCourseEducator();
+                }
+            });
+        }
     }
 
     public void createCourseEducator() {
@@ -83,7 +91,6 @@ public class CourseCreationEducator extends AppCompatActivity {
             mInputCourseName.setError("Please enter a course name");
             mInputCourseName.requestFocus(); // requestFocus will make the focus go to this box that is empty
         }
-
 
         if (mQuizzes.isChecked()) {
             quiz = "true";
@@ -102,10 +109,9 @@ public class CourseCreationEducator extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        //When course is succesfully created, user is taken back to courses home page
                         Toast.makeText(getActivity(), courseName + " created.", Toast.LENGTH_SHORT).show();
-                        //Log.d("WDF", courseName + " " + educatorDocumentID + " " + institutionID);
-
-                        Intent intent = new Intent(getActivity(), CoursesActivity.class);
+                        Intent intent = new Intent(getActivity(), CoursesActivityEducator.class);
                         startActivity(intent);
                     }
                 });
@@ -125,7 +131,9 @@ public class CourseCreationEducator extends AppCompatActivity {
         void call(ArrayList<String> institutionList);
     }
 
-
+    /*
+    Method to grab educatorDocumentID so we know which educator is creating the course
+    */
     public void getEducatorDocument() {
 
         if (user != null) {
@@ -141,12 +149,11 @@ public class CourseCreationEducator extends AppCompatActivity {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     educatorDocumentID = document.getReference();
                                     institutionID = document.getDocumentReference("Institution_ID");
-
-                                    Log.d("WDF", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
+                                    Log.d("Yu", "Ed ID: " + educatorDocumentID + " " + " Ins ID: " + institutionID);
                                 }
 
                             } else {
-                                Log.d("WDF", "Error retrieving educator document ID");
+                                Log.d("Yu", "Error retrieving educator document ID");
                             }
                         }
                     });

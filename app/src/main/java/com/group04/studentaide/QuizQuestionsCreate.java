@@ -2,6 +2,17 @@ package com.group04.studentaide;
 
 /*
 Written By: Yufeng Luo
+
+Educators have the ability to create questions for their quiz
+Completed quiz is then uploaded to database
+
+Quiz Definiton takes:
+- Associated Course Document Reference - course_SA_ID
+- Associated Educator Document Reference - educator_SA_ID
+- Quiz Name
+- ArrayList of QuizQuestions objects
+- ReleaseDate that is set in the previous activity (QuizCreate.java)
+
 */
 
 import android.content.Intent;
@@ -154,28 +165,17 @@ public class QuizQuestionsCreate extends AppCompatActivity {
         return this;
     }
 
-    //Need to pass in course name as intent and search
+    /*
+    Method stores the completed quiz object to firestore
+    */
     public void addQuizDefinition(){
-        /*
-        Map<String, Object> dataMap = new HashMap<>();
-
-        dataMap.put("Course_SA_ID", course_SA_ID);
-        dataMap.put("Educator_SA_ID",educatorDocRef);
-        dataMap.put("Name", quizName);
-        dataMap.put("ReleaseDate", releaseDate);
-
-
-        dataMap.put("Quiz", quizList);
-         */
-
         QuizDocument quizDocument = new QuizDocument(courseDocRef, educatorDocRef, quizName, quizList, releaseDate);
-
-
         db.collection(QUIZ_DB)
                 .add(quizDocument)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
+                        //When succesfully created, takes users back to Course homepage
                         Toast.makeText(getActivity(), "Quiz created.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), CoursesActivityEducator.class);
                         startActivity(intent);

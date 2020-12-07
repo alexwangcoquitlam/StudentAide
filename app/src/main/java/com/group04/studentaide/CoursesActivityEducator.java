@@ -26,6 +26,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
+Written By: Yufeng Luo
+
+Educator is able to:
+Create a new Course
+Create a new Quiz
+
+** NOT IMPLEMENTED **
+- View students that are enrolled in course
+- View students grades on quizzes
+- Deletion and editing of quizzes
+- Remove students from course
+- Assign Teaching Assistants
 
 */
 

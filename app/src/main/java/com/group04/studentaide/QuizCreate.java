@@ -2,6 +2,9 @@ package com.group04.studentaide;
 
 /*
 Written By: Yufeng Luo
+
+Activity is used by Educator to set the time, date, and name of their quiz
+
 */
 
 import android.content.Intent;
@@ -88,9 +91,13 @@ public class QuizCreate extends AppCompatActivity {
         ArrayAdapter<String> minutesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, minutes);
         dueMinute.setAdapter(minutesAdapter);
 
-        //QuizDocument partialQuiz = new QuizDocument(null, educatorDocRef, nameInput,  null, userInputDate);
+        /*
+        When the educator fills in all fields available, quizDateOkay will be true and be given the
+        go-ahead to start creating quiz questions
 
-        //Date finalUserInputDate = userInputDate;
+        If a field is not filled or the date has already been passed, a toast message will appear
+        asking the educator to fix whatever field is wrong
+        */
         quizQuestionsCreateOpen.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
 
@@ -128,15 +135,13 @@ public class QuizCreate extends AppCompatActivity {
         String minuteInput = null;
 
         int monthInt = 0;
-
+        //Check that user has inputted a quiz name
         if (TextUtils.isEmpty(nameInput)){
             quizName.setError("Please enter a quiz name.");
             quizName.requestFocus();
         }
 
-        //String quizDate = yearInput + "-" + monthInput + "-" + dayInput + " 'at' " + hourInput + ":" + minuteInput;
-
-
+        //Check validity of spinners
         if (dueYear.getSelectedItem().equals("Choose a year") || dueDay.getSelectedItem().equals("Choose a day") || dueHour.getSelectedItem().equals("Choose a hour")
             || dueMinute.getSelectedItem().equals("Choose a minute")) {
             Toast.makeText(this, "Please fill out all options", Toast.LENGTH_SHORT).show();
@@ -188,6 +193,8 @@ public class QuizCreate extends AppCompatActivity {
             hourInput = dueHour.getSelectedItem().toString();
             minuteInput = dueMinute.getSelectedItem().toString();
 
+
+            //Building Timestamp object
             int day = Integer.parseInt(dayInput);
             int year = Integer.parseInt(yearInput);
             int hour = Integer.parseInt(hourInput);
@@ -206,6 +213,7 @@ public class QuizCreate extends AppCompatActivity {
             if (quizDate.isBefore(currentDate)){
                 Toast.makeText(this, "Date has already passed", Toast.LENGTH_SHORT).show();
             }else{
+                //Everything okay, create partial Quiz object to be completed in QuizQuestionsCreate.java
                 partialQuiz = new QuizCreateHelper(courseDocRef, educatorDocRef, nameInput, quizReleaseDate);
                 quizDateOkay = true;
             }

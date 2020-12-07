@@ -34,10 +34,8 @@ import java.util.Map;
 
 public class CoursesActivity extends AppCompatActivity {
 
-    Button createCourseClicked;
-    Button joinCourseClicked;
-    Button openQuizzes;
-    Spinner coursesDisplay;
+    Button joinCourseClicked, getQuizzes;
+    Spinner coursesDisplay, quizDisplay;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -50,6 +48,8 @@ public class CoursesActivity extends AppCompatActivity {
 
     ArrayList<String> courses = new ArrayList<String>();
     Map<String, String> coursesHM = new HashMap<>();
+
+    Map<String, String> quizHM = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +79,9 @@ public class CoursesActivity extends AppCompatActivity {
                 }
             });
 
-            openQuizzes = findViewById(R.id.openQuizzes);
+            getQuizzes = findViewById(R.id.openQuizzes);
             coursesDisplay = findViewById(R.id.courseDropdown);
+            quizDisplay = findViewById(R.id.quizDropDown);
             courses.add(0, "Choose a Course");
 
             grabCourses(new Callback() {
@@ -100,7 +101,8 @@ public class CoursesActivity extends AppCompatActivity {
                         chosenCourseID = coursesHM.get(choice);
 
                         //Show buttons
-                        openQuizzes.setVisibility(View.VISIBLE);
+                        getQuizzes.setVisibility(View.VISIBLE);
+
                     }
                 }
 
@@ -110,17 +112,45 @@ public class CoursesActivity extends AppCompatActivity {
                 }
             });
 
-            openQuizzes.setOnClickListener(new View.OnClickListener() {
+            getQuizzes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     if(choice.equals("Choose a Course")){
                         Toast.makeText(getActivity(), "Please choose a course.", Toast.LENGTH_SHORT).show();
                     }else {
-                        Intent intent = new Intent(getActivity(), QuizActivity.class);
-                        intent.putExtra("Course_SA_ID", chosenCourseID);
-                        startActivity(intent);
+                        getQuizzes.setVisibility(View.INVISIBLE);
+                        retrieveQuizzes(chosenCourseID, new QuizCallback() {
+                            @Override
+                            public void quizCall(ArrayList<String> quizNames) {
+                                ArrayAdapter<String> quizAdapter= new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, quizNames);
+                                quizDisplay.setAdapter(quizAdapter);
+                            }
+                        });
                     }
+                }
+            });
+
+            quizDisplay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String choice = quizDisplay.getItemAtPosition(position).toString();
+
+                    if(choice.equals("Select a Quiz")){
+                        //Do nothing
+                    }else{
+                        String chosenQuizID = quizHM.get(choice);
+
+                        Intent intent = new Intent(getActivity(), QuizActivity.class);
+                        intent.putExtra("quizID", chosenQuizID);
+                        startActivity(intent);
+
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
 
@@ -150,9 +180,15 @@ public class CoursesActivity extends AppCompatActivity {
             };
 
     private CoursesActivity getActivity() {
-
         return this;
+    }
 
+    public interface Callback {
+        void call();
+    }
+
+    public interface QuizCallback{
+        void quizCall(ArrayList<String> quizNames);
     }
 
     // Return current users document ID and document reference path
@@ -161,7 +197,6 @@ public class CoursesActivity extends AppCompatActivity {
         studentDocumentId = infoRetrieve.getDocumentID();
         studentRef = db.collection("Students").document(studentDocumentId);
         Log.d("Yu", "Student ref grabbed.");
-
     }
 
     private void grabCourses(Callback callback) {
@@ -205,10 +240,36 @@ public class CoursesActivity extends AppCompatActivity {
 
     }
 
+    public void retrieveQuizzes(String chosenCourseID, QuizCallback quizCallback){
 
-    public interface Callback {
-        void call();
+        DocumentReference chosenCourseDocRef = db.collection("Courses").document(chosenCourseID);
+
+        db.collection("QuizDefs")
+                .whereEqualTo("course_SA_ID", chosenCourseDocRef)
+                .orderBy("releaseDate", Query.Direction.ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            ArrayList<String> quizList = new ArrayList<>();
+                            quizList.add(0, "Select a Quiz");
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                String name = document.getString("quiz_Name");
+                                String quizID = document.getId();
+
+                                quizList.add(name);
+                                quizHM.put(name, quizID);
+                            }
+                            quizCallback.quizCall(quizList);
+                        }else{
+                            Log.d("Yu", "Error retrieving quiz documents");
+                        }
+                    }
+                });
     }
+
+
 
     public void courseCreate(View view){
         Intent create = new Intent(this, CourseCreation.class);
