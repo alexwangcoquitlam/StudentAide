@@ -60,17 +60,12 @@ public class CoursesActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        User educatorCheck = new User();
-
-        boolean isEducator = educatorCheck.getEducator();
-        String str = Boolean.toString(isEducator);
-        Log.d("Yu", str);
-
         //user == null here
-        if (isEducator) {
+        if (user == null) {
 
-            Log.v("Hareye", "Test");
-
+            Toast.makeText(getActivity(), "Please sign in.", Toast.LENGTH_SHORT).show();
+            Intent main = new Intent(this, MainActivity.class);
+            startActivity(main);
         } else {
 
             grabDocumentReference();
