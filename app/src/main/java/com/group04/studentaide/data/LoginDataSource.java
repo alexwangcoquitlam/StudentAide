@@ -1,6 +1,7 @@
 package com.example.myapplication.data;
 
 import com.example.myapplication.data.model.LoggedInUser;
+import com.group04.studentaide.Result;
 
 import java.io.IOException;
 

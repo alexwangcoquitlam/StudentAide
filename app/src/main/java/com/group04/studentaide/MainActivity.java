@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             .build();
 
     InformationRetrieval infoRetrieve = InformationRetrieval.getInstance();
-
+    InformationRetrievalEducator infoRetrieveEd = InformationRetrievalEducator.getInstance();
     private Button loginScreen;
     private TextView greeting;
 

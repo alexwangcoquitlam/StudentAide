@@ -166,7 +166,7 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
             setTime = findViewById(R.id.setTime);
             textCountdownTimer = findViewById(R.id.timeLeft);
             startTime = findViewById(R.id.startTime);
-            
+
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
             bottomNav.setOnNavigationItemSelectedListener(navListener);
             //resetTime = findViewById(R.id.resetTimer);
@@ -458,7 +458,7 @@ public class StudySession extends AppCompatActivity implements SensorEventListen
         foreground.stopForegroundCheck();
 
     }
-    
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override

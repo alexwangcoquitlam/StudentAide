@@ -50,7 +50,6 @@ public class LoginActivityGuest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_guest);
-        Log.d("loginGuestReached", "Hi");
 
         signedInUser = findViewById(R.id.signedInUserLabel);
         mlogInButton = (Button) findViewById(R.id.login2);
@@ -91,6 +90,7 @@ public class LoginActivityGuest extends AppCompatActivity {
     private void loginFire(){
         mAuth.signOut();
         infoRetrieve.updateID();
+        infoRetrieveEd.updateID();
 
         minputEmail = findViewById(R.id.emailInputLogin2);
         minputPassword = findViewById(R.id.password2);
@@ -119,14 +119,16 @@ public class LoginActivityGuest extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("hwa135", "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                infoRetrieveEd.updateID();
+                                infoRetrieve.updateID();
                                 if (infoRetrieveEd.getEducatorDocumentID() != null){
-                                    infoRetrieveEd.updateID();
+                                    Log.d("loginGuestCheck", "Educator");
                                     Intent returnMain = new Intent(LoginActivityGuest.this, MainActivityEducator.class);
                                     Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
                                     startActivity(returnMain);
                                 }
                                 else {
-                                    infoRetrieve.updateID();
+                                    Log.d("loginGuestCheck", "Student");
                                     Intent returnMain = new Intent(LoginActivityGuest.this, MainActivity.class);
                                     Toast.makeText(LoginActivityGuest.this, "Login successful", Toast.LENGTH_SHORT).show();
                                     startActivity(returnMain);

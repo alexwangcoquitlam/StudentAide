@@ -107,9 +107,9 @@ public class StudyStatistics extends AppCompatActivity {
 			courseSpinner = (Spinner) findViewById(R.id.chooseCourseStats);
 			timeCount = (TextView) findViewById(R.id.totalTimeCount);
 			chart = (PieChart) findViewById(R.id.chart);
-			
-			BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);	
-			bottomNav.setOnNavigationItemSelectedListener(navListener);	
+
+			BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+			bottomNav.setOnNavigationItemSelectedListener(navListener);
 
 			chart.setNoDataText("No Study Sessions Found.");
 			chart.setRotationEnabled(true);
@@ -231,26 +231,26 @@ public class StudyStatistics extends AppCompatActivity {
 		}
 
 	}
-	
-	private BottomNavigationView.OnNavigationItemSelectedListener navListener =	
-			new BottomNavigationView.OnNavigationItemSelectedListener() {	
-				@Override	
-				public boolean onNavigationItemSelected(@NonNull MenuItem item) {	
-					switch(item.getItemId()){	
-						case R.id.nav_study:	
-							Intent study = new Intent(StudyStatistics.this, StudySession.class);	
-							startActivity(study);	
-							break;	
-						case R.id.nav_courses:	
-							Intent courses = new Intent(StudyStatistics.this, CoursesActivity.class);	
-							startActivity(courses);	
-							break;	
-						case R.id.nav_home:	
-							Intent main = new Intent(StudyStatistics.this, MainActivity.class);	
-							startActivity(main);	
-					}	
-					return true;	
-				}	
+
+	private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+			new BottomNavigationView.OnNavigationItemSelectedListener() {
+				@Override
+				public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+					switch(item.getItemId()){
+						case R.id.nav_study:
+							Intent study = new Intent(StudyStatistics.this, StudySession.class);
+							startActivity(study);
+							break;
+						case R.id.nav_courses:
+							Intent courses = new Intent(StudyStatistics.this, CoursesActivity.class);
+							startActivity(courses);
+							break;
+						case R.id.nav_home:
+							Intent main = new Intent(StudyStatistics.this, MainActivity.class);
+							startActivity(main);
+					}
+					return true;
+				}
 			};
 
 	// Return current activity

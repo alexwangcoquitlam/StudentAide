@@ -102,7 +102,6 @@ public class InformationRetrieval {
     // Returns the user's document ID
     public String getDocumentID() {
 
-        Log.v("Hareye", studentDocumentID);
         return studentDocumentID;
 
     }

@@ -1,6 +1,7 @@
 package com.example.myapplication.data;
 
 import com.example.myapplication.data.model.LoggedInUser;
+import com.group04.studentaide.Result;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -10,18 +11,18 @@ public class LoginRepository {
 
     private static volatile LoginRepository instance;
 
-    private LoginDataSource dataSource;
+    private com.example.myapplication.data.LoginDataSource dataSource;
 
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private LoginRepository(LoginDataSource dataSource) {
+    private LoginRepository(com.example.myapplication.data.LoginDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public static LoginRepository getInstance(LoginDataSource dataSource) {
+    public static LoginRepository getInstance(com.example.myapplication.data.LoginDataSource dataSource) {
         if (instance == null) {
             instance = new LoginRepository(dataSource);
         }
