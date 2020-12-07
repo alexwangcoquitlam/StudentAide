@@ -115,7 +115,7 @@ public class CoursesActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if(choice.equals("Choose a Course") || !quizHM.containsKey(choice)){
+                    if(choice.equals("Choose a Course")){
                         Toast.makeText(getActivity(), "Please choose a valid course.", Toast.LENGTH_SHORT).show();
                     }else {
                         getQuizzes.setVisibility(View.INVISIBLE);
@@ -136,7 +136,7 @@ public class CoursesActivity extends AppCompatActivity {
                     String choice = quizDisplay.getItemAtPosition(position).toString();
 
                     if(choice.equals("Select a Quiz")){
-                        //Do nothing
+                        Toast.makeText(getActivity(),"Please select a quiz.", Toast.LENGTH_SHORT).show();
                     }else{
                         String chosenQuizID = quizHM.get(choice);
 
