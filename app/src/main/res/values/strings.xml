@@ -69,8 +69,12 @@
     <string name="finish_quiz">Finish</string>
 
     <string name="do_quiz_label">Quiz __</string>
+    <string name="due">Due:</string>
     <string name="question_label">Question #</string>
     <string name="question_name_label">Question</string>
     <string name="next_question">Next</string>
+
+    <string name="open_quizzes">Do Quiz</string>
+    <string name="answer_box">Answer</string>
 
 </resources>

@@ -8,6 +8,19 @@
     tools:context=".QuizCreate">
 
     <TextView
+        android:id="@+id/dueDateLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dueDateMinute"
+        app:layout_constraintStart_toEndOf="@+id/dueDateHour"
+        app:layout_constraintTop_toBottomOf="@+id/dueDateMonth"
+        app:layout_constraintVertical_bias="0.09" />
+
+    <TextView
         android:id="@+id/quizCreateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +34,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Spinner
+        android:id="@+id/dueDateMonth"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.088" />
+
     <Button
         android:id="@+id/quizQuestionsActivityOpen"
         android:layout_width="145dp"
@@ -32,68 +57,44 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
-        app:layout_constraintVertical_bias="0.221" />
+        app:layout_constraintTop_toBottomOf="@+id/quizName"
+        app:layout_constraintVertical_bias="0.279" />
 
     <Spinner
-        android:id="@+id/dueDateMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/dueDateDay"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintEnd_toStartOf="@+id/dueDateMonth"
+        app:layout_constraintHorizontal_bias="0.671"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quizCreateLabel"
-        app:layout_constraintVertical_bias="0.387" />
-
-    <Spinner
-        android:id="@+id/dueDateDay3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/dueDateMinute"
-        app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dueDateMonth"
-        app:layout_constraintVertical_bias="0.168" />
-
-    <Spinner
-        android:id="@+id/dueDateMinute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.676"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dueDateMonth"
-        app:layout_constraintVertical_bias="0.168" />
-
-    <Spinner
-        android:id="@+id/dueDateYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.349"
-        app:layout_constraintStart_toEndOf="@+id/dueDateMonth"
-        app:layout_constraintTop_toBottomOf="@+id/quizCreateLabel"
-        app:layout_constraintVertical_bias="0.387" />
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.088" />
 
     <Spinner
         android:id="@+id/dueDateHour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.323"
+        app:layout_constraintHorizontal_bias="0.309"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dueDateMonth"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/dueDateDay"
+        app:layout_constraintVertical_bias="0.064" />
+
+    <Spinner
+        android:id="@+id/dueDateMinute"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.69"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dueDateYear"
+        app:layout_constraintVertical_bias="0.064" />
 
     <EditText
         android:id="@+id/quizName"
@@ -102,23 +103,56 @@
         android:background="#FFFFFF"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="@string/quiz_name_hint"
+        android:text="@string/quiz_name_hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dueDateMinute"
-        app:layout_constraintVertical_bias="0.208" />
+        app:layout_constraintVertical_bias="0.092" />
+
+    <TextView
+        android:id="@+id/dueDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/due"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createQuizLogo"
+        app:layout_constraintVertical_bias="0.015" />
+
+    <Spinner
+        android:id="@+id/dueDateYear"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.338"
+        app:layout_constraintStart_toEndOf="@+id/dueDateMonth"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.088" />
 
     <ImageView
         android:id="@+id/createQuizLogo"
-        android:layout_width="223dp"
-        android:layout_height="215dp"
+        android:layout_width="198dp"
+        android:layout_height="193dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quizCreateLabel"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@mipmap/applogo_foreground" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

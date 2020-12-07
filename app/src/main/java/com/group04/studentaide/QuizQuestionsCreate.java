@@ -61,7 +61,7 @@ public class QuizQuestionsCreate extends AppCompatActivity {
         releaseDate = extraQuiz.getQuizDate();
         educatorDocRef = db.collection("Educators").document(educator_SA_ID);
         course_SA_ID = extraQuiz.getCourseDocRef();
-        //courseDocRef = db.collection("Courses").document(course_SA_ID);
+        courseDocRef = db.collection("Courses").document(course_SA_ID);
         quizName = extraQuiz.getQuizName();
 
         mCreateQuestions = findViewById(R.id.newQuestionButton);
@@ -168,7 +168,7 @@ public class QuizQuestionsCreate extends AppCompatActivity {
         dataMap.put("Quiz", quizList);
          */
 
-        QuizDocument quizDocument = new QuizDocument(null, educatorDocRef, quizName, quizList, releaseDate);
+        QuizDocument quizDocument = new QuizDocument(courseDocRef, educatorDocRef, quizName, quizList, releaseDate);
 
 
         db.collection(QUIZ_DB)
