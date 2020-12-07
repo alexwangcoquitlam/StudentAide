@@ -102,7 +102,6 @@ public class CoursesActivity extends AppCompatActivity {
 
                         //Show buttons
                         getQuizzes.setVisibility(View.VISIBLE);
-
                     }
                 }
 
@@ -116,8 +115,8 @@ public class CoursesActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if(choice.equals("Choose a Course")){
-                        Toast.makeText(getActivity(), "Please choose a course.", Toast.LENGTH_SHORT).show();
+                    if(choice.equals("Choose a Course") || !quizHM.containsKey(choice)){
+                        Toast.makeText(getActivity(), "Please choose a valid course.", Toast.LENGTH_SHORT).show();
                     }else {
                         getQuizzes.setVisibility(View.INVISIBLE);
                         retrieveQuizzes(chosenCourseID, new QuizCallback() {

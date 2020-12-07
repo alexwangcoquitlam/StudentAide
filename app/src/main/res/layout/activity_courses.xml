@@ -14,6 +14,7 @@
         android:background="@drawable/buttonbackground"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/open_quizzes"
+        android:visibility="invisible"
         android:textColor="#01003B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
