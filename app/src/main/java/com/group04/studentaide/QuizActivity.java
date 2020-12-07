@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,15 +34,12 @@ public class QuizActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    TextView mQuestionText;
+    TextView mQuestionText,mQuestionNumber, mQuizLabel;
     RadioGroup mAllChoices;
-    RadioButton mSelectedChoice;
-    RadioButton mChoice1;
-    RadioButton mChoice2;
-    RadioButton mChoice3;
+    RadioButton mSelectedChoice, mChoice1, mChoice2, mChoice3;
     Button mNextButton;
 
-    private final String QUIZDB = "QuizDef";
+    private final String QUIZDB = "QuizDefs";
     private final static String TAG = "QuizActivity";
 
     private ArrayList<QuizQuestions> quizList;
@@ -57,6 +55,8 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         mQuestionText = findViewById(R.id.questionLabel);
+        mQuestionNumber = findViewById(R.id.questionNumberLabel);
+        mQuizLabel = findViewById(R.id.quizLabel);
         mAllChoices = findViewById(R.id.radioGroup);
         mChoice1 = findViewById(R.id.questionAnswer1);
         mChoice2 = findViewById(R.id.questionAnswer2);
@@ -66,44 +66,21 @@ public class QuizActivity extends AppCompatActivity {
         currentQuestionIndex = 0;
         correctAnswers = 0;
 
-        /*
+
         //put quizDocID
-        getAllQuestions("SEE0TEnnRsmhc9QFg7ay", new QuizCallback() {
+        getAllQuestions("SgQB6RutVYgnDTDYRhpL", new QuizCallback() {
             @Override
             public void onQuizCallback(ArrayList<QuizQuestions> quizQuestions) {
                 //Then use quizList outside
                 quizList = quizQuestions;
                 Log.d("Yu", "ArrayList is not populated?");
-
+                setQuizQuestion(currentQuestionIndex);
             }
         });
 
-         */
+
 
         //getQuestions("SEE0TEnnRsmhc9QFg7ay");
-
-        DocumentReference quizDocRef = db.collection(QUIZDB).document("SEE0TEnnRsmhc9QFg7ay");
-
-        quizDocRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()){
-                            Log.d("Yu", "Does it get in here?");
-                            QuizDocument quizDocument = documentSnapshot.toObject(QuizDocument.class);
-                            String quizName = quizDocument.getQuizName();
-                            quizList = quizDocument.getQuiz();
-                            setQuizQuestion(currentQuestionIndex);
-
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
 
 
         mNextButton.setOnClickListener(new View.OnClickListener() {
@@ -113,10 +90,12 @@ public class QuizActivity extends AppCompatActivity {
 
                     correctAnswers++;
                     nextQuestion();
+                    Log.d("Yu", "Correct answer: " + correctAnswers);
 
                 }else{
                     //Incorrect answer
                     nextQuestion();
+                    Log.d("Yu", "Correct answer: " + correctAnswers);
                 }
             }
             private boolean answerIsCorrect(){
@@ -147,7 +126,10 @@ public class QuizActivity extends AppCompatActivity {
         mChoice1.setText(quizList.get(currentQuestionIndex).getChoice1());
         mChoice2.setText(quizList.get(currentQuestionIndex).getChoice2());
         mChoice3.setText(quizList.get(currentQuestionIndex).getChoice3());
-        mAllChoices.clearCheck();
+        String questionNumber =  String.valueOf(currentQuestionIndex + 1);
+        mQuestionNumber.setText("Question " + (currentQuestionIndex+1));
+
+        clearAllCheck();
 
         start = System.nanoTime();
 
@@ -160,9 +142,12 @@ public class QuizActivity extends AppCompatActivity {
         double timeElapsed = (finish - start) / 1000000000;
         quizList.get(currentQuestionIndex).setTimeElapsed(timeElapsed);
 
-        if (currentQuestionIndex < quizList.size()){
+        if (currentQuestionIndex < quizList.size() - 1){
             currentQuestionIndex++;
             setQuizQuestion(currentQuestionIndex);
+            clearAllCheck();
+        }else{
+            Toast.makeText(this, "End of quiz.", Toast.LENGTH_SHORT).show();
         }
 
         //currentQuestionIndex = (currentQuestionIndex + 1) % quizList.size()
@@ -177,11 +162,13 @@ public class QuizActivity extends AppCompatActivity {
     }
 
 
-    //Put this into an onsuccesslistner instead
-    //Try actually putting the whole object into firestore instead of individual fields
-    //See IF IT WILL ACTUALLY PULL THE CLASS AFTER
+    public void clearAllCheck(){
+        mChoice1.setChecked(false);
+        mChoice2.setChecked(false);
+        mChoice3.setChecked(false);
 
-    /*
+    }
+
     public void getAllQuestions(String documentID, QuizCallback callback){
         Log.d("Yu", "Getting all questions");
         DocumentReference quizDocRef = db.collection(QUIZDB).document(documentID);
@@ -193,19 +180,23 @@ public class QuizActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             //This will only look at one document
                             Log.d("Yu", "Does it go in here?");
-                            ArrayList<QuizQuestions> quizQuestions = new ArrayList<>();
+                            //ArrayList<QuizQuestions> quizQuestions = new ArrayList<>();
                             DocumentSnapshot document = task.getResult();
+                            ArrayList<QuizQuestions> quizQuestions = null;
                             if (document.exists()){
                                 Log.d("Yu" ,"Building quiz questions object");
                                 //Hopefully this populates arrayList with only the questions
+                                quizQuestions = document.toObject(QuizDocument.class).quiz;
+                                //Log.d("Yu", quizQuestions.toString());
                                 QuizDocument quizDocument = document.toObject(QuizDocument.class);
-                                String quizName = quizDocument.getQuizName();
-                                quizQuestions = quizDocument.getQuiz();
+                                String quizName = quizDocument.getQuiz_Name();
+                                //quizQuestions = quizDocument.getQuiz();
+
+                                mQuizLabel.setText(quizName);
 
                                 Log.d("Yu", "Quiz name: " + quizName);
+                                Log.d("Yu", quizQuestions.toString());
 
-                                setQuizQuestion(currentQuestionIndex);
-                                //Call method that builds quiz
                             }
                             callback.onQuizCallback(quizQuestions);
                         }else{
@@ -216,41 +207,4 @@ public class QuizActivity extends AppCompatActivity {
 
 
     }
-
-
-     */
-
-    /*
-
-    public void getQuestions(String documentID){
-        DocumentReference quizDocRef = db.collection(QUIZDB).document(documentID);
-
-        quizDocRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()){
-                            Log.d("Yu", "Does it get in here?");
-                            QuizDocument quizDocument = documentSnapshot.toObject(QuizDocument.class);
-                            String quizName = quizDocument.getQuizName();
-                            quizList = quizDocument.getQuiz();
-                            setQuizQuestion(currentQuestionIndex);
-
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-    }
-
-
-
-     */
-
-
 }

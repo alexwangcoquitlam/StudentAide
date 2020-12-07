@@ -5,77 +5,68 @@ Written By: Yufeng Luo
 Helper class for grabbing object from Firestore and turning from document to class object
 */
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
-import org.w3c.dom.Document;
-
-import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class QuizDocument{
 
 
-    private Timestamp quizDate;
-    private String quizName;
-    private DocumentReference educatorDocRef;
-    private DocumentReference courseDocRef;
+    private DocumentReference Educator_SA_ID;
+    private DocumentReference Course_SA_ID;
     public ArrayList<QuizQuestions> quiz;
+    private String Quiz_Name;
+    private Timestamp ReleaseDate;
 
     public QuizDocument(){
     }
 
-    public QuizDocument(DocumentReference courseDocRef, DocumentReference educatorDocRef, String quizName, ArrayList<QuizQuestions> quizQuestionsArrayList, Timestamp releaseDate){
-        this.courseDocRef = courseDocRef;
-        this.educatorDocRef = educatorDocRef;
-        this.quizName = quizName;
+    public QuizDocument(DocumentReference courseDocRef, DocumentReference educatorDocRef, String Quiz_Name, ArrayList<QuizQuestions> quizQuestionsArrayList, Timestamp releaseDate){
+        this.Course_SA_ID = courseDocRef;
+        this.Educator_SA_ID = educatorDocRef;
+        this.Quiz_Name = Quiz_Name;
         this.quiz = quizQuestionsArrayList;
-        this.quizDate = releaseDate;
+        this.ReleaseDate = releaseDate;
     }
 
-
-    public Timestamp getQuizDate() {
-        return quizDate;
+    public DocumentReference getEducator_SA_ID() {
+        return Educator_SA_ID;
     }
 
-    public void setQuizDate(Timestamp quizDate) {
-        this.quizDate = quizDate;
+    public void setEducator_SA_ID(DocumentReference Educator_SA_ID) {
+        this.Educator_SA_ID = Educator_SA_ID;
     }
 
-    public String getQuizName() {
-        return quizName;
+    public DocumentReference getCourse_SA_ID() {
+        return Course_SA_ID;
     }
 
-    public void setQuizName(String quizName) {
-        this.quizName = quizName;
-    }
-
-    public DocumentReference getEducatorDocRef() {
-        return educatorDocRef;
-    }
-
-    public void setEducatorDocRef(DocumentReference educatorDocRef) {
-        this.educatorDocRef = educatorDocRef;
-    }
-
-    public DocumentReference getCourseDocRef() {
-        return courseDocRef;
-    }
-
-    public void setCourseDocRef(DocumentReference courseDocRef) {
-        this.courseDocRef = courseDocRef;
+    public void setCourse_SA_ID(DocumentReference Course_SA_ID) {
+        this.Course_SA_ID = Course_SA_ID;
     }
 
     public ArrayList<QuizQuestions> getQuiz() {
         return quiz;
     }
 
-    public void setQuiz(ArrayList<QuizQuestions> quiz) {
-        this.quiz = quiz;
+    public void setQuiz(ArrayList<QuizQuestions> Quiz) {
+        this.quiz = Quiz;
+    }
+
+    public String getQuiz_Name() {
+        return Quiz_Name;
+    }
+
+    public void setQuiz_Name(String Quiz_Name) {
+        this.Quiz_Name = Quiz_Name;
+    }
+
+    public Timestamp getReleaseDate() {
+        return ReleaseDate;
+    }
+
+    public void ReleaseDate(Timestamp ReleaseDate) {
+        this.ReleaseDate = ReleaseDate;
     }
 }

@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courseJoin"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintVertical_bias="0.147" />
 
     <Button
         android:id="@+id/courseJoin"
@@ -64,9 +64,10 @@
         android:textColor="#01003B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coursesLabel"
-        app:layout_constraintVertical_bias="0.072" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
         android:id="@+id/courseDropdown"
