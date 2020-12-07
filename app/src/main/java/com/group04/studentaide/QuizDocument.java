@@ -2,6 +2,9 @@ package com.group04.studentaide;
 
 /*
 Written By: Yufeng Luo
+
+Getters and Setters are case sensitive to what is in firestore when retrieving
+
 Helper class for grabbing object from Firestore and turning from document to class object
 */
 

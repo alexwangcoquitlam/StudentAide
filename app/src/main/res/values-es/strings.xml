@@ -56,6 +56,7 @@
     <string name="study_button">Estudiar</string>
     <string name="courses_button">Cursos</string>
 
+    <string name="retrieve_quiz">Cuestionario</string>
     <string name="quiz_create_label">Crear Cuestionario</string>
     <string name="quiz_name_hint">Nombre de Cuestionario</string>
     <string name="set_quiz_name">Crear Preguntas</string>

@@ -1,5 +1,14 @@
 package com.group04.studentaide;
 
+/*
+Written By: Yufeng Luo
+
+Class that implements Parcelable to pass TimeStamp object
+DocumentReference does not implement Parcelable therefore hvae to pass strings, then build
+DocumentReference path inside of the next activity
+
+*/
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
