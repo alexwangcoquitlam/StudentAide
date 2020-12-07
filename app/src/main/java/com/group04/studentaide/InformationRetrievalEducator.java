@@ -81,7 +81,7 @@ public class InformationRetrievalEducator {
         if (user != null) {
 
             String uid = user.getUid();
-            db.collection("Students")
+            db.collection("Educators")
                     .whereEqualTo("User_ID", uid)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
